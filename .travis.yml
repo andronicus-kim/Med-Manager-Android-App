@@ -15,9 +15,9 @@ android :
     - extra-android-m2repository
     - addon-google_apis-google-$ANDROID_API_LEVEL
   licences :
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
 before_script :
     - mkdir -p "$ANDROID_HOME/licenses"
     - cp ./licenses/* "$ANDROID_HOME/licenses"
