@@ -1,13 +1,31 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.andronicus.med_manager.signin.SignInFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.andronicus.med_manager.signin.SignInFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="48dp"
+        android:scaleType="centerCrop"
+        android:layout_width="120dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_action_name"
+        android:layout_height="120dp"/>
     <TextView
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Signed Out"/>
+    <com.google.android.gms.common.SignInButton
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
-
-</FrameLayout>
+        android:layout_height="60dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"/>
+</LinearLayout>
