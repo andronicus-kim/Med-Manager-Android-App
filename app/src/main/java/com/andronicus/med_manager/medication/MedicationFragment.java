@@ -1,4 +1,4 @@
-package com.andronicus.med_manager.addmedication;
+package com.andronicus.med_manager.medication;
 
 
 import android.os.Bundle;

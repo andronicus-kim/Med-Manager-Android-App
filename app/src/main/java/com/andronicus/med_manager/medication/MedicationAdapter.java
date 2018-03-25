@@ -1,6 +1,6 @@
-package com.andronicus.med_manager.addmedication;
+package com.andronicus.med_manager.medication;
 
-import android.icu.util.ValueIterator;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +11,6 @@ import com.andronicus.med_manager.R;
 
 import java.util.List;
 import java.util.Random;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by andronicus on 3/25/2018.
@@ -35,6 +32,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             R.color.card_background11,
     };
 
+    private Context mContext;
     private List<String> mStrings;
     public MedicationAdapter(List<String> strings){
         mStrings = strings;
@@ -42,6 +40,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
     @Override
     public MedicationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_medication,parent,false);
         return new MedicationViewHolder(view);
     }
@@ -60,19 +59,24 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
         TextView mMedicationInitial;
         TextView mMedicationName;
+        TextView mPrescription;
+        TextView mEndDate;
         public MedicationViewHolder(View view) {
             super(view);
             mMedicationInitial = view.findViewById(R.id.tv_medication_initial);
             mMedicationName = view.findViewById(R.id.tv_medication_name);
-
+            mPrescription = view.findViewById(R.id.tv_prescription);
+            mEndDate = view.findViewById(R.id.tv_end_date);
         }
         private void bind(String name){
             String medicationInital = name.substring(0,1);
             Random random = new Random();
             int position = random.nextInt(colors.length);
-            mMedicationInitial.setBackgroundColor(colors[position]);
+            mMedicationInitial.setBackgroundColor(mContext.getResources().getColor(colors[position]));
             mMedicationInitial.setText(medicationInital);
             mMedicationName.setText(name);
+            mPrescription.setText("1 * 3");
+            mEndDate.setText("26/04/2018");
         }
     }
 }

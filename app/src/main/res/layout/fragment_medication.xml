@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.andronicus.med_manager.addmedication.MedicationFragment">
+             tools:context="com.andronicus.med_manager.medication.MedicationFragment">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recview_medication"
         android:layout_width="match_parent"

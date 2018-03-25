@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginRight="8dp"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
@@ -40,28 +41,58 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:textSize="22sp"
-                    android:text="Menthol"/>
+                    android:text="Menthol"
+                    android:textColor="#212121"/>
                 <ImageView
+                    android:id="@+id/imageview_edit_medication"
                     android:layout_marginTop="5dp"
                     android:layout_alignParentRight="true"
                     android:layout_width="48dp"
                     android:layout_height="30dp"
                     android:src="@drawable/image_edit_medication"/>
             </RelativeLayout>
-            <TextView
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:maxLines="1"
-                android:textSize="18sp"
-                android:text="Prescription  1 * 3"/>
-            <TextView
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:maxLines="1"
+                    android:textSize="18sp"
+                    android:text="Prescription  "/>
+                <TextView
+                    android:id="@+id/tv_prescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:textSize="15sp"
+                    tools:text="1 * 3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:maxLines="1"
-                android:textSize="18sp"
-                android:text="End date        26/04/2018"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:maxLines="1"
+                    android:textSize="18sp"
+                    android:text="End date"/>
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="40dp"
+                    android:maxLines="1"
+                    android:textSize="15sp"
+                    tools:text="26/04/2018"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

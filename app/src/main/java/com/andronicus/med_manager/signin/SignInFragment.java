@@ -6,13 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
-import com.andronicus.med_manager.addmedication.MedicationActivity;
+import com.andronicus.med_manager.medication.MedicationActivity;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
