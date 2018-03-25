@@ -13,10 +13,11 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:id="@+id/imageView_edit_profile"
         android:layout_gravity="right"
         android:src="@drawable/image_edit_profile"
-        android:layout_width="40dp"
-        android:layout_height="60dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_gravity="center_horizontal"

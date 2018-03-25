@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
 
@@ -34,6 +35,11 @@ public class MedicationActivity extends AppCompatActivity
         setContentView(R.layout.activity_medication);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        findViewById(R.id.imageView_edit_profile).setOnClickListener(
+                (view) -> {
+                    Toast.makeText(this, "Edit profile", Toast.LENGTH_SHORT).show();
+                }
+        );
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
