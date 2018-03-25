@@ -8,50 +8,60 @@
     android:layout_marginTop="8dp"
     android:elevation="8dp"
     app:cardCornerRadius="8dp"
-    android:layout_height="120dp">
+    android:layout_height="110dp">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:id="@+id/tv_medication_initial"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@color/colorPrimary"
-            android:text="M"
+            android:fontFamily="@font/lato_light"
             android:gravity="center"
-            android:textSize="72sp"
-            android:layout_weight="1"/>
+            android:textColor="#FFFFFF"
+            android:text="M"
+            android:textSize="72sp"/>
         <LinearLayout
             android:layout_marginLeft="8dp"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:orientation="vertical"
             android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/tv_medication_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textSize="22sp"
+                    android:text="Menthol"/>
+                <ImageView
+                    android:layout_marginTop="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="48dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/image_edit_medication"/>
+            </RelativeLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:textSize="22sp"
-                android:text="Menthol"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:maxLines="1"
                 android:textSize="18sp"
-                android:text="1 * 3"/>
-            <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textSize="18sp"
-            android:text="Start : "/>
+                android:text="Prescription  1 * 3"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:maxLines="1"
                 android:textSize="18sp"
-                android:text="End : "/>
+                android:text="End date        26/04/2018"/>
         </LinearLayout>
     </LinearLayout>
-
 </android.support.v7.widget.CardView>

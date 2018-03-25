@@ -24,6 +24,10 @@
             android:name=".editprofile.EditProfileActivity"
             android:parentActivityName=".addmedication.MedicationActivity"
             android:label="@string/title_activity_editprofile"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts"/>
     </application>
 
 </manifest>

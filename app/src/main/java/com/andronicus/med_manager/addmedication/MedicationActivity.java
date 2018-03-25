@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.editprofile.EditProfileActivity;
+import com.andronicus.med_manager.util.ActivityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +43,17 @@ public class MedicationActivity extends AppCompatActivity
         setContentView(R.layout.activity_medication);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        /*
+        * Reference the layout that contains the fragment in
+        * Sign In activity layout
+        * */
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment == null){
+            //If the layout contains no fragment then create a new instance
+            fragment = MedicationFragment.newInstance();
+            ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),R.id.fragment_container,fragment);
+        }
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener( (view) -> {

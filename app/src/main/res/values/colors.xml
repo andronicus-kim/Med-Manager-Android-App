@@ -3,4 +3,15 @@
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="card_background1">#4CAF50</color>
+    <color name="card_background2">#009688</color>
+    <color name="card_background3">#E91E63</color>
+    <color name="card_background4">#9C27B0</color>
+    <color name="card_background5">#3F51B5</color>
+    <color name="card_background6">#2196F3</color>
+    <color name="card_background7">#009688</color>
+    <color name="card_background8">#00BCD4</color>
+    <color name="card_background9">#FF5722</color>
+    <color name="card_background10">#795548</color>
+    <color name="card_background11">#455A64</color>
 </resources>
