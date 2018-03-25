@@ -2,9 +2,14 @@
 
 buildscript {
     
-    ext.play_services_version = '11.8.0'
-    ext.circular_imageview_version = '2.2.0'
-    ext.butterknife_version = '8.8.1'
+    ext.play_services = '11.8.0'
+    ext.circular_imageview = '2.2.0'
+    ext.butterknife = '8.8.1'
+    ext.support_library = '26.1.0'
+    ext.constraint_layout = '1.0.2'
+    ext.junit = '4.12'
+    ext.test_runner = '1.0.1'
+    ext.espresso = '3.0.1'
     repositories {
         google()
         jcenter()

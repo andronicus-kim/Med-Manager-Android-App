@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.andronicus.med_manager.R;
 
 public class EditProfileActivity extends AppCompatActivity {
+    private static final String TAG = "EditProfileActivity";
 
     /*
     * Helper method to start this activity
@@ -20,7 +22,11 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setHomeButtonEnabled(true);
         setContentView(R.layout.activity_edit_profile);
+        try{
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }catch (NullPointerException e){
+            Log.e(TAG, "onCreate: " + e.getMessage() );
+        }
     }
 }
