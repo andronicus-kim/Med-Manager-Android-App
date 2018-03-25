@@ -19,8 +19,11 @@
         <activity
             android:name=".addmedication.MedicationActivity"
             android:label="@string/title_activity_medication"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".editprofile.EditProfileActivity"
+            android:label="@string/title_activity_editprofile"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

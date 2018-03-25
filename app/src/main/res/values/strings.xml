@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Med-Manager</string>
-    <string name="title_activity_medication">AddMedication</string>
+    <string name="title_activity_medication">Add Medication</string>
+    <string name="title_activity_editprofile">Edit Profile</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

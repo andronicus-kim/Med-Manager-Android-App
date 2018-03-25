@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.editprofile.EditProfileActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +62,7 @@ public class MedicationActivity extends AppCompatActivity
         * */
         navHeaderView.findViewById(R.id.imageView_edit_profile)
                 .setOnClickListener((view) -> {
-                    Toast.makeText(this, "Edit profile", Toast.LENGTH_SHORT).show();
+                    startActivity(EditProfileActivity.newIntent(MedicationActivity.this));
                 });
     }
 
