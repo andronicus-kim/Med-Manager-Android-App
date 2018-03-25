@@ -15,9 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,19 +40,11 @@ public class MedicationActivity extends AppCompatActivity
         setContentView(R.layout.activity_medication);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        findViewById(R.id.imageView_edit_profile).setOnClickListener(
-                (view) -> {
-                    Toast.makeText(this, "Edit profile", Toast.LENGTH_SHORT).show();
-                }
-        );
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fab.setOnClickListener( (view) -> {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-            }
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -58,6 +55,14 @@ public class MedicationActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View navHeaderView = navigationView.getHeaderView(0);
+        /*
+        * Reference views in Navigation Header
+        * */
+        navHeaderView.findViewById(R.id.imageView_edit_profile)
+                .setOnClickListener((view) -> {
+                    Toast.makeText(this, "Edit profile", Toast.LENGTH_SHORT).show();
+                });
     }
 
     @Override
