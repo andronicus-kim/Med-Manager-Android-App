@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_med_manager_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_med_manager_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".signin.SignInActivity">
@@ -22,8 +22,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".editprofile.EditProfileActivity"
-            android:label="@string/title_activity_editprofile"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:parentActivityName=".addmedication.MedicationActivity"
+            android:label="@string/title_activity_editprofile"/>
     </application>
 
 </manifest>
