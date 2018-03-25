@@ -28,10 +28,4 @@ public class SignInActivity extends AppCompatActivity {
             ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),R.id.fragment_container,fragment);
         }
     }
-        /*
-        * Helper method to start this activity
-        * */
-    public static Intent newIntent(@NonNull Context context){
-        return new Intent(context,SignInActivity.class);
-    }
 }

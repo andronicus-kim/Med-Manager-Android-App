@@ -4,6 +4,7 @@ buildscript {
     
     ext.play_services_version = '11.8.0'
     ext.circular_imageview_version = '2.2.0'
+    ext.butterknife_version = '8.8.1'
     repositories {
         google()
         jcenter()
