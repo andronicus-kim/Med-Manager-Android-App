@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.editmedication.EditMedicationActivity;
 
 import java.util.List;
 import java.util.Random;
@@ -61,6 +63,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         TextView mMedicationName;
         TextView mPrescription;
         TextView mEndDate;
+        ImageView mEditMedication;
         public MedicationViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
@@ -68,6 +71,13 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             mMedicationName = view.findViewById(R.id.tv_medication_name);
             mPrescription = view.findViewById(R.id.tv_prescription);
             mEndDate = view.findViewById(R.id.tv_end_date);
+            mEditMedication = view.findViewById(R.id.imageview_edit_medication);
+            mEditMedication.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mContext.startActivity(EditMedicationActivity.newIntent(mContext));
+                }
+            });
         }
         private void bind(String name){
             String medicationInital = name.substring(0,1);

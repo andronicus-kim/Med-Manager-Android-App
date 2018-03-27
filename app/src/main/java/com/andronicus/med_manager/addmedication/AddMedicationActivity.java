@@ -1,4 +1,4 @@
-package com.andronicus.med_manager.editmedication;
+package com.andronicus.med_manager.addmedication;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,21 +9,19 @@ import android.util.Log;
 
 import com.andronicus.med_manager.R;
 
-public class EditMedicationActivity extends AppCompatActivity {
-
-    private static final String TAG = "EditMedicationActivity";
-
+public class AddMedicationActivity extends AppCompatActivity {
+    private static final String TAG = "AddMedicationActivity";
 
     /*
    * Helper method to start this activity
    * */
     public static Intent newIntent(@NonNull Context context){
-        return new Intent(context,EditMedicationActivity.class);
+        return new Intent(context,AddMedicationActivity.class);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_medication);
+        setContentView(R.layout.activity_add_medication);
         try{
             getSupportActionBar().setHomeButtonEnabled(true);
         }catch (NullPointerException e){

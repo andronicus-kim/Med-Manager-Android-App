@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Med-Manager</string>
     <string name="title_activity_medication">Medication</string>
-    <string name="title_activity_editprofile">Edit Profile</string>
+    <string name="title_activity_edit_profile">Edit Profile</string>
+    <string name="title_activity_edit_medication">Edit Medication</string>
+    <string name="title_activity_add_medication">Add Medication</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

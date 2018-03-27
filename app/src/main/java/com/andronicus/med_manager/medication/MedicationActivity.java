@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.addmedication.AddMedicationActivity;
 import com.andronicus.med_manager.editprofile.EditProfileActivity;
 import com.andronicus.med_manager.util.ActivityUtil;
 
@@ -50,8 +51,7 @@ public class MedicationActivity extends AppCompatActivity
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener( (view) -> {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(AddMedicationActivity.newIntent(this));
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -22,7 +22,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".editprofile.EditProfileActivity"
-            android:label="@string/title_activity_editprofile"
+            android:label="@string/title_activity_edit_profile"
             android:parentActivityName=".medication.MedicationActivity"/>
 
         <meta-data
@@ -32,8 +32,14 @@
         <activity
             android:name=".medication.MedicationPopupActivity"
             android:theme="@style/AppTheme.CustomTheme"/>
-        <activity android:name=".editmedication.EditMedicationActivity">
-        </activity>
+        <activity
+            android:name=".editmedication.EditMedicationActivity"
+            android:label="@string/title_activity_edit_medication"
+            android:parentActivityName=".medication.MedicationActivity"/>
+        <activity
+            android:name=".addmedication.AddMedicationActivity"
+            android:label="@string/title_activity_add_medication"
+            android:parentActivityName=".medication.MedicationActivity"/>
     </application>
 
 </manifest>
