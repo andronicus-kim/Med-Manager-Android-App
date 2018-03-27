@@ -22,12 +22,16 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".editprofile.EditProfileActivity"
-            android:parentActivityName=".medication.MedicationActivity"
-            android:label="@string/title_activity_editprofile"/>
+            android:label="@string/title_activity_editprofile"
+            android:parentActivityName=".medication.MedicationActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts"/>
+
+        <activity
+            android:name=".medication.MedicationPopupActivity"
+            android:theme="@style/AppTheme.CustomTheme"/>
     </application>
 
 </manifest>

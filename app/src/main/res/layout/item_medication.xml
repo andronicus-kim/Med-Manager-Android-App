@@ -7,7 +7,7 @@
     android:layout_marginRight="8dp"
     android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
-    android:elevation="8dp"
+    app:cardElevation="8dp"
     app:cardCornerRadius="8dp"
     android:layout_height="110dp">
     <LinearLayout
@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:textSize="22sp"
+                    android:textStyle="bold"
                     android:text="Menthol"
                     android:textColor="#212121"/>
                 <ImageView
@@ -61,6 +62,7 @@
                     android:layout_marginTop="8dp"
                     android:maxLines="1"
                     android:textSize="18sp"
+                    android:textStyle="bold"
                     android:text="Prescription  "/>
                 <TextView
                     android:id="@+id/tv_prescription"
@@ -82,6 +84,7 @@
                     android:layout_marginTop="8dp"
                     android:maxLines="1"
                     android:textSize="18sp"
+                    android:textStyle="bold"
                     android:text="End date"/>
                 <TextView
                     android:id="@+id/tv_end_date"

@@ -55,7 +55,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         return mStrings.size();
     }
 
-    public class MedicationViewHolder extends RecyclerView.ViewHolder{
+    public class MedicationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView mMedicationInitial;
         TextView mMedicationName;
@@ -63,6 +63,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         TextView mEndDate;
         public MedicationViewHolder(View view) {
             super(view);
+            view.setOnClickListener(this);
             mMedicationInitial = view.findViewById(R.id.tv_medication_initial);
             mMedicationName = view.findViewById(R.id.tv_medication_name);
             mPrescription = view.findViewById(R.id.tv_prescription);
@@ -77,6 +78,11 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             mMedicationName.setText(name);
             mPrescription.setText("1 * 3");
             mEndDate.setText("26/04/2018");
+        }
+
+        @Override
+        public void onClick(View v) {
+            mContext.startActivity(MedicationPopupActivity.newIntent(mContext));
         }
     }
 }
