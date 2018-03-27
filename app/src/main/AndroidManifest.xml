@@ -32,6 +32,8 @@
         <activity
             android:name=".medication.MedicationPopupActivity"
             android:theme="@style/AppTheme.CustomTheme"/>
+        <activity android:name=".editmedication.EditMedicationActivity">
+        </activity>
     </application>
 
 </manifest>

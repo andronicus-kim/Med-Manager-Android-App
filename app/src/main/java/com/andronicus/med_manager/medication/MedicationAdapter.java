@@ -82,7 +82,10 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
         @Override
         public void onClick(View v) {
-            mContext.startActivity(MedicationPopupActivity.newIntent(mContext));
+            Random random = new Random();
+            int position = random.nextInt(colors.length);
+            String name = mStrings.get(getAdapterPosition());
+            mContext.startActivity(MedicationPopupActivity.newIntent(mContext,name,position));
         }
     }
 }
