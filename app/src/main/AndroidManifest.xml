@@ -16,29 +16,37 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts"/>
         <activity
             android:name=".medication.MedicationActivity"
             android:label="@string/title_activity_medication"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".editprofile.EditProfileActivity"
-            android:label="@string/title_activity_edit_profile"
-            android:parentActivityName=".medication.MedicationActivity"/>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts"/>
-
+            android:name=".addmedication.AddMedicationActivity"
+            android:label="@string/title_activity_add_medication"
+            android:parentActivityName=".medication.MedicationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".medication.MedicationActivity"
+                />
+        </activity>
         <activity
             android:name=".medication.MedicationPopupActivity"
             android:theme="@style/AppTheme.CustomTheme"/>
         <activity
             android:name=".editmedication.EditMedicationActivity"
             android:label="@string/title_activity_edit_medication"
-            android:parentActivityName=".medication.MedicationActivity"/>
+            android:parentActivityName=".medication.MedicationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".medication.MedicationActivity"
+                />
+        </activity>
         <activity
-            android:name=".addmedication.AddMedicationActivity"
-            android:label="@string/title_activity_add_medication"
+            android:name=".editprofile.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
             android:parentActivityName=".medication.MedicationActivity"/>
     </application>
 
