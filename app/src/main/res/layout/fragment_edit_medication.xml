@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/et_name"
                 android:paddingLeft="8dp"
                 android:layout_width="match_parent"
                 android:hint="Name"
@@ -23,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/et_description"
                 android:layout_width="match_parent"
                 android:hint="Description"
                 android:paddingLeft="8dp"
@@ -32,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/et_frequency"
                 android:layout_width="match_parent"
                 android:hint="Frequency/Interval"
                 android:paddingLeft="8dp"
@@ -41,16 +44,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/et_start_date"
                 android:layout_width="match_parent"
                 android:hint="Start date"
                 android:paddingLeft="8dp"
+                android:clickable="true"
+                android:focusable="false"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/et_end_date"
                 android:layout_width="match_parent"
+                android:clickable="true"
+                android:focusable="false"
                 android:hint="End date"
                 android:paddingLeft="8dp"
                 android:layout_height="wrap_content"/>
