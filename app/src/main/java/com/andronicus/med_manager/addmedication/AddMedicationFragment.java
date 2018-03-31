@@ -3,6 +3,7 @@ package com.andronicus.med_manager.addmedication;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,13 +17,14 @@ import android.widget.Toast;
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.medication.MedicationActivity;
 import com.andronicus.med_manager.util.DatePickerFragment;
+import com.andronicus.med_manager.util.DatePickerListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class AddMedicationFragment extends Fragment {
+public class AddMedicationFragment extends Fragment implements DatePickerListener{
 
     private Unbinder mUnbinder;
     @BindView(R.id.et_start_date)
@@ -53,7 +55,13 @@ public class AddMedicationFragment extends Fragment {
     }
     @OnClick(R.id.et_start_date) public void onClick(){
         DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.initiliazeListener(this);
         datePickerFragment.show(getActivity().getSupportFragmentManager(),"date-picker");
+    }
+
+    @Override
+    public void setDate(int year, int month, int dayOfMonth) {
+        Snackbar.make(mStartDate,dayOfMonth + "/" + month + "/" + year,Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
