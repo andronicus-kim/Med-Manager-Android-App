@@ -1,7 +1,9 @@
 package com.andronicus.med_manager.medication;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -105,10 +107,17 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_edit_medication :
+                    //Start Edit Medication activity
                     mContext.startActivity(EditMedicationActivity.newIntent(mContext));
                     break;
                 case R.id.action_delete_medication :
-                    Toast.makeText(mContext, "Delete Medication", Toast.LENGTH_SHORT).show();
+                    /*
+                    * Alert dialog to ask the user if they really want to delete
+                    * */
+                    new AlertDialog.Builder(mContext)
+                            .setMessage("Delete Medication ?")
+                            .setNegativeButton("CANCEL", (dialog1, which) -> dialog1.dismiss())
+                            .setPositiveButton("OK",((dialog1, which) -> Toast.makeText(mContext, "Deleted...", Toast.LENGTH_SHORT).show())).show();
                     break;
             }
             return true;
