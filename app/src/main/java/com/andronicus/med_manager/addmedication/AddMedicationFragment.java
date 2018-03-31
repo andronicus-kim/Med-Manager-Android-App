@@ -35,6 +35,7 @@ public class AddMedicationFragment extends Fragment{
     @BindView(R.id.et_end_date)
     EditText mEndDate;
 
+
     public static AddMedicationFragment newInstance() {
         
         Bundle args = new Bundle();
