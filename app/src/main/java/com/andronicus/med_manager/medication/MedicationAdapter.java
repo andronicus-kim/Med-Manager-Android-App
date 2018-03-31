@@ -1,6 +1,7 @@
 package com.andronicus.med_manager.medication;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.editmedication.EditMedicationActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -55,6 +57,12 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
     @Override
     public int getItemCount() {
         return mStrings.size();
+    }
+
+    public void filter(@NonNull List<String> strings){
+        mStrings = new ArrayList<>();
+        mStrings.addAll(strings);
+        notifyDataSetChanged();
     }
 
     public class MedicationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

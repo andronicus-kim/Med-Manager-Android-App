@@ -2,10 +2,15 @@ package com.andronicus.med_manager.medication;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,11 +26,14 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MedicationFragment extends Fragment {
+public class MedicationFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private Unbinder mUnbinder;
     @BindView(R.id.recview_medication)
     RecyclerView mMedicationRecyclerView;
+    private List<String> mStrings;
+    private MedicationAdapter mAdapter;
+
     /*
    * Helper method to create an instance of this fragment
    * */
@@ -39,20 +47,27 @@ public class MedicationFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
-        List<String> strings = new ArrayList<>();
-        strings.add("Methnol");
-        strings.add("Maramoja");
-        strings.add("Panadol");
-        strings.add("Telmi");
-        strings.add("Syrup");
-        strings.add("Action");
+        mStrings = new ArrayList<>();
+        mStrings.add("Methnol");
+        mStrings.add("Maramoja");
+        mStrings.add("Panadol");
+        mStrings.add("Telmi");
+        mStrings.add("Syrup");
+        mStrings.add("Action");
+        mAdapter = new MedicationAdapter(mStrings);
         mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mMedicationRecyclerView.setAdapter(new MedicationAdapter(strings));
+        mMedicationRecyclerView.setAdapter(mAdapter);
         return view;
     }
 
@@ -60,5 +75,32 @@ public class MedicationFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.medication,menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String name = newText.toLowerCase();
+        List<String> strings = new ArrayList<>();
+        for (String string:mStrings){
+            if (string.toLowerCase().contains(name)){
+                strings.add(string);
+            }
+        }
+        mAdapter.filter(strings);
+        return true;
     }
 }
