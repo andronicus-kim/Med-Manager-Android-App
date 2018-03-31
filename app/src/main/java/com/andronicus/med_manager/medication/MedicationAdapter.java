@@ -2,12 +2,15 @@ package com.andronicus.med_manager.medication;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.editmedication.EditMedicationActivity;
@@ -65,7 +68,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         notifyDataSetChanged();
     }
 
-    public class MedicationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MedicationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,PopupMenu.OnMenuItemClickListener{
 
         TextView mMedicationInitial;
         TextView mMedicationName;
@@ -80,11 +83,11 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             mPrescription = view.findViewById(R.id.tv_prescription);
             mEndDate = view.findViewById(R.id.tv_end_date);
             mEditMedication = view.findViewById(R.id.imageview_edit_medication);
-            mEditMedication.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mContext.startActivity(EditMedicationActivity.newIntent(mContext));
-                }
+            mEditMedication.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(mContext,mEditMedication);
+                popupMenu.getMenuInflater().inflate(R.menu.medication_pop_up,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(MedicationViewHolder.this);
+                popupMenu.show();
             });
         }
         private void bind(String name){
@@ -96,6 +99,19 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             mMedicationName.setText(name);
             mPrescription.setText("1 * 3");
             mEndDate.setText("26/04/2018");
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_edit_medication :
+                    mContext.startActivity(EditMedicationActivity.newIntent(mContext));
+                    break;
+                case R.id.action_delete_medication :
+                    Toast.makeText(mContext, "Delete Medication", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            return true;
         }
 
         @Override
