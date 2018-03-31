@@ -33,8 +33,9 @@
             android:layout_height="wrap_content">
             <EditText
                 android:layout_width="match_parent"
-                android:hint="Frequency/Interval"
+                android:hint="Frequency/Interval Per Day"
                 android:paddingLeft="8dp"
+                android:inputType="number"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
@@ -56,6 +57,8 @@
                 android:id="@+id/et_end_date"
                 android:layout_width="match_parent"
                 android:hint="End date"
+                android:clickable="true"
+                android:focusable="false"
                 android:paddingLeft="8dp"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>

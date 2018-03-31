@@ -19,16 +19,21 @@ import com.andronicus.med_manager.medication.MedicationActivity;
 import com.andronicus.med_manager.util.DatePickerFragment;
 import com.andronicus.med_manager.util.DatePickerListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class AddMedicationFragment extends Fragment implements DatePickerListener{
+public class AddMedicationFragment extends Fragment{
 
     private Unbinder mUnbinder;
     @BindView(R.id.et_start_date)
     EditText mStartDate;
+    @BindView(R.id.et_end_date)
+    EditText mEndDate;
 
     public static AddMedicationFragment newInstance() {
         
@@ -53,15 +58,15 @@ public class AddMedicationFragment extends Fragment implements DatePickerListene
         mUnbinder = ButterKnife.bind(this,view);
         return view;
     }
-    @OnClick(R.id.et_start_date) public void onClick(){
+    @OnClick(R.id.et_start_date) public void onStartDateClick(){
         DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.initiliazeListener(this);
+        datePickerFragment.passClickedEditText(mStartDate);
         datePickerFragment.show(getActivity().getSupportFragmentManager(),"date-picker");
     }
-
-    @Override
-    public void setDate(int year, int month, int dayOfMonth) {
-        Snackbar.make(mStartDate,dayOfMonth + "/" + month + "/" + year,Snackbar.LENGTH_SHORT).show();
+    @OnClick(R.id.et_end_date) public void onEndDateClick(){
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.passClickedEditText(mEndDate);
+        datePickerFragment.show(getActivity().getSupportFragmentManager(),"date-picker");
     }
 
     @Override
