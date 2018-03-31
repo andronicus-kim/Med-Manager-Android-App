@@ -4,6 +4,7 @@ package com.andronicus.med_manager.addmedication;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,10 +31,17 @@ import butterknife.Unbinder;
 public class AddMedicationFragment extends Fragment{
 
     private Unbinder mUnbinder;
+    @BindView(R.id.et_name)
+    EditText mEditTextName;
+    @BindView(R.id.et_description)
+    EditText mEditTextDescription;
+    @BindView(R.id.et_frequency)
+    EditText mEditTextFrequency;
     @BindView(R.id.et_start_date)
-    EditText mStartDate;
+    EditText mEditTextStartDate;
     @BindView(R.id.et_end_date)
-    EditText mEndDate;
+    EditText mEditTextEndDate;
+
 
 
     public static AddMedicationFragment newInstance() {
@@ -61,12 +69,12 @@ public class AddMedicationFragment extends Fragment{
     }
     @OnClick(R.id.et_start_date) public void onStartDateClick(){
         DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.passClickedEditText(mStartDate);
+        datePickerFragment.passClickedEditText(mEditTextStartDate);
         datePickerFragment.show(getActivity().getSupportFragmentManager(),"date-picker");
     }
     @OnClick(R.id.et_end_date) public void onEndDateClick(){
         DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.passClickedEditText(mEndDate);
+        datePickerFragment.passClickedEditText(mEditTextEndDate);
         datePickerFragment.show(getActivity().getSupportFragmentManager(),"date-picker");
     }
 
@@ -79,6 +87,22 @@ public class AddMedicationFragment extends Fragment{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save){
+            if (mEditTextName.getText().toString().equals("")){
+                mEditTextName.setError("Name cannot be Blank!");
+                return false;
+            }else if (mEditTextDescription.getText().toString().equals("")){
+                mEditTextDescription.setError("Description cannot be Blank!");
+                return false;
+            }else if (mEditTextFrequency.getText().toString().equals("")){
+                mEditTextFrequency.setError("Frequency cannot be Blank!");
+                return false;
+            }else if (mEditTextStartDate.getText().toString().equals("")){
+                mEditTextStartDate.setError("Start date cannot be Blank!");
+                return false;
+            }else if (mEditTextEndDate.getText().toString().equals("")){
+                mEditTextEndDate.setError("End date cannot be Blank!");
+                return false;
+            }
             Toast.makeText(getActivity(), "Saving...", Toast.LENGTH_SHORT).show();
             startActivity(MedicationActivity.newIntent(getActivity()));
         }
