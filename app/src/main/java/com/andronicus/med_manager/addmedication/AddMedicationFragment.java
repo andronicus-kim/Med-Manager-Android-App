@@ -10,12 +10,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.medication.MedicationActivity;
+import com.andronicus.med_manager.util.DatePickerFragment;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class AddMedicationFragment extends Fragment {
+
+    private Unbinder mUnbinder;
+    @BindView(R.id.et_start_date)
+    EditText mStartDate;
 
     public static AddMedicationFragment newInstance() {
         
@@ -36,7 +47,13 @@ public class AddMedicationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_medication, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_medication, container, false);
+        mUnbinder = ButterKnife.bind(this,view);
+        return view;
+    }
+    @OnClick(R.id.et_start_date) public void onClick(){
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.show(getActivity().getSupportFragmentManager(),"date-picker");
     }
 
     @Override
@@ -52,5 +69,11 @@ public class AddMedicationFragment extends Fragment {
             startActivity(MedicationActivity.newIntent(getActivity()));
         }
         return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
     }
 }

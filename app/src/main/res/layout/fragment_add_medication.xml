@@ -41,7 +41,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/et_start_date"
                 android:layout_width="match_parent"
+                android:clickable="true"
+                android:focusable="false"
                 android:hint="Start date"
                 android:paddingLeft="8dp"
                 android:layout_height="wrap_content"/>
@@ -50,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/et_end_date"
                 android:layout_width="match_parent"
                 android:hint="End date"
                 android:paddingLeft="8dp"
