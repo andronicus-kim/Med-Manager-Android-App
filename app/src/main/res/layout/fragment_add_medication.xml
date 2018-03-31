@@ -1,13 +1,59 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.andronicus.med_manager.addmedication.AddMedicationFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.andronicus.med_manager.addmedication.AddMedicationFragment">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
-
-</FrameLayout>
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_height="match_parent">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:paddingLeft="8dp"
+                android:layout_width="match_parent"
+                android:hint="Name"
+                android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
+                android:hint="Description"
+                android:paddingLeft="8dp"
+                android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
+                android:hint="Frequency/Interval"
+                android:paddingLeft="8dp"
+                android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
+                android:hint="Start date"
+                android:paddingLeft="8dp"
+                android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
+                android:hint="End date"
+                android:paddingLeft="8dp"
+                android:layout_height="wrap_content"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+</ScrollView>
