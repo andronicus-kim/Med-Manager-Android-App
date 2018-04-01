@@ -2,6 +2,7 @@ package com.andronicus.med_manager.signin;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.medication.MedicationActivity;
 import com.andronicus.med_manager.util.ActivityUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -83,7 +85,7 @@ public class SignInActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this,(task -> {
                     if (task.isSuccessful()){
-                        updateUI(mAuth.getCurrentUser());
+                        launchMedicationActivity();
                     }else {
                         //An error occurred respond accordingly
                     }
@@ -95,12 +97,13 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user!= null){
-            updateUI(user);
+            launchMedicationActivity();
         }
     }
 
-    private void updateUI(FirebaseUser user) {
-
+    private void launchMedicationActivity() {
+        Snackbar.make(mButtonSignIn,"Successful",Snackbar.LENGTH_SHORT).show();
+        startActivity(MedicationActivity.newIntent(this));
     }
 
     @Override
