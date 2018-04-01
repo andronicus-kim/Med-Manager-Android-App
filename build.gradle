@@ -2,7 +2,7 @@
 
 buildscript {
     
-    ext.play_services = '11.8.0'
+    ext.play_services = '12.0.1'
     ext.circular_imageview = '2.2.0'
     ext.butterknife = '8.8.1'
     ext.support_library = '26.1.0'
@@ -16,6 +16,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.google.gms:google-services:3.2.0'
         
 
         // NOTE: Do not place your application dependencies here; they belong

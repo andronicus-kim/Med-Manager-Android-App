@@ -65,12 +65,12 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
         View view = inflater.inflate(R.layout.fragment_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
         mStrings = new ArrayList<>();
-//        mStrings.add("Methnol");
-//        mStrings.add("Maramoja");
-//        mStrings.add("Panadol");
-//        mStrings.add("Telmi");
-//        mStrings.add("Syrup");
-//        mStrings.add("Action");
+        mStrings.add("Methnol");
+        mStrings.add("Maramoja");
+        mStrings.add("Panadol");
+        mStrings.add("Telmi");
+        mStrings.add("Syrup");
+        mStrings.add("Action");
         if (mStrings.size() == 0){
             mMedicationRecyclerView.setVisibility(View.GONE);
             mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
