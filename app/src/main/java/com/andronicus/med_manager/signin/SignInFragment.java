@@ -19,7 +19,6 @@ import butterknife.Unbinder;
  */
 public class SignInFragment extends Fragment {
 
-    private Unbinder mUnbinder;
     /*
     * Helper method to create an instance of this Fragment
     * */
@@ -37,22 +36,6 @@ public class SignInFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        /*
-        * Pass the target view that butterknife will bind it the views to
-        * */
-        mUnbinder = ButterKnife.bind(this,view);
         return view;
-    }
-    @OnClick(R.id.button_sign_in) void signIn(){
-        startActivity(MedicationActivity.newIntent(getActivity()));
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        /*
-        * Release all bindings in order to free up memory
-        * */
-        mUnbinder.unbind();
     }
 }
