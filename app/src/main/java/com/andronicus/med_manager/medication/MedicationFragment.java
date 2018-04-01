@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.andronicus.med_manager.R;
 
@@ -31,6 +33,10 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     private Unbinder mUnbinder;
     @BindView(R.id.recview_medication)
     RecyclerView mMedicationRecyclerView;
+    @BindView(R.id.iv_empty_recyclerview)
+    ImageView mImageViewEmptyRecyclerview;
+    @BindView(R.id.tv_empty_recyclerview)
+    TextView mTextViewEmptyRecyclerview;
     private List<String> mStrings;
     private MedicationAdapter mAdapter;
 
@@ -59,15 +65,24 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
         View view = inflater.inflate(R.layout.fragment_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
         mStrings = new ArrayList<>();
-        mStrings.add("Methnol");
-        mStrings.add("Maramoja");
-        mStrings.add("Panadol");
-        mStrings.add("Telmi");
-        mStrings.add("Syrup");
-        mStrings.add("Action");
-        mAdapter = new MedicationAdapter(mStrings);
-        mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mMedicationRecyclerView.setAdapter(mAdapter);
+//        mStrings.add("Methnol");
+//        mStrings.add("Maramoja");
+//        mStrings.add("Panadol");
+//        mStrings.add("Telmi");
+//        mStrings.add("Syrup");
+//        mStrings.add("Action");
+        if (mStrings.size() == 0){
+            mMedicationRecyclerView.setVisibility(View.GONE);
+            mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
+            mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
+        }else {
+            mMedicationRecyclerView.setVisibility(View.VISIBLE);
+            mImageViewEmptyRecyclerview.setVisibility(View.GONE);
+            mTextViewEmptyRecyclerview.setVisibility(View.GONE);
+            mAdapter = new MedicationAdapter(mStrings);
+            mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mMedicationRecyclerView.setAdapter(mAdapter);
+        }
         return view;
     }
 
@@ -95,12 +110,16 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     public boolean onQueryTextChange(String newText) {
         String name = newText.toLowerCase();
         List<String> strings = new ArrayList<>();
-        for (String string:mStrings){
-            if (string.toLowerCase().contains(name)){
-                strings.add(string);
+        if (mStrings.size() > 0){
+            for (String string:mStrings){
+                if (string.toLowerCase().contains(name)){
+                    strings.add(string);
+                }
             }
+            mAdapter.filter(strings);
+        }else {
+            return false;
         }
-        mAdapter.filter(strings);
         return true;
     }
 }
