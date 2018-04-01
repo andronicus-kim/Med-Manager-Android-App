@@ -1,0 +1,9 @@
+image: javiersantos/android-ci:27.0.3
+
+pipelines:
+  default:
+    - step:
+        script:
+          - export GRADLE_USER_HOME=`pwd`/.gradle
+          - chmod +x ./gradlew
+          - ./gradlew assembleDebug
