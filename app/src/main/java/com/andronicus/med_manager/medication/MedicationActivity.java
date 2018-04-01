@@ -20,13 +20,20 @@ import android.widget.Toast;
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.addmedication.AddMedicationActivity;
 import com.andronicus.med_manager.editprofile.EditProfileActivity;
+import com.andronicus.med_manager.signin.SignInActivity;
 import com.andronicus.med_manager.util.ActivityUtil;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
+    private GoogleSignInClient mSignInClient;
     /*
     * Helper method to start this activity
     * */
@@ -38,6 +45,11 @@ public class MedicationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mSignInClient = GoogleSignIn.getClient(this,signInOptions);
         mAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,9 +98,11 @@ public class MedicationActivity extends AppCompatActivity
         if (id == R.id.nav_edit_profile) {
             startActivity(EditProfileActivity.newIntent(MedicationActivity.this));
         }else if (id == R.id.nav_sign_out){
-            Toast.makeText(this, "Signing out...", Toast.LENGTH_SHORT).show();
             if (mAuth.getCurrentUser() != null){
                 FirebaseAuth.getInstance().signOut();
+                mSignInClient.signOut();
+                startActivity(SignInActivity.newIntent(MedicationActivity.this));
+                finish();
             }
         }
 

@@ -1,5 +1,6 @@
 package com.andronicus.med_manager.signin;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -42,6 +43,10 @@ public class SignInActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_sign_in)
     SignInButton mButtonSignIn;
+
+    public static Intent newIntent(@NonNull Context context){
+        return new Intent(context,SignInActivity.class);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,7 @@ public class SignInActivity extends AppCompatActivity {
     private void launchMedicationActivity() {
         Snackbar.make(mButtonSignIn,"Successful",Snackbar.LENGTH_SHORT).show();
         startActivity(MedicationActivity.newIntent(this));
+        finish();
     }
 
     @Override
