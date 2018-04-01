@@ -110,12 +110,16 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     public boolean onQueryTextChange(String newText) {
         String name = newText.toLowerCase();
         List<String> strings = new ArrayList<>();
-        for (String string:mStrings){
-            if (string.toLowerCase().contains(name)){
-                strings.add(string);
+        if (mStrings.size() > 0){
+            for (String string:mStrings){
+                if (string.toLowerCase().contains(name)){
+                    strings.add(string);
+                }
             }
+            mAdapter.filter(strings);
+        }else {
+            return false;
         }
-        mAdapter.filter(strings);
         return true;
     }
 }
