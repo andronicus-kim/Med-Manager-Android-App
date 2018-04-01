@@ -90,6 +90,8 @@ public class MedicationActivity extends AppCompatActivity
 
         if (id == R.id.nav_edit_profile) {
             startActivity(EditProfileActivity.newIntent(MedicationActivity.this));
+        }else if (id == R.id.nav_sign_out){
+            Toast.makeText(this, "Signing out...", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
