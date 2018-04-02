@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class MedicationActivity extends AppCompatActivity
     private GoogleSignInClient mSignInClient;
     private TextView mTextViewUserName;
     private TextView mTextViewEmail;
+    private ImageView mImageViewProfilePic;
     /*
     * Helper method to start this activity
     * */
@@ -85,6 +87,7 @@ public class MedicationActivity extends AppCompatActivity
         View navHeader = navigationView.getHeaderView(0);
         mTextViewUserName = navHeader.findViewById(R.id.tv_username);
         mTextViewEmail = navHeader.findViewById(R.id.tv_email);
+        mImageViewProfilePic = navHeader.findViewById(R.id.iv_profile_pic);
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null){
