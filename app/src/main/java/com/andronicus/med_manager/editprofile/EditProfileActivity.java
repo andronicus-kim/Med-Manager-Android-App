@@ -18,6 +18,7 @@ import butterknife.Unbinder;
 public class EditProfileActivity extends AppCompatActivity {
     private static final String TAG = "EditProfileActivity";
 
+
     private Unbinder mUnbinder;
     @BindView(R.id.iv_profile_pic)
     ImageView mImageViewProfilePic;

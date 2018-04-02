@@ -24,16 +24,18 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "com.android.support.test:runner:$test_runner"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso"
     implementation "com.android.support:appcompat-v7:$support_library"
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout"
     implementation "com.android.support:support-v4:$support_library"
     implementation "com.android.support:design:$support_library"
     implementation "com.android.support:support-v4:$support_library"
-    testImplementation "junit:junit:$junit"
-    androidTestImplementation "com.android.support.test:runner:$test_runner"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso"
     implementation "com.google.android.gms:play-services-auth:$play_services"
     implementation "com.google.firebase:firebase-auth:$play_services"
+    implementation "com.google.firebase:firebase-storage:$play_services"
+    implementation "com.google.firebase:firebase-database:$play_services"
     implementation "de.hdodenhof:circleimageview:$circular_imageview"
     implementation "com.jakewharton:butterknife:$butterknife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife"
