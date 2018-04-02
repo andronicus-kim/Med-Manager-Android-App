@@ -98,7 +98,7 @@ public class SignInActivity extends AppCompatActivity {
             if (mProgressDialog != null && mProgressDialog.isShowing()){
                 mProgressDialog.dismiss();
             }
-            Snackbar.make(mButtonSignIn,"Sign In error!",Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(mButtonSignIn,"Sign in error!",Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -112,7 +112,7 @@ public class SignInActivity extends AppCompatActivity {
                         if (mProgressDialog != null && mProgressDialog.isShowing()){
                             mProgressDialog.dismiss();
                         }
-                        Snackbar.make(mButtonSignIn,"Sign In error!",Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(mButtonSignIn,"Sign in error!",Snackbar.LENGTH_SHORT).show();
                     }
                 }));
     }
