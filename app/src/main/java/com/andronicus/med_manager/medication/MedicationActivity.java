@@ -2,11 +2,13 @@ package com.andronicus.med_manager.medication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,16 +33,29 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "MedicationActivity";
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabaseReference;
     private GoogleSignInClient mSignInClient;
     private TextView mTextViewUserName;
     private TextView mTextViewEmail;
     private ImageView mImageViewProfilePic;
+    private String mName;
+    private String mEmail;
+    private String mProfileImageUrl;
     /*
     * Helper method to start this activity
     * */
@@ -90,26 +105,70 @@ public class MedicationActivity extends AppCompatActivity
         mTextViewEmail = navHeader.findViewById(R.id.tv_email);
         mImageViewProfilePic = navHeader.findViewById(R.id.iv_profile_pic);
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null){
-            if (user.getDisplayName() != null){
-                mTextViewUserName.setText(user.getDisplayName());
-            }else {
-                mTextViewUserName.setText("UserName");
-            }
-            if (user.getEmail() != null){
-                mTextViewEmail.setText(user.getEmail());
-            }else {
-                mTextViewEmail.setText("user@email.com");
-            }
-            if (user.getPhotoUrl() != null){
-                Picasso.get()
-                        .load(user.getPhotoUrl())
-                        .placeholder(R.drawable.user)
-                        .error(R.drawable.user)
-                        .into(mImageViewProfilePic);
+        checkIfUserExists();
+
+        if (mName != null && mEmail != null && mProfileImageUrl != null){
+            mTextViewUserName.setText(mName);
+            mTextViewEmail.setText(mEmail);
+            Picasso.get()
+                    .load(mProfileImageUrl)
+                    .placeholder(R.drawable.user)
+                    .error(R.drawable.user)
+                    .into(mImageViewProfilePic);
+        }else {
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user != null){
+                saveUserInfo(user);
             }
         }
+    }
+    private void checkIfUserExists(){
+        if (mDatabaseReference != null){
+            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
+                        Map<String,Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                        try{
+                            mName = map.get("name").toString();
+                            mEmail = map.get("email").toString();
+                            mProfileImageUrl = map.get("profileImageUrl").toString();
+                        }catch (NullPointerException e){
+                            Log.d(TAG, "onDataChange: " + e.getMessage());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    private void saveUserInfo(FirebaseUser user) {
+        if (user.getDisplayName() != null){
+            mTextViewUserName.setText(user.getDisplayName());
+        }else {
+            mTextViewUserName.setText("UserName");
+        }
+        if (user.getEmail() != null){
+            mTextViewEmail.setText(user.getEmail());
+        }else {
+            mTextViewEmail.setText("user@email.com");
+        }
+        if (user.getPhotoUrl() != null){
+            Picasso.get()
+                    .load(user.getPhotoUrl())
+                    .placeholder(R.drawable.user)
+                    .error(R.drawable.user)
+                    .into(mImageViewProfilePic);
+        }
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+        mDatabaseReference.child("name").setValue(user.getDisplayName());
+        mDatabaseReference.child("email").setValue(user.getEmail());
+        mDatabaseReference.child("profileImageUrl").setValue(user.getPhotoUrl().toString());
     }
 
     @Override
