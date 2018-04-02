@@ -6,12 +6,23 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.andronicus.med_manager.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class EditProfileActivity extends AppCompatActivity {
     private static final String TAG = "EditProfileActivity";
 
+    private Unbinder mUnbinder;
+    @BindView(R.id.iv_profile_pic)
+    ImageView mImageViewProfilePic;
+    @BindView(R.id.et_name)
+    EditText mEditTextName;
     /*
     * Helper method to start this activity
     * */
@@ -28,5 +39,13 @@ public class EditProfileActivity extends AppCompatActivity {
         }catch (NullPointerException e){
             Log.e(TAG, "onCreate: " + e.getMessage() );
         }
+        mUnbinder = ButterKnife.bind(this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
     }
 }
