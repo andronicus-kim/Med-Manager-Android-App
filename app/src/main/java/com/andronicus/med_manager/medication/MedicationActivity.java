@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.addmedication.AddMedicationActivity;
+import com.andronicus.med_manager.data.User;
 import com.andronicus.med_manager.editprofile.EditProfileActivity;
 import com.andronicus.med_manager.signin.SignInActivity;
 import com.andronicus.med_manager.util.ActivityUtil;
@@ -39,6 +40,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,6 +76,7 @@ public class MedicationActivity extends AppCompatActivity
                 .build();
         mSignInClient = GoogleSignIn.getClient(this,signInOptions);
         mAuth = FirebaseAuth.getInstance();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -106,35 +110,37 @@ public class MedicationActivity extends AppCompatActivity
         mImageViewProfilePic = navHeader.findViewById(R.id.iv_profile_pic);
 
         checkIfUserExists();
-
-        if (mName != null && mEmail != null && mProfileImageUrl != null){
-            mTextViewUserName.setText(mName);
-            mTextViewEmail.setText(mEmail);
-            Picasso.get()
-                    .load(mProfileImageUrl)
-                    .placeholder(R.drawable.user)
-                    .error(R.drawable.user)
-                    .into(mImageViewProfilePic);
-        }else {
-            FirebaseUser user = mAuth.getCurrentUser();
-            if (user != null){
-                saveUserInfo(user);
-            }
-        }
     }
     private void checkIfUserExists(){
-        if (mDatabaseReference != null){
             mDatabaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
-                        Map<String,Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                        try{
-                            mName = map.get("name").toString();
-                            mEmail = map.get("email").toString();
-                            mProfileImageUrl = map.get("profileImageUrl").toString();
-                        }catch (NullPointerException e){
-                            Log.d(TAG, "onDataChange: " + e.getMessage());
+                        for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                            User user = snapshot.getValue(User.class);
+                            try{
+                                mName = user.getName();
+                                mEmail = user.getEmail();
+                                mProfileImageUrl = user.getProfileImageUrl();
+                                Log.e(TAG, "onDataChange: " + mName + mEmail + mProfileImageUrl);
+                                if (mName != null && mEmail != null && mProfileImageUrl != null){
+                                    mTextViewUserName.setText(mName);
+                                    mTextViewEmail.setText(mEmail);
+                                    Picasso.get()
+                                            .load(mProfileImageUrl)
+                                            .placeholder(R.drawable.user)
+                                            .error(R.drawable.user)
+                                            .into(mImageViewProfilePic);
+                                }
+                            }catch (NullPointerException e){
+                                Log.e(TAG, "onDataChange: " + e.getMessage());
+                            }
+                        }
+
+                    }else {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null){
+                            saveUserInfo(user);
                         }
                     }
                 }
@@ -144,7 +150,6 @@ public class MedicationActivity extends AppCompatActivity
 
                 }
             });
-        }
     }
 
     private void saveUserInfo(FirebaseUser user) {
@@ -165,10 +170,10 @@ public class MedicationActivity extends AppCompatActivity
                     .error(R.drawable.user)
                     .into(mImageViewProfilePic);
         }
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
-        mDatabaseReference.child("name").setValue(user.getDisplayName());
-        mDatabaseReference.child("email").setValue(user.getEmail());
-        mDatabaseReference.child("profileImageUrl").setValue(user.getPhotoUrl().toString());
+        DatabaseReference userReference = mDatabaseReference.child(user.getUid());
+        userReference.child("name").setValue(user.getDisplayName());
+        userReference.child("email").setValue(user.getEmail());
+        userReference.child("profileImageUrl").setValue(user.getPhotoUrl().toString());
     }
 
     @Override

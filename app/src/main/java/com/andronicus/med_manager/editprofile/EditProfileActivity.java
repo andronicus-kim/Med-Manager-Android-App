@@ -115,6 +115,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         finish();
                     });
                     uploadTask.addOnFailureListener(e -> {
+                        Log.e(TAG, "onOptionsItemSelected: " + e.getMessage() );
                         Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show();
                     });
                 }else {
