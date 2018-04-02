@@ -31,6 +31,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -100,6 +101,13 @@ public class MedicationActivity extends AppCompatActivity
                 mTextViewEmail.setText(user.getEmail());
             }else {
                 mTextViewEmail.setText("user@email.com");
+            }
+            if (user.getPhotoUrl() != null){
+                Picasso.get()
+                        .load(user.getPhotoUrl())
+                        .placeholder(R.drawable.user)
+                        .error(R.drawable.user)
+                        .into(mImageViewProfilePic);
             }
         }
     }
