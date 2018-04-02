@@ -1,7 +1,9 @@
 package com.andronicus.med_manager.signin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -40,6 +42,7 @@ public class SignInActivity extends AppCompatActivity {
     private GoogleSignInClient mSignInClient;
     private FirebaseAuth mAuth;
     private Unbinder mUnbinder;
+    private ProgressDialog mProgressDialog;
 
     @BindView(R.id.btn_sign_in)
     SignInButton mButtonSignIn;
@@ -59,11 +62,14 @@ public class SignInActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mSignInClient = GoogleSignIn.getClient(this,signInOptions);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Loading...");
     }
     @OnClick(R.id.btn_sign_in)public void onSignInClick(){
         signIn();
     }
     private void signIn() {
+        mProgressDialog.show();
         Intent signInIntent = mSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -71,6 +77,9 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (mProgressDialog != null && mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
+        }
         if (requestCode == RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -115,6 +124,9 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mProgressDialog != null && mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
+        }
         mUnbinder.unbind();
     }
 }
