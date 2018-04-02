@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#FF0d0c31"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -18,27 +19,20 @@
         android:src="@drawable/user"/>
 
     <TextView
+        android:id="@+id/tv_username"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Andronicus Kim"
+        tools:text="Andronicus Kim"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
         android:layout_gravity="center_horizontal"
-        android:id="@+id/textView"
+        android:id="@+id/tv_email"
         android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="andronicus@android.com"/>
-
-    <!--<ImageView-->
-        <!--android:id="@+id/imageView_edit_profile"-->
-        <!--android:layout_gravity="right"-->
-        <!--android:src="@drawable/image_edit_profile"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_marginRight="@dimen/activity_horizontal_margin"-->
-        <!--android:layout_height="20dp"/>-->
+        tools:text="andronicus@android.com"/>
 
 </LinearLayout>
