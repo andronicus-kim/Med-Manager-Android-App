@@ -87,10 +87,18 @@ public class SignInActivity extends AppCompatActivity {
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
+            if (mProgressDialog != null && mProgressDialog.isShowing()){
+                mProgressDialog.dismiss();
+            }else {
+                mProgressDialog.show();
+            }
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             firebaseAuthWithGoogle(account);
         } catch (ApiException e) {
-            //An error occurred
+            if (mProgressDialog != null && mProgressDialog.isShowing()){
+                mProgressDialog.dismiss();
+            }
+            Snackbar.make(mButtonSignIn,"Sign In error!",Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -101,7 +109,10 @@ public class SignInActivity extends AppCompatActivity {
                     if (task.isSuccessful()){
                         launchMedicationActivity();
                     }else {
-                        //An error occurred respond accordingly
+                        if (mProgressDialog != null && mProgressDialog.isShowing()){
+                            mProgressDialog.dismiss();
+                        }
+                        Snackbar.make(mButtonSignIn,"Sign In error!",Snackbar.LENGTH_SHORT).show();
                     }
                 }));
     }
@@ -116,7 +127,9 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void launchMedicationActivity() {
-        Snackbar.make(mButtonSignIn,"Successful",Snackbar.LENGTH_SHORT).show();
+        if (mProgressDialog != null && mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
+        }
         startActivity(MedicationActivity.newIntent(this));
         finish();
     }
