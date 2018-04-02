@@ -15,6 +15,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
@@ -28,12 +30,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mSignInClient;
+    private TextView mTextViewUserName;
+    private TextView mTextViewEmail;
+    private ImageView mImageViewProfilePic;
     /*
     * Helper method to start this activity
     * */
@@ -78,6 +85,31 @@ public class MedicationActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View navHeader = navigationView.getHeaderView(0);
+        mTextViewUserName = navHeader.findViewById(R.id.tv_username);
+        mTextViewEmail = navHeader.findViewById(R.id.tv_email);
+        mImageViewProfilePic = navHeader.findViewById(R.id.iv_profile_pic);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null){
+            if (user.getDisplayName() != null){
+                mTextViewUserName.setText(user.getDisplayName());
+            }else {
+                mTextViewUserName.setText("UserName");
+            }
+            if (user.getEmail() != null){
+                mTextViewEmail.setText(user.getEmail());
+            }else {
+                mTextViewEmail.setText("user@email.com");
+            }
+            if (user.getPhotoUrl() != null){
+                Picasso.get()
+                        .load(user.getPhotoUrl())
+                        .placeholder(R.drawable.user)
+                        .error(R.drawable.user)
+                        .into(mImageViewProfilePic);
+            }
+        }
     }
 
     @Override
