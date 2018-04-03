@@ -2,11 +2,13 @@ package com.andronicus.med_manager.medication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.addmedication.AddMedicationActivity;
+import com.andronicus.med_manager.data.User;
 import com.andronicus.med_manager.editprofile.EditProfileActivity;
 import com.andronicus.med_manager.signin.SignInActivity;
 import com.andronicus.med_manager.util.ActivityUtil;
@@ -31,16 +34,31 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "MedicationActivity";
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabaseReference;
     private GoogleSignInClient mSignInClient;
     private TextView mTextViewUserName;
     private TextView mTextViewEmail;
     private ImageView mImageViewProfilePic;
+    private String mName;
+    private String mEmail;
+    private String mProfileImageUrl;
     /*
     * Helper method to start this activity
     * */
@@ -58,6 +76,7 @@ public class MedicationActivity extends AppCompatActivity
                 .build();
         mSignInClient = GoogleSignIn.getClient(this,signInOptions);
         mAuth = FirebaseAuth.getInstance();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -90,26 +109,71 @@ public class MedicationActivity extends AppCompatActivity
         mTextViewEmail = navHeader.findViewById(R.id.tv_email);
         mImageViewProfilePic = navHeader.findViewById(R.id.iv_profile_pic);
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null){
-            if (user.getDisplayName() != null){
-                mTextViewUserName.setText(user.getDisplayName());
-            }else {
-                mTextViewUserName.setText("UserName");
-            }
-            if (user.getEmail() != null){
-                mTextViewEmail.setText(user.getEmail());
-            }else {
-                mTextViewEmail.setText("user@email.com");
-            }
-            if (user.getPhotoUrl() != null){
-                Picasso.get()
-                        .load(user.getPhotoUrl())
-                        .placeholder(R.drawable.user)
-                        .error(R.drawable.user)
-                        .into(mImageViewProfilePic);
-            }
+        checkIfUserExists();
+    }
+    private void checkIfUserExists(){
+            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
+                        for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                            User user = snapshot.getValue(User.class);
+                            try{
+                                mName = user.getName();
+                                mEmail = user.getEmail();
+                                mProfileImageUrl = user.getProfileImageUrl();
+                                Log.e(TAG, "onDataChange: " + mName + mEmail + mProfileImageUrl);
+                                if (mName != null && mEmail != null && mProfileImageUrl != null){
+                                    mTextViewUserName.setText(mName);
+                                    mTextViewEmail.setText(mEmail);
+                                    Picasso.get()
+                                            .load(mProfileImageUrl)
+                                            .placeholder(R.drawable.user)
+                                            .error(R.drawable.user)
+                                            .into(mImageViewProfilePic);
+                                }
+                            }catch (NullPointerException e){
+                                Log.e(TAG, "onDataChange: " + e.getMessage());
+                            }
+                        }
+
+                    }else {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null){
+                            saveUserInfo(user);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+    }
+
+    private void saveUserInfo(FirebaseUser user) {
+        if (user.getDisplayName() != null){
+            mTextViewUserName.setText(user.getDisplayName());
+        }else {
+            mTextViewUserName.setText("UserName");
         }
+        if (user.getEmail() != null){
+            mTextViewEmail.setText(user.getEmail());
+        }else {
+            mTextViewEmail.setText("user@email.com");
+        }
+        if (user.getPhotoUrl() != null){
+            Picasso.get()
+                    .load(user.getPhotoUrl())
+                    .placeholder(R.drawable.user)
+                    .error(R.drawable.user)
+                    .into(mImageViewProfilePic);
+        }
+        DatabaseReference userReference = mDatabaseReference.child(user.getUid());
+        userReference.child("name").setValue(user.getDisplayName());
+        userReference.child("email").setValue(user.getEmail());
+        userReference.child("profileImageUrl").setValue(user.getPhotoUrl().toString());
     }
 
     @Override

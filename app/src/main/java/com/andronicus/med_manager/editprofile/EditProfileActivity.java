@@ -102,29 +102,22 @@ public class EditProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_save :
-                if (mUri != null){
-                    StorageReference filePath = mStorage.getReference().child("profile_images").child(mUserId);
-                    Bitmap bitmap = null;
-                    try{
-                        bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),mUri);
-                    }catch (IOException e){
-                        Log.e(TAG, "onOptionsItemSelected: " + e.getMessage());
-                    }
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream);
-                    byte[] data = byteArrayOutputStream.toByteArray();
-                    UploadTask uploadTask = filePath.putBytes(data);
+                if (mUri != null && !mEditTextName.getText().toString().trim().equals("")){
+                    UploadTask uploadTask = uploadImage(mUri);
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         Map<String,Object> newPost = new HashMap<>();
+                        newPost.put("name",mEditTextName.getText().toString().trim());
                         newPost.put("profileImageUrl",downloadUrl.toString());
-                    /*
-                    * Save the download url to database
-                    * */
+
+                        //Update database
                         mDatabaseReference.updateChildren(newPost);
                         finish();
                     });
-                    uploadTask.addOnFailureListener(e -> Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show());
+                    uploadTask.addOnFailureListener(e -> {
+                        Log.e(TAG, "onOptionsItemSelected: " + e.getMessage() );
+                        Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show();
+                    });
                 }else {
                     finish();
                     return false;
@@ -135,6 +128,20 @@ public class EditProfileActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    private UploadTask uploadImage(Uri uri) {
+        StorageReference filePath = mStorage.getReference().child("profile_images").child(mUserId);
+        Bitmap bitmap = null;
+        try{
+            bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),mUri);
+        }catch (IOException e){
+            Log.e(TAG, "onOptionsItemSelected: " + e.getMessage());
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream);
+        byte[] data = byteArrayOutputStream.toByteArray();
+        return filePath.putBytes(data);
     }
 
     @Override
