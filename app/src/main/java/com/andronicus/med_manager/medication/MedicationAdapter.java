@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.editmedication.EditMedicationActivity;
 
 import java.util.ArrayList;
@@ -42,9 +43,9 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
     };
 
     private Context mContext;
-    private List<String> mStrings;
-    public MedicationAdapter(List<String> strings){
-        mStrings = strings;
+    private List<Medication> mMedications;
+    public MedicationAdapter(List<Medication> medications){
+        this.mMedications = medications;
     }
 
     @Override
@@ -56,17 +57,17 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
     @Override
     public void onBindViewHolder(MedicationViewHolder holder, int position) {
-        holder.bind(mStrings.get(position));
+        holder.bind(mMedications.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mStrings.size();
+        return mMedications.size();
     }
 
-    public void filter(@NonNull List<String> strings){
-        mStrings = new ArrayList<>();
-        mStrings.addAll(strings);
+    public void filter(@NonNull List<Medication> medications){
+        mMedications = new ArrayList<>();
+        mMedications.addAll(medications);
         notifyDataSetChanged();
     }
 
@@ -92,21 +93,22 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
                 popupMenu.show();
             });
         }
-        private void bind(String name){
-            String medicationInital = name.substring(0,1);
+        private void bind(Medication medication){
+            String medicationInital = medication.getName().substring(0,1);
             Random random = new Random();
             int position = random.nextInt(colors.length);
             mMedicationInitial.setBackgroundColor(mContext.getResources().getColor(colors[position]));
             mMedicationInitial.setText(medicationInital);
-            mMedicationName.setText(name);
-            mPrescription.setText("1 * 3");
-            mEndDate.setText("26/04/2018");
+            mMedicationName.setText(medication.getName());
+            mPrescription.setText(medication.getFrequency());
+            mEndDate.setText(medication.getEnd_date());
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_edit_medication :
+                    mMedications.get(getAdapterPosition());
                     //Start Edit Medication activity
                     mContext.startActivity(EditMedicationActivity.newIntent(mContext));
                     break;
@@ -127,7 +129,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         public void onClick(View v) {
             Random random = new Random();
             int position = random.nextInt(colors.length);
-            String name = mStrings.get(getAdapterPosition());
+            String name = mMedications.get(getAdapterPosition()).getName();
             mContext.startActivity(MedicationPopupActivity.newIntent(mContext,name,position));
         }
     }

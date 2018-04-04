@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.medication.MedicationActivity;
 import com.andronicus.med_manager.util.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -115,12 +116,15 @@ public class AddMedicationFragment extends Fragment{
                 mEditTextEndDate.setError("End date cannot be Blank!");
                 return false;
             }
-            DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication").push();
-            medicationReference.child(NAME).setValue(name);
-            medicationReference.child(DESCRIPTION).setValue(description);
-            medicationReference.child(FREQUENCY).setValue(frequency);
-            medicationReference.child(START_DATE).setValue(start_date);
-            medicationReference.child(END_DATE).setValue(end_date);
+            DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
+            String id = medicationReference.push().getKey();
+            Medication medication = new Medication(id,name,description,frequency,start_date,end_date);
+            medicationReference.setValue(medication);
+//            medicationReference.child(NAME).setValue(name);
+//            medicationReference.child(DESCRIPTION).setValue(description);
+//            medicationReference.child(FREQUENCY).setValue(frequency);
+//            medicationReference.child(START_DATE).setValue(start_date);
+//            medicationReference.child(END_DATE).setValue(end_date);
             startActivity(MedicationActivity.newIntent(getActivity()));
             getActivity().finish();
         }

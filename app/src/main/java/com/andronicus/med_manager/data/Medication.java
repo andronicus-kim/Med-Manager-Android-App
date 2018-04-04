@@ -6,6 +6,7 @@ package com.andronicus.med_manager.data;
 
 public class Medication {
 
+    private String id;
     private String name;
     private String description;
     private String frequency;
@@ -17,6 +18,15 @@ public class Medication {
 
     public String getName() {
         return name;
+    }
+
+    public Medication(String id, String name, String description, String frequency, String start_date, String end_date) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.frequency = frequency;
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
     public void setName(String name) {

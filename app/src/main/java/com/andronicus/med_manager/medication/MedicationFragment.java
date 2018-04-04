@@ -49,7 +49,7 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     ImageView mImageViewEmptyRecyclerview;
     @BindView(R.id.tv_empty_recyclerview)
     TextView mTextViewEmptyRecyclerview;
-    private List<String> mStrings;
+    private List<Medication> mMedications;
     private MedicationAdapter mAdapter;
 
     /*
@@ -86,7 +86,7 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
                     for (DataSnapshot snapshot:dataSnapshot.getChildren()){
                         Medication medication = snapshot.getValue(Medication.class);
-                        Toast.makeText(getActivity(), medication.getName(), Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }
@@ -96,14 +96,8 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
 
             }
         });
-        mStrings = new ArrayList<>();
-        mStrings.add("Methnol");
-        mStrings.add("Maramoja");
-        mStrings.add("Panadol");
-        mStrings.add("Telmi");
-        mStrings.add("Syrup");
-        mStrings.add("Action");
-        if (mStrings.size() == 0){
+
+        if (mMedications.size() == 0){
             mMedicationRecyclerView.setVisibility(View.GONE);
             mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
             mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
@@ -111,7 +105,7 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
             mMedicationRecyclerView.setVisibility(View.VISIBLE);
             mImageViewEmptyRecyclerview.setVisibility(View.GONE);
             mTextViewEmptyRecyclerview.setVisibility(View.GONE);
-            mAdapter = new MedicationAdapter(mStrings);
+            mAdapter = new MedicationAdapter(mMedications);
             mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mMedicationRecyclerView.setAdapter(mAdapter);
         }
@@ -141,14 +135,14 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public boolean onQueryTextChange(String newText) {
         String name = newText.toLowerCase();
-        List<String> strings = new ArrayList<>();
-        if (mStrings.size() > 0){
-            for (String string:mStrings){
-                if (string.toLowerCase().contains(name)){
-                    strings.add(string);
+        List<Medication> medications = new ArrayList<>();
+        if (mMedications.size() > 0){
+            for (Medication medication:mMedications){
+                if (medication.getName().toLowerCase().contains(name)){
+                    medications.add(medication);
                 }
             }
-            mAdapter.filter(strings);
+            mAdapter.filter(mMedications);
         }else {
             return false;
         }
