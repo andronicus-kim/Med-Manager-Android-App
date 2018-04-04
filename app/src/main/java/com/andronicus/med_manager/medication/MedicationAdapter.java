@@ -108,9 +108,9 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_edit_medication :
-                    mMedications.get(getAdapterPosition());
+                    Medication medication = mMedications.get(getAdapterPosition());
                     //Start Edit Medication activity
-                    mContext.startActivity(EditMedicationActivity.newIntent(mContext));
+                    mContext.startActivity(EditMedicationActivity.newIntent(mContext,medication.getId()));
                     break;
                 case R.id.action_delete_medication :
                     /*

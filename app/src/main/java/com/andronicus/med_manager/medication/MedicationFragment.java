@@ -76,18 +76,38 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
-
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
-        String userId = mAuth.getCurrentUser().getUid();
         mMedications = new ArrayList<>();
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        String userId = mAuth.getCurrentUser().getUid();
         mDatabaseReference.child(userId).child("medication").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mMedications.clear();
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
                     for (DataSnapshot snapshot:dataSnapshot.getChildren()){
                         Medication medication = snapshot.getValue(Medication.class);
-                        mMedications.add(medication);
+                        if (medication != null){
+                            mMedications.add(medication);
+                        }
+                    }
+                    if (mMedications.size() == 0){
+                        mMedicationRecyclerView.setVisibility(View.GONE);
+                        mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
+                        mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
+                    }else {
+                        mMedicationRecyclerView.setVisibility(View.VISIBLE);
+                        mImageViewEmptyRecyclerview.setVisibility(View.GONE);
+                        mTextViewEmptyRecyclerview.setVisibility(View.GONE);
+                        mAdapter = new MedicationAdapter(mMedications);
+                        mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        mMedicationRecyclerView.setAdapter(mAdapter);
                     }
                 }
             }
@@ -97,20 +117,6 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
 
             }
         });
-
-        if (mMedications.size() == 0){
-            mMedicationRecyclerView.setVisibility(View.GONE);
-            mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
-            mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
-        }else {
-            mMedicationRecyclerView.setVisibility(View.VISIBLE);
-            mImageViewEmptyRecyclerview.setVisibility(View.GONE);
-            mTextViewEmptyRecyclerview.setVisibility(View.GONE);
-            mAdapter = new MedicationAdapter(mMedications);
-            mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mMedicationRecyclerView.setAdapter(mAdapter);
-        }
-        return view;
     }
 
     @Override
@@ -143,7 +149,7 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
                     medications.add(medication);
                 }
             }
-            mAdapter.filter(mMedications);
+            mAdapter.filter(medications);
         }else {
             return false;
         }
