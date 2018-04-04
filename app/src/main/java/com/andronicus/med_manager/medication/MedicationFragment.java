@@ -80,13 +80,14 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
         String userId = mAuth.getCurrentUser().getUid();
+        mMedications = new ArrayList<>();
         mDatabaseReference.child(userId).child("medication").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
                     for (DataSnapshot snapshot:dataSnapshot.getChildren()){
                         Medication medication = snapshot.getValue(Medication.class);
-
+                        mMedications.add(medication);
                     }
                 }
             }
