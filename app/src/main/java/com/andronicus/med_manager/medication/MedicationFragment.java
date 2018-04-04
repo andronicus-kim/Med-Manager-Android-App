@@ -4,6 +4,7 @@ package com.andronicus.med_manager.medication;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,8 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     ImageView mImageViewEmptyRecyclerview;
     @BindView(R.id.tv_empty_recyclerview)
     TextView mTextViewEmptyRecyclerview;
+    @BindView(R.id.progress_bar_medication)
+    ProgressBar mProgressBar;
     private List<Medication> mMedications;
     private MedicationAdapter mAdapter;
 
@@ -85,6 +89,7 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public void onStart() {
         super.onStart();
+        mProgressBar.setVisibility(View.VISIBLE);
         String userId = mAuth.getCurrentUser().getUid();
         mDatabaseReference.child(userId).child("medication").addValueEventListener(new ValueEventListener() {
             @Override
@@ -99,10 +104,12 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
                     }
                 }
                 if (mMedications.size() == 0){
+                    mProgressBar.setVisibility(View.GONE);
                     mMedicationRecyclerView.setVisibility(View.GONE);
                     mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
                     mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
                 }else {
+                    mProgressBar.setVisibility(View.GONE);
                     mMedicationRecyclerView.setVisibility(View.VISIBLE);
                     mImageViewEmptyRecyclerview.setVisibility(View.GONE);
                     mTextViewEmptyRecyclerview.setVisibility(View.GONE);

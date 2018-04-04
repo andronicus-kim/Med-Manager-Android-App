@@ -3,6 +3,14 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="com.andronicus.med_manager.medication.MedicationFragment">
+    <ProgressBar
+        android:id="@+id/progress_bar_medication"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="30dp"
+        android:layout_height="30dp"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recview_medication"
         android:layout_width="match_parent"
