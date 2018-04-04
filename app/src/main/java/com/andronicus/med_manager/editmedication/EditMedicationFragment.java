@@ -31,12 +31,12 @@ import butterknife.Unbinder;
 
 public class EditMedicationFragment extends Fragment {
 
-    public static final String MEDICATION_ID = "MEDICATION_ID";
+    public static final String MEDICATION = "MEDICATION";
 
     private Unbinder mUnbinder;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
-    private String mMedicationId;
+    private Medication mMedication;
     @BindView(R.id.et_name)
     EditText mEditTextName;
     @BindView(R.id.et_description)
@@ -48,10 +48,10 @@ public class EditMedicationFragment extends Fragment {
     @BindView(R.id.et_end_date)
     EditText mEditTextEndDate;
 
-    public static EditMedicationFragment newInstance(String medicationId) {
+    public static EditMedicationFragment newInstance(Medication medication) {
 
         Bundle args = new Bundle();
-        args.putString(MEDICATION_ID,medicationId);
+        args.putParcelable(MEDICATION,medication);
 
         EditMedicationFragment fragment = new EditMedicationFragment();
         fragment.setArguments(args);
@@ -62,7 +62,7 @@ public class EditMedicationFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mMedicationId = getArguments().getString(MEDICATION_ID);
+        mMedication = getArguments().getParcelable(MEDICATION);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
     }
@@ -73,6 +73,11 @@ public class EditMedicationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
+        mEditTextName.setText(mMedication.getName());
+        mEditTextDescription.setText(mMedication.getDescription());
+        mEditTextFrequency.setText(mMedication.getFrequency());
+        mEditTextStartDate.setText(mMedication.getStart_date());
+        mEditTextEndDate.setText(mMedication.getEnd_date());
         return view;
     }
     @OnClick(R.id.et_start_date) public void onStartDateClick(){
@@ -117,8 +122,8 @@ public class EditMedicationFragment extends Fragment {
                 return false;
             }
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
-            Medication medication = new Medication(mMedicationId,name,description,frequency,start_date,end_date);
-            medicationReference.child(mMedicationId).setValue(medication);
+            Medication medication = new Medication(mMedication.getId(),name,description,frequency,start_date,end_date);
+            medicationReference.child(mMedication.getId()).setValue(medication);
             getActivity().finish();
         }
         return true;

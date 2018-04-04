@@ -110,7 +110,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
                 case R.id.action_edit_medication :
                     Medication medication = mMedications.get(getAdapterPosition());
                     //Start Edit Medication activity
-                    mContext.startActivity(EditMedicationActivity.newIntent(mContext,medication.getId()));
+                    mContext.startActivity(EditMedicationActivity.newIntent(mContext,medication));
                     break;
                 case R.id.action_delete_medication :
                     /*

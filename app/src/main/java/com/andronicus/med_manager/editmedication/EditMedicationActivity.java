@@ -12,20 +12,21 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.util.ActivityUtil;
 
 public class EditMedicationActivity extends AppCompatActivity {
 
     private static final String TAG = "EditMedicationActivity";
-    public static final String MEDICATION_ID = "MEDICATION_ID";
+    public static final String MEDICATION = "MEDICATION";
 
 
     /*
    * Helper method to start this activity
    * */
-    public static Intent newIntent(@NonNull Context context,String medicationId){
+    public static Intent newIntent(@NonNull Context context,Medication medication){
         Intent intent = new Intent(context,EditMedicationActivity.class);
-        intent.putExtra(MEDICATION_ID,medicationId);
+        intent.putExtra(MEDICATION,medication);
         return intent;
     }
     @Override
@@ -39,7 +40,7 @@ public class EditMedicationActivity extends AppCompatActivity {
         }
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment == null){
-            fragment = EditMedicationFragment.newInstance(getIntent().getStringExtra(MEDICATION_ID));
+            fragment = EditMedicationFragment.newInstance(getIntent().getParcelableExtra(MEDICATION));
             ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),R.id.fragment_container,fragment);
         }
     }
