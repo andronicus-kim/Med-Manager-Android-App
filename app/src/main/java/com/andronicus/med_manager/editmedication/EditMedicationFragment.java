@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.medication.MedicationActivity;
 import com.andronicus.med_manager.util.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,15 +31,12 @@ import butterknife.Unbinder;
 
 public class EditMedicationFragment extends Fragment {
 
-    public static final String NAME = "name";
-    public static final String DESCRIPTION = "description";
-    public static final String FREQUENCY = "frequency";
-    public static final String START_DATE = "start_date";
-    public static final String END_DATE = "end_date";
+    public static final String MEDICATION_ID = "MEDICATION_ID";
 
     private Unbinder mUnbinder;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
+    private String mMedicationId;
     @BindView(R.id.et_name)
     EditText mEditTextName;
     @BindView(R.id.et_description)
@@ -50,9 +48,10 @@ public class EditMedicationFragment extends Fragment {
     @BindView(R.id.et_end_date)
     EditText mEditTextEndDate;
 
-    public static EditMedicationFragment newInstance() {
+    public static EditMedicationFragment newInstance(String medicationId) {
 
         Bundle args = new Bundle();
+        args.putString(MEDICATION_ID,medicationId);
 
         EditMedicationFragment fragment = new EditMedicationFragment();
         fragment.setArguments(args);
@@ -63,6 +62,7 @@ public class EditMedicationFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mMedicationId = getArguments().getString(MEDICATION_ID);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
     }
@@ -117,14 +117,8 @@ public class EditMedicationFragment extends Fragment {
                 return false;
             }
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
-            Map<String,Object> medicationUpdate = new HashMap<>();
-            medicationUpdate.put(NAME,name);
-            medicationUpdate.put(DESCRIPTION,description);
-            medicationUpdate.put(FREQUENCY,frequency);
-            medicationUpdate.put(START_DATE,start_date);
-            medicationUpdate.put(END_DATE,end_date);
-
-            medicationReference.updateChildren(medicationUpdate);
+            Medication medication = new Medication(mMedicationId,name,description,frequency,start_date,end_date);
+            medicationReference.child(mMedicationId).setValue(medication);
             getActivity().finish();
         }
         return true;
