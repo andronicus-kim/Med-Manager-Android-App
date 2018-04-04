@@ -97,18 +97,18 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
                             mMedications.add(medication);
                         }
                     }
-                    if (mMedications.size() == 0){
-                        mMedicationRecyclerView.setVisibility(View.GONE);
-                        mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
-                        mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
-                    }else {
-                        mMedicationRecyclerView.setVisibility(View.VISIBLE);
-                        mImageViewEmptyRecyclerview.setVisibility(View.GONE);
-                        mTextViewEmptyRecyclerview.setVisibility(View.GONE);
-                        mAdapter = new MedicationAdapter(mMedications);
-                        mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        mMedicationRecyclerView.setAdapter(mAdapter);
-                    }
+                }
+                if (mMedications.size() == 0){
+                    mMedicationRecyclerView.setVisibility(View.GONE);
+                    mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
+                    mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
+                }else {
+                    mMedicationRecyclerView.setVisibility(View.VISIBLE);
+                    mImageViewEmptyRecyclerview.setVisibility(View.GONE);
+                    mTextViewEmptyRecyclerview.setVisibility(View.GONE);
+                    mAdapter = new MedicationAdapter(mMedications);
+                    mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    mMedicationRecyclerView.setAdapter(mAdapter);
                 }
             }
 
