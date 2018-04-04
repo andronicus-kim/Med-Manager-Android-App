@@ -17,6 +17,9 @@ import android.widget.Toast;
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.editmedication.EditMedicationActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +45,16 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             R.color.card_background11,
     };
 
+    private DatabaseReference mDatabaseReference;
+    private FirebaseAuth mAuth;
+    private String mUserId;
     private Context mContext;
     private List<Medication> mMedications;
     public MedicationAdapter(List<Medication> medications){
         this.mMedications = medications;
+        this.mAuth = FirebaseAuth.getInstance();
+        mUserId = mAuth.getCurrentUser().getUid();
+        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mUserId).child("medication");
     }
 
     @Override
@@ -106,9 +115,9 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
+            Medication medication = mMedications.get(getAdapterPosition());
             switch (item.getItemId()) {
                 case R.id.action_edit_medication :
-                    Medication medication = mMedications.get(getAdapterPosition());
                     //Start Edit Medication activity
                     mContext.startActivity(EditMedicationActivity.newIntent(mContext,medication));
                     break;
@@ -119,7 +128,9 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
                     new AlertDialog.Builder(mContext)
                             .setMessage("Delete Medication ?")
                             .setNegativeButton("CANCEL", (dialog1, which) -> dialog1.dismiss())
-                            .setPositiveButton("OK",((dialog1, which) -> Toast.makeText(mContext, "Deleted...", Toast.LENGTH_SHORT).show())).show();
+                            .setPositiveButton("OK", (dialog, which) -> {
+                                mDatabaseReference.child(medication.getId()).removeValue();
+                            }).show();
                     break;
             }
             return true;
