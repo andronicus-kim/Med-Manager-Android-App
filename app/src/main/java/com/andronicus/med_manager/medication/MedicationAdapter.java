@@ -100,7 +100,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             mMedicationInitial.setBackgroundColor(mContext.getResources().getColor(colors[position]));
             mMedicationInitial.setText(medicationInital);
             mMedicationName.setText(medication.getName());
-            mPrescription.setText(medication.getFrequency());
+            mPrescription.setText("1 * " + medication.getFrequency());
             mEndDate.setText(medication.getEnd_date());
         }
 

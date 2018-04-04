@@ -12,10 +12,12 @@
         android:layout_height="match_parent">
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/et_name"
                 android:paddingLeft="8dp"
+                android:inputType="textCapSentences"
                 android:layout_width="match_parent"
                 android:hint="Name"
                 android:layout_height="wrap_content"/>
@@ -27,6 +29,7 @@
                 android:id="@+id/et_description"
                 android:layout_width="match_parent"
                 android:hint="Description"
+                android:inputType="textCapSentences"
                 android:paddingLeft="8dp"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>
