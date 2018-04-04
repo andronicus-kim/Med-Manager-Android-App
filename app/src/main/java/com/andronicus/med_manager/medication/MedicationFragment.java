@@ -15,11 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
+import com.andronicus.med_manager.data.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +40,8 @@ import butterknife.Unbinder;
  */
 public class MedicationFragment extends Fragment implements SearchView.OnQueryTextListener {
 
+    private DatabaseReference mDatabaseReference;
+    private FirebaseAuth mAuth;
     private Unbinder mUnbinder;
     @BindView(R.id.recview_medication)
     RecyclerView mMedicationRecyclerView;
@@ -64,6 +76,26 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        mAuth = FirebaseAuth.getInstance();
+        String userId = mAuth.getCurrentUser().getUid();
+        mDatabaseReference.child(userId).child("medication").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
+                    for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        Medication medication = snapshot.getValue(Medication.class);
+                        Toast.makeText(getActivity(), medication.getName(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         mStrings = new ArrayList<>();
         mStrings.add("Methnol");
         mStrings.add("Maramoja");
