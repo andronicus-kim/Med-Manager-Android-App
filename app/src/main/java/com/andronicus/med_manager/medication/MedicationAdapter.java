@@ -15,7 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.editmedication.EditMedicationActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +45,16 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             R.color.card_background11,
     };
 
+    private DatabaseReference mDatabaseReference;
+    private FirebaseAuth mAuth;
+    private String mUserId;
     private Context mContext;
-    private List<String> mStrings;
-    public MedicationAdapter(List<String> strings){
-        mStrings = strings;
+    private List<Medication> mMedications;
+    public MedicationAdapter(List<Medication> medications){
+        this.mMedications = medications;
+        this.mAuth = FirebaseAuth.getInstance();
+        mUserId = mAuth.getCurrentUser().getUid();
+        this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mUserId).child("medication");
     }
 
     @Override
@@ -56,17 +66,17 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
     @Override
     public void onBindViewHolder(MedicationViewHolder holder, int position) {
-        holder.bind(mStrings.get(position));
+        holder.bind(mMedications.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mStrings.size();
+        return mMedications.size();
     }
 
-    public void filter(@NonNull List<String> strings){
-        mStrings = new ArrayList<>();
-        mStrings.addAll(strings);
+    public void filter(@NonNull List<Medication> medications){
+        mMedications = new ArrayList<>();
+        mMedications.addAll(medications);
         notifyDataSetChanged();
     }
 
@@ -92,23 +102,24 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
                 popupMenu.show();
             });
         }
-        private void bind(String name){
-            String medicationInital = name.substring(0,1);
+        private void bind(Medication medication){
+            String medicationInital = medication.getName().substring(0,1);
             Random random = new Random();
             int position = random.nextInt(colors.length);
             mMedicationInitial.setBackgroundColor(mContext.getResources().getColor(colors[position]));
             mMedicationInitial.setText(medicationInital);
-            mMedicationName.setText(name);
-            mPrescription.setText("1 * 3");
-            mEndDate.setText("26/04/2018");
+            mMedicationName.setText(medication.getName());
+            mPrescription.setText("1 * " + medication.getFrequency());
+            mEndDate.setText(medication.getEnd_date());
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
+            Medication medication = mMedications.get(getAdapterPosition());
             switch (item.getItemId()) {
                 case R.id.action_edit_medication :
                     //Start Edit Medication activity
-                    mContext.startActivity(EditMedicationActivity.newIntent(mContext));
+                    mContext.startActivity(EditMedicationActivity.newIntent(mContext,medication));
                     break;
                 case R.id.action_delete_medication :
                     /*
@@ -117,7 +128,9 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
                     new AlertDialog.Builder(mContext)
                             .setMessage("Delete Medication ?")
                             .setNegativeButton("CANCEL", (dialog1, which) -> dialog1.dismiss())
-                            .setPositiveButton("OK",((dialog1, which) -> Toast.makeText(mContext, "Deleted...", Toast.LENGTH_SHORT).show())).show();
+                            .setPositiveButton("OK", (dialog, which) -> {
+                                mDatabaseReference.child(medication.getId()).removeValue();
+                            }).show();
                     break;
             }
             return true;
@@ -127,7 +140,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
         public void onClick(View v) {
             Random random = new Random();
             int position = random.nextInt(colors.length);
-            String name = mStrings.get(getAdapterPosition());
+            String name = mMedications.get(getAdapterPosition()).getName();
             mContext.startActivity(MedicationPopupActivity.newIntent(mContext,name,position));
         }
     }

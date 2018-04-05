@@ -14,8 +14,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.medication.MedicationActivity;
 import com.andronicus.med_manager.util.DatePickerFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +28,15 @@ import butterknife.Unbinder;
 
 public class AddMedicationFragment extends Fragment{
 
+    public static final String NAME = "name";
+    public static final String DESCRIPTION = "description";
+    public static final String FREQUENCY = "frequency";
+    public static final String START_DATE = "start_date";
+    public static final String END_DATE = "end_date";
+
     private Unbinder mUnbinder;
+    private DatabaseReference mDatabaseReference;
+    private FirebaseAuth mAuth;
     @BindView(R.id.et_name)
     EditText mEditTextName;
     @BindView(R.id.et_description)
@@ -51,6 +63,8 @@ public class AddMedicationFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -81,24 +95,33 @@ public class AddMedicationFragment extends Fragment{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save){
-            if (mEditTextName.getText().toString().equals("")){
+            String name = mEditTextName.getText().toString().trim();
+            String description = mEditTextDescription.getText().toString().trim();
+            String frequency = mEditTextFrequency.getText().toString().trim();
+            String start_date = mEditTextStartDate.getText().toString().trim();
+            String end_date = mEditTextEndDate.getText().toString().trim();
+            if (name.equals("")){
                 mEditTextName.setError("Name cannot be Blank!");
                 return false;
-            }else if (mEditTextDescription.getText().toString().equals("")){
+            }else if (description.equals("")){
                 mEditTextDescription.setError("Description cannot be Blank!");
                 return false;
-            }else if (mEditTextFrequency.getText().toString().equals("")){
+            }else if (frequency.equals("")){
                 mEditTextFrequency.setError("Frequency cannot be Blank!");
                 return false;
-            }else if (mEditTextStartDate.getText().toString().equals("")){
+            }else if (start_date.equals("")){
                 mEditTextStartDate.setError("Start date cannot be Blank!");
                 return false;
-            }else if (mEditTextEndDate.getText().toString().equals("")){
+            }else if (end_date.equals("")){
                 mEditTextEndDate.setError("End date cannot be Blank!");
                 return false;
             }
-            Toast.makeText(getActivity(), "Saving...", Toast.LENGTH_SHORT).show();
+            DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
+            String id = medicationReference.push().getKey();
+            Medication medication = new Medication(id,name,description,frequency,start_date,end_date);
+            medicationReference.child(id).setValue(medication);
             startActivity(MedicationActivity.newIntent(getActivity()));
+            getActivity().finish();
         }
         return true;
     }

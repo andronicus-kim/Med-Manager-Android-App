@@ -4,6 +4,7 @@ package com.andronicus.med_manager.medication;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -14,12 +15,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
+import com.andronicus.med_manager.data.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +42,8 @@ import butterknife.Unbinder;
  */
 public class MedicationFragment extends Fragment implements SearchView.OnQueryTextListener {
 
+    private DatabaseReference mDatabaseReference;
+    private FirebaseAuth mAuth;
     private Unbinder mUnbinder;
     @BindView(R.id.recview_medication)
     RecyclerView mMedicationRecyclerView;
@@ -37,7 +51,9 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     ImageView mImageViewEmptyRecyclerview;
     @BindView(R.id.tv_empty_recyclerview)
     TextView mTextViewEmptyRecyclerview;
-    private List<String> mStrings;
+    @BindView(R.id.progress_bar_medication)
+    ProgressBar mProgressBar;
+    private List<Medication> mMedications;
     private MedicationAdapter mAdapter;
 
     /*
@@ -64,26 +80,56 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
-        mStrings = new ArrayList<>();
-        mStrings.add("Methnol");
-        mStrings.add("Maramoja");
-        mStrings.add("Panadol");
-        mStrings.add("Telmi");
-        mStrings.add("Syrup");
-        mStrings.add("Action");
-        if (mStrings.size() == 0){
-            mMedicationRecyclerView.setVisibility(View.GONE);
-            mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
-            mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
-        }else {
-            mMedicationRecyclerView.setVisibility(View.VISIBLE);
-            mImageViewEmptyRecyclerview.setVisibility(View.GONE);
-            mTextViewEmptyRecyclerview.setVisibility(View.GONE);
-            mAdapter = new MedicationAdapter(mStrings);
-            mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mMedicationRecyclerView.setAdapter(mAdapter);
-        }
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        mAuth = FirebaseAuth.getInstance();
+        mMedications = new ArrayList<>();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mProgressBar != null){
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+        String userId = mAuth.getCurrentUser().getUid();
+        mDatabaseReference.child(userId).child("medication").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mMedications.clear();
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
+                    for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                        Medication medication = snapshot.getValue(Medication.class);
+                        if (medication != null){
+                            mMedications.add(medication);
+                        }
+                    }
+                }
+                if (mMedications.size() == 0){
+                    if (mProgressBar != null){
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                    mMedicationRecyclerView.setVisibility(View.GONE);
+                    mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
+                    mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
+                }else {
+                    if (mProgressBar != null){
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                    mMedicationRecyclerView.setVisibility(View.VISIBLE);
+                    mImageViewEmptyRecyclerview.setVisibility(View.GONE);
+                    mTextViewEmptyRecyclerview.setVisibility(View.GONE);
+                    mAdapter = new MedicationAdapter(mMedications);
+                    mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    mMedicationRecyclerView.setAdapter(mAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -109,14 +155,14 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public boolean onQueryTextChange(String newText) {
         String name = newText.toLowerCase();
-        List<String> strings = new ArrayList<>();
-        if (mStrings.size() > 0){
-            for (String string:mStrings){
-                if (string.toLowerCase().contains(name)){
-                    strings.add(string);
+        List<Medication> medications = new ArrayList<>();
+        if (mMedications.size() > 0){
+            for (Medication medication:mMedications){
+                if (medication.getName().toLowerCase().contains(name)){
+                    medications.add(medication);
                 }
             }
-            mAdapter.filter(strings);
+            mAdapter.filter(medications);
         }else {
             return false;
         }
