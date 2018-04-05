@@ -101,19 +101,19 @@ public class AddMedicationFragment extends Fragment{
             String start_date = mEditTextStartDate.getText().toString().trim();
             String end_date = mEditTextEndDate.getText().toString().trim();
             if (name.equals("")){
-                mEditTextName.setError("Name cannot be Blank!");
+                mEditTextName.setError("Name required!");
                 return false;
             }else if (description.equals("")){
-                mEditTextDescription.setError("Description cannot be Blank!");
+                mEditTextDescription.setError("Description required!");
                 return false;
             }else if (frequency.equals("")){
-                mEditTextFrequency.setError("Frequency cannot be Blank!");
+                mEditTextFrequency.setError("Frequency required!");
                 return false;
             }else if (start_date.equals("")){
-                mEditTextStartDate.setError("Start date cannot be Blank!");
+                mEditTextStartDate.setError("Start date required!");
                 return false;
             }else if (end_date.equals("")){
-                mEditTextEndDate.setError("End date cannot be Blank!");
+                mEditTextEndDate.setError("End date required!");
                 return false;
             }
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
