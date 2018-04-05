@@ -54,7 +54,7 @@ public class MedicationPopupActivity extends AppCompatActivity {
     TextView mMedicationNamePopUp;
     @BindView(R.id.tv_description_pop_up)
     TextView mTextViewDescription;
-    @BindView(R.id.tv_prescription)
+    @BindView(R.id.tv_prescription_pop_up)
     TextView mTextViewPrescription;
     @BindView(R.id.tv_start_date_pop_up)
     TextView mTextViewStartDate;
@@ -81,7 +81,7 @@ public class MedicationPopupActivity extends AppCompatActivity {
         mMedicationInitialPopUp.setText(medicationInital);
         mMedicationNamePopUp.setText(mMedication.getName());
         mTextViewDescription.setText(mMedication.getDescription());
-        mTextViewPrescription.setText("1 * " + mMedication.getDescription());
+        mTextViewPrescription.setText("1 * " + mMedication.getFrequency());
         mTextViewStartDate.setText(mMedication.getStart_date());
         mTextViewEndDate.setText(mMedication.getEnd_date());
         mMedicationInitialPopUp.setBackgroundColor(this.getResources().getColor(colors[position]));
