@@ -126,7 +126,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
                     * Alert dialog to ask the user if they really want to delete
                     * */
                     new AlertDialog.Builder(mContext)
-                            .setMessage("Delete Medication ?")
+                            .setMessage("Delete " + medication.getName() + " ?")
                             .setNegativeButton("CANCEL", (dialog1, which) -> dialog1.dismiss())
                             .setPositiveButton("OK", (dialog, which) -> {
                                 mDatabaseReference.child(medication.getId()).removeValue();
