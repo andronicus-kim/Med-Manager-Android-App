@@ -89,7 +89,9 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public void onStart() {
         super.onStart();
-        mProgressBar.setVisibility(View.VISIBLE);
+        if (mProgressBar != null){
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
         String userId = mAuth.getCurrentUser().getUid();
         mDatabaseReference.child(userId).child("medication").addValueEventListener(new ValueEventListener() {
             @Override
@@ -104,12 +106,16 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
                     }
                 }
                 if (mMedications.size() == 0){
-                    mProgressBar.setVisibility(View.GONE);
+                    if (mProgressBar != null){
+                        mProgressBar.setVisibility(View.GONE);
+                    }
                     mMedicationRecyclerView.setVisibility(View.GONE);
                     mImageViewEmptyRecyclerview.setVisibility(View.VISIBLE);
                     mTextViewEmptyRecyclerview.setVisibility(View.VISIBLE);
                 }else {
-                    mProgressBar.setVisibility(View.GONE);
+                    if (mProgressBar != null){
+                        mProgressBar.setVisibility(View.GONE);
+                    }
                     mMedicationRecyclerView.setVisibility(View.VISIBLE);
                     mImageViewEmptyRecyclerview.setVisibility(View.GONE);
                     mTextViewEmptyRecyclerview.setVisibility(View.GONE);

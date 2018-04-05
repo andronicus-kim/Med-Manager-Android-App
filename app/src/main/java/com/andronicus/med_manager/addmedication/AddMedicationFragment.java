@@ -116,10 +116,10 @@ public class AddMedicationFragment extends Fragment{
                 mEditTextEndDate.setError("End date cannot be Blank!");
                 return false;
             }
-            DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication").push();
+            DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
             String id = medicationReference.push().getKey();
             Medication medication = new Medication(id,name,description,frequency,start_date,end_date);
-            medicationReference.setValue(medication);
+            medicationReference.child(id).setValue(medication);
             startActivity(MedicationActivity.newIntent(getActivity()));
             getActivity().finish();
         }
