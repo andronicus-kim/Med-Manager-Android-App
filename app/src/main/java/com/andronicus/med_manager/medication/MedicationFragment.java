@@ -89,10 +89,16 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     @Override
     public void onStart() {
         super.onStart();
+        String userId = null;
         if (mProgressBar != null){
             mProgressBar.setVisibility(View.VISIBLE);
         }
-        String userId = mAuth.getCurrentUser().getUid();
+        if (mAuth.getCurrentUser() != null){
+            userId = mAuth.getCurrentUser().getUid();
+        }else {
+            return;
+        }
+
         mDatabaseReference.child(userId).child("medication").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
