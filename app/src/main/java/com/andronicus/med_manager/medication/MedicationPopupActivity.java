@@ -10,6 +10,9 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.Medication;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,8 +20,7 @@ import butterknife.ButterKnife;
 public class MedicationPopupActivity extends AppCompatActivity {
 
     private static final String TAG = "MedicationPopupActivity";
-    public static final String NAME = "NAME";
-    public static final String COLOR = "COLOR";
+    public static final String MEDICATION = "MEDICATION";
 
     private int[] colors = new int[]{
             R.color.card_background1,
@@ -34,14 +36,15 @@ public class MedicationPopupActivity extends AppCompatActivity {
             R.color.card_background11,
     };
 
-    String name;
-    int color;
+    private Medication mMedication;
+    int position;
 
-
-    public static Intent newIntent(@NonNull Context context,String name, int color){
+    /*
+   * Helper method to start this activity
+   * */
+    public static Intent newIntent(@NonNull Context context,Medication medication){
         Intent intent = new Intent(context,MedicationPopupActivity.class);
-        intent.putExtra(NAME,name);
-        intent.putExtra(COLOR,color);
+        intent.putExtra(MEDICATION,medication);
         return intent;
     }
 
@@ -49,15 +52,23 @@ public class MedicationPopupActivity extends AppCompatActivity {
     TextView mMedicationInitialPopUp;
     @BindView(R.id.tv_medication_name_pop_up)
     TextView mMedicationNamePopUp;
+    @BindView(R.id.tv_description_pop_up)
+    TextView mTextViewDescription;
+    @BindView(R.id.tv_prescription_pop_up)
+    TextView mTextViewPrescription;
+    @BindView(R.id.tv_start_date_pop_up)
+    TextView mTextViewStartDate;
+    @BindView(R.id.tv_end_date_pop_up)
+    TextView mTextViewEndDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication_popup);
         ButterKnife.bind(this);
         
-        name = getIntent().getStringExtra(NAME);
-        color = getIntent().getIntExtra(COLOR, 0);
-
+        mMedication = getIntent().getParcelableExtra(MEDICATION);
+        Random random = new Random();
+        position = random.nextInt(colors.length);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -66,11 +77,14 @@ public class MedicationPopupActivity extends AppCompatActivity {
 
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
 
-        String medicationInital = name.substring(0,1);
-        mMedicationNamePopUp.setText(name);
+        String medicationInital = mMedication.getName().substring(0,1);
         mMedicationInitialPopUp.setText(medicationInital);
-
-        mMedicationInitialPopUp.setBackgroundColor(this.getResources().getColor(colors[color]));
+        mMedicationNamePopUp.setText(mMedication.getName());
+        mTextViewDescription.setText(mMedication.getDescription());
+        mTextViewPrescription.setText("1 * " + mMedication.getFrequency());
+        mTextViewStartDate.setText(mMedication.getStart_date());
+        mTextViewEndDate.setText(mMedication.getEnd_date());
+        mMedicationInitialPopUp.setBackgroundColor(this.getResources().getColor(colors[position]));
 
     }
 }
