@@ -12,5 +12,14 @@
     <string name="search">Search</string>
     <string name="save">Save</string>
 
+    <string-array name="frequencies">
+        <item>Select Medication Frequency/Interval</item>
+        <item>Once a day</item>
+        <item>Twice a day</item>
+        <item>Thrice a day</item>
+        <item>Four times a day</item>
+        <item>Five times a day</item>
+    </string-array>
+
 
 </resources>

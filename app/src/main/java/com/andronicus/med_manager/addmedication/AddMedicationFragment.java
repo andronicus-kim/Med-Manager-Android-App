@@ -10,7 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
@@ -26,7 +29,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class AddMedicationFragment extends Fragment{
+public class AddMedicationFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";
@@ -49,6 +52,8 @@ public class AddMedicationFragment extends Fragment{
     EditText mEditTextEndDate;
     @BindView(R.id.et_tablets)
     EditText mEditTextNumberOfTablets;
+    @BindView(R.id.spinner_frequency)
+    Spinner mSpinnerFrequency;
 
 
     public static AddMedicationFragment newInstance() {
@@ -74,8 +79,25 @@ public class AddMedicationFragment extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.frequencies, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
+        mSpinnerFrequency.setAdapter(adapter);
+        mSpinnerFrequency.setOnItemSelectedListener(this);
         return view;
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String[] strings = getActivity().getResources().getStringArray(R.array.frequencies);
+        Toast.makeText(getActivity(), strings[position] , Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
     @OnClick(R.id.et_start_date) public void onStartDateClick(){
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         datePickerFragment.passClickedEditText(mEditTextStartDate);
