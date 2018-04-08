@@ -37,13 +37,84 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
-                android:id="@+id/et_frequency"
+                android:id="@+id/et_tablets"
                 android:layout_width="match_parent"
-                android:hint="Frequency/Interval Per Day"
+                android:hint="Number of tablets"
                 android:paddingLeft="8dp"
                 android:inputType="number"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>
+        <Spinner
+            android:id="@+id/spinner_frequency"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="5dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_reminder_1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="18sp"
+            android:text="Set Reminder"
+            android:paddingLeft="8dp"
+            android:drawableLeft="@drawable/ic_action_reminder"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            tools:text="8 : 00 AM"/>
+        <TextView
+            android:id="@+id/tv_reminder_2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            android:text="Set Reminder"
+            android:paddingLeft="8dp"
+            android:drawableLeft="@drawable/ic_action_reminder"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            tools:text="8 : 00 AM"/>
+        <TextView
+            android:id="@+id/tv_reminder_3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            android:text="Set Reminder"
+            android:paddingLeft="8dp"
+            android:drawableLeft="@drawable/ic_action_reminder"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            tools:text="8 : 00 AM"/>
+        <TextView
+            android:id="@+id/tv_reminder_4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            android:text="Set Reminder"
+            android:paddingLeft="8dp"
+            android:drawableLeft="@drawable/ic_action_reminder"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            tools:text="8 : 00 AM"/>
+        <TextView
+            android:id="@+id/tv_reminder_5"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            android:text="Set Reminder"
+            android:paddingLeft="8dp"
+            android:drawableLeft="@drawable/ic_action_reminder"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            tools:text="8 : 00 AM"/>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -61,6 +132,7 @@
             android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/et_end_date"
+                android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
                 android:hint="End date"
                 android:clickable="true"

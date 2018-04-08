@@ -77,11 +77,12 @@ public class MedicationPopupActivity extends AppCompatActivity {
 
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
 
-        String medicationInital = mMedication.getName().substring(0,1);
-        mMedicationInitialPopUp.setText(medicationInital);
+        String medicationInitial = mMedication.getName().substring(0,1);
+        String prescription = mMedication.getNo_of_tablets() + " * " + mMedication.getFrequency();
+        mMedicationInitialPopUp.setText(medicationInitial);
         mMedicationNamePopUp.setText(mMedication.getName());
         mTextViewDescription.setText(mMedication.getDescription());
-        mTextViewPrescription.setText("1 * " + mMedication.getFrequency());
+        mTextViewPrescription.setText(prescription);
         mTextViewStartDate.setText(mMedication.getStart_date());
         mTextViewEndDate.setText(mMedication.getEnd_date());
         mMedicationInitialPopUp.setBackgroundColor(this.getResources().getColor(colors[position]));

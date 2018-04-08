@@ -10,7 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
@@ -29,7 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class EditMedicationFragment extends Fragment {
+public class EditMedicationFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     public static final String MEDICATION = "MEDICATION";
 
@@ -41,12 +44,14 @@ public class EditMedicationFragment extends Fragment {
     EditText mEditTextName;
     @BindView(R.id.et_description)
     EditText mEditTextDescription;
-    @BindView(R.id.et_frequency)
-    EditText mEditTextFrequency;
+    @BindView(R.id.spinner_frequency)
+    Spinner mSpinnerFrequency;
     @BindView(R.id.et_start_date)
     EditText mEditTextStartDate;
     @BindView(R.id.et_end_date)
     EditText mEditTextEndDate;
+    @BindView(R.id.et_tablets)
+    EditText mEditTextNumberOfTablets;
 
     public static EditMedicationFragment newInstance(Medication medication) {
 
@@ -73,12 +78,40 @@ public class EditMedicationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.frequencies, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
+        mSpinnerFrequency.setAdapter(adapter);
+        mSpinnerFrequency.setOnItemSelectedListener(this);
         mEditTextName.setText(mMedication.getName());
         mEditTextDescription.setText(mMedication.getDescription());
-        mEditTextFrequency.setText(mMedication.getFrequency());
+        mEditTextNumberOfTablets.setText(mMedication.getNo_of_tablets());
         mEditTextStartDate.setText(mMedication.getStart_date());
         mEditTextEndDate.setText(mMedication.getEnd_date());
         return view;
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String[] strings = getActivity().getResources().getStringArray(R.array.frequencies);
+        String selectedString = strings[position];
+        if (selectedString.equals(R.string.select_frequency)){
+            Toast.makeText(getActivity(), "Nothing selected", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.once_a_day)){
+            Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.twice_a_day)){
+            Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.thrice_a_day)){
+            Toast.makeText(getActivity(), "3", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.four_times_a_day)){
+            Toast.makeText(getActivity(), "4", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.five_times_a_day)){
+            Toast.makeText(getActivity(), "5", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
     @OnClick(R.id.et_start_date) public void onStartDateClick(){
         DatePickerFragment datePickerFragment = new DatePickerFragment();
@@ -102,17 +135,18 @@ public class EditMedicationFragment extends Fragment {
         if (item.getItemId() == R.id.action_save){
             String name = mEditTextName.getText().toString().trim();
             String description = mEditTextDescription.getText().toString().trim();
-            String frequency = mEditTextFrequency.getText().toString().trim();
+            String no_of_tablets = mEditTextNumberOfTablets.getText().toString().trim();
             String start_date = mEditTextStartDate.getText().toString().trim();
             String end_date = mEditTextEndDate.getText().toString().trim();
+
             if (name.equals("")){
                 mEditTextName.setError("Name required!");
                 return false;
             }else if (description.equals("")){
                 mEditTextDescription.setError("Description required!");
                 return false;
-            }else if (frequency.equals("")){
-                mEditTextFrequency.setError("Frequency required!");
+            }else if (no_of_tablets.equals("")){
+                mEditTextNumberOfTablets.setError("Number of tablets required!");
                 return false;
             }else if (start_date.equals("")){
                 mEditTextStartDate.setError("Start date required!");
@@ -125,7 +159,7 @@ public class EditMedicationFragment extends Fragment {
                     .child(mAuth.getCurrentUser().getUid())
                     .child("medication")
                     .child(mMedication.getId());
-            Medication medication = new Medication(mMedication.getId(),name,description,frequency,start_date,end_date);
+            Medication medication = new Medication(mMedication.getId(),name,description,no_of_tablets,"3",start_date,end_date);
             medicationReference.setValue(medication);
             getActivity().finish();
         }

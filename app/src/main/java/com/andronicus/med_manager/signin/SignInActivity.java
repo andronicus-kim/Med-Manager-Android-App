@@ -112,7 +112,7 @@ public class SignInActivity extends AppCompatActivity {
                         if (mProgressDialog != null && mProgressDialog.isShowing()){
                             mProgressDialog.dismiss();
                         }
-                        Snackbar.make(mButtonSignIn,"Sign in error!",Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(mButtonSignIn,task.getException().getMessage(),Snackbar.LENGTH_SHORT).show();
                     }
                 }));
     }
