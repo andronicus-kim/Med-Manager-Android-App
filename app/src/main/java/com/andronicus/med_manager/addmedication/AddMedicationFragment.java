@@ -2,6 +2,7 @@ package com.andronicus.med_manager.addmedication;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class AddMedicationFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class AddMedicationFragment extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
 
     private Unbinder mUnbinder;
     private DatabaseReference mDatabaseReference;
@@ -86,6 +87,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         View view = inflater.inflate(R.layout.fragment_add_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
         clearAllReminders();
+        setOnClickListeners();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.frequencies, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
@@ -93,13 +95,54 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         mSpinnerFrequency.setOnItemSelectedListener(this);
         return view;
     }
-    public void clearAllReminders(){
+    private void clearAllReminders(){
         mTextViewReminder1.setVisibility(View.GONE);
         mTextViewReminder2.setVisibility(View.GONE);
         mTextViewReminder3.setVisibility(View.GONE);
         mTextViewReminder4.setVisibility(View.GONE);
         mTextViewReminder5.setVisibility(View.GONE);
+
+        mTextViewReminder1.setText(R.string.set_reminder);
+        mTextViewReminder2.setText(R.string.set_reminder);
+        mTextViewReminder3.setText(R.string.set_reminder);
+        mTextViewReminder4.setText(R.string.set_reminder);
+        mTextViewReminder5.setText(R.string.set_reminder);
     }
+    private void setOnClickListeners(){
+        mTextViewReminder1.setOnClickListener(this);
+        mTextViewReminder2.setOnClickListener(this);
+        mTextViewReminder3.setOnClickListener(this);
+        mTextViewReminder4.setOnClickListener(this);
+        mTextViewReminder5.setOnClickListener(this);
+    }
+
+    private void launchTimePickerFragment(@NonNull TextView textView){
+        TimerPickerFragment newFragment = new TimerPickerFragment();
+        newFragment.passClickedTextView(textView);
+        newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_reminder_1 :
+                launchTimePickerFragment(mTextViewReminder1);
+                break;
+            case R.id.tv_reminder_2 :
+                launchTimePickerFragment(mTextViewReminder2);
+                break;
+            case R.id.tv_reminder_3 :
+                launchTimePickerFragment(mTextViewReminder3);
+                break;
+            case R.id.tv_reminder_4 :
+                launchTimePickerFragment(mTextViewReminder4);
+                break;
+            case R.id.tv_reminder_5 :
+                launchTimePickerFragment(mTextViewReminder5);
+                break;
+        }
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (position){
@@ -111,11 +154,6 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 clearAllReminders();
                 mFrequency = "1";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
-                mTextViewReminder1.setOnClickListener((v) -> {
-                    TimerPickerFragment newFragment = new TimerPickerFragment();
-                    newFragment.passClickedTextView(mTextViewReminder1);
-                    newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
-                });
                 break;
             case 2 :
                 clearAllReminders();
