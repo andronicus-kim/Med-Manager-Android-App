@@ -103,13 +103,14 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             });
         }
         private void bind(Medication medication){
-            String medicationInital = medication.getName().substring(0,1);
+            String medicationInitial = medication.getName().substring(0,1);
+            String prescription = medication.getNo_of_tablets() + " * " + medication.getFrequency();
             Random random = new Random();
             int position = random.nextInt(colors.length);
             mMedicationInitial.setBackgroundColor(mContext.getResources().getColor(colors[position]));
-            mMedicationInitial.setText(medicationInital);
+            mMedicationInitial.setText(medicationInitial);
             mMedicationName.setText(medication.getName());
-            mPrescription.setText("1 * " + medication.getFrequency());
+            mPrescription.setText(prescription);
             mEndDate.setText(medication.getEnd_date());
         }
 

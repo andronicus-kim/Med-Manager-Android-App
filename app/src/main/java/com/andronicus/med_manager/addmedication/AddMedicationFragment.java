@@ -47,7 +47,8 @@ public class AddMedicationFragment extends Fragment{
     EditText mEditTextStartDate;
     @BindView(R.id.et_end_date)
     EditText mEditTextEndDate;
-
+    @BindView(R.id.et_tablets)
+    EditText mEditTextNumberOfTablets;
 
 
     public static AddMedicationFragment newInstance() {
@@ -97,14 +98,19 @@ public class AddMedicationFragment extends Fragment{
         if (item.getItemId() == R.id.action_save){
             String name = mEditTextName.getText().toString().trim();
             String description = mEditTextDescription.getText().toString().trim();
+            String no_of_tablets = mEditTextNumberOfTablets.getText().toString().trim();
             String frequency = mEditTextFrequency.getText().toString().trim();
             String start_date = mEditTextStartDate.getText().toString().trim();
             String end_date = mEditTextEndDate.getText().toString().trim();
+
             if (name.equals("")){
                 mEditTextName.setError("Name required!");
                 return false;
             }else if (description.equals("")){
                 mEditTextDescription.setError("Description required!");
+                return false;
+            }else if (no_of_tablets.equals("")){
+                mEditTextNumberOfTablets.setError("Number of tablets required!");
                 return false;
             }else if (frequency.equals("")){
                 mEditTextFrequency.setError("Frequency required!");
@@ -116,9 +122,10 @@ public class AddMedicationFragment extends Fragment{
                 mEditTextEndDate.setError("End date required!");
                 return false;
             }
+
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
             String id = medicationReference.push().getKey();
-            Medication medication = new Medication(id,name,description,frequency,start_date,end_date);
+            Medication medication = new Medication(id,name,description,no_of_tablets,frequency,start_date,end_date);
             medicationReference.child(id).setValue(medication);
             startActivity(MedicationActivity.newIntent(getActivity()));
             getActivity().finish();

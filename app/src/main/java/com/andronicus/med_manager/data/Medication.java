@@ -12,17 +12,29 @@ public class Medication implements Parcelable{
     private String id;
     private String name;
     private String description;
+    private String no_of_tablets;
     private String frequency;
     private String start_date;
     private String end_date;
 
-    public Medication() {
+    public Medication(){}
+
+    public Medication(String id, String name, String description,
+                      String no_of_tablets, String frequency, String start_date, String end_date) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.no_of_tablets = no_of_tablets;
+        this.frequency = frequency;
+        this.start_date = start_date;
+        this.end_date = end_date;
     }
 
     protected Medication(Parcel in) {
         id = in.readString();
         name = in.readString();
         description = in.readString();
+        no_of_tablets = in.readString();
         frequency = in.readString();
         start_date = in.readString();
         end_date = in.readString();
@@ -40,25 +52,20 @@ public class Medication implements Parcelable{
         }
     };
 
-    public String getName() {
-        return name;
-    }
-
-    public Medication(String id, String name, String description, String frequency, String start_date, String end_date) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.frequency = frequency;
-        this.start_date = start_date;
-        this.end_date = end_date;
-    }
-
     public String getId() {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public String getNo_of_tablets() {
+        return no_of_tablets;
     }
 
     public String getFrequency() {
@@ -83,6 +90,7 @@ public class Medication implements Parcelable{
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(description);
+        dest.writeString(no_of_tablets);
         dest.writeString(frequency);
         dest.writeString(start_date);
         dest.writeString(end_date);
