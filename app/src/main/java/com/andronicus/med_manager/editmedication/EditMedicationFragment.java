@@ -77,6 +77,7 @@ public class EditMedicationFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this,view);
         mEditTextName.setText(mMedication.getName());
         mEditTextDescription.setText(mMedication.getDescription());
+        mEditTextNumberOfTablets.setText(mMedication.getNo_of_tablets());
         mEditTextFrequency.setText(mMedication.getFrequency());
         mEditTextStartDate.setText(mMedication.getStart_date());
         mEditTextEndDate.setText(mMedication.getEnd_date());
