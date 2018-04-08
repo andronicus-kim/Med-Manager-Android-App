@@ -88,20 +88,25 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String[] strings = getActivity().getResources().getStringArray(R.array.frequencies);
-        String selectedString = strings[position];
-        Toast.makeText(getActivity(), selectedString, Toast.LENGTH_SHORT).show();
-        if (selectedString.equals(R.string.select_frequency)){
-            Toast.makeText(getActivity(), "Nothing selected", Toast.LENGTH_SHORT).show();
-        }else if (selectedString.equals("Once a day")){
-            Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
-        }else if (selectedString.equals(R.string.twice_a_day)){
-            Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
-        }else if (selectedString.equals(R.string.thrice_a_day)){
-            Toast.makeText(getActivity(), "3", Toast.LENGTH_SHORT).show();
-        }else if (selectedString.equals(R.string.four_times_a_day)){
-            Toast.makeText(getActivity(), "4", Toast.LENGTH_SHORT).show();
-        }else if (selectedString.equals(R.string.five_times_a_day)){
-            Toast.makeText(getActivity(), "5", Toast.LENGTH_SHORT).show();
+        switch (position){
+            case 0 :
+                Toast.makeText(getActivity(), strings[0], Toast.LENGTH_SHORT).show();
+                break;
+            case 1 :
+                Toast.makeText(getActivity(), strings[1], Toast.LENGTH_SHORT).show();
+                break;
+            case 2 :
+                Toast.makeText(getActivity(), strings[2], Toast.LENGTH_SHORT).show();
+                break;
+            case 3 :
+                Toast.makeText(getActivity(), strings[3], Toast.LENGTH_SHORT).show();
+                break;
+            case 4 :
+                Toast.makeText(getActivity(), strings[4], Toast.LENGTH_SHORT).show();
+                break;
+            case 5 :
+                Toast.makeText(getActivity(), strings[5], Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
