@@ -101,28 +101,23 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String[] strings = getActivity().getResources().getStringArray(R.array.frequencies);
         switch (position){
             case 0 :
-                Toast.makeText(getActivity(), strings[0], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
                 mFrequency = "0";
                 break;
             case 1 :
-                Toast.makeText(getActivity(), strings[1], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
                 mFrequency = "1";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 break;
             case 2 :
-                Toast.makeText(getActivity(), strings[2], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
                 mFrequency = "2";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 break;
             case 3 :
-                Toast.makeText(getActivity(), strings[3], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
                 mFrequency = "3";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
@@ -130,7 +125,6 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 mTextViewReminder3.setVisibility(View.VISIBLE);
                 break;
             case 4 :
-                Toast.makeText(getActivity(), strings[4], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
                 mFrequency = "4";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
@@ -139,7 +133,6 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 mTextViewReminder4.setVisibility(View.VISIBLE);
                 break;
             case 5 :
-                Toast.makeText(getActivity(), strings[5], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
                 mFrequency = "5";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
