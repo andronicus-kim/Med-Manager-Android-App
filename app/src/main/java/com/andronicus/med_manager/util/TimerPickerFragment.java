@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -16,6 +17,8 @@ import java.util.Calendar;
 
 public class TimerPickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
+
+    private TextView mTextView;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,6 +34,17 @@ public class TimerPickerFragment extends DialogFragment implements TimePickerDia
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String time;
+        if (minute < 10){
+            String min = "0" + String.valueOf(minute);
+            time = hourOfDay + " : " + min;
+        }else {
+            time = hourOfDay + " : " + minute;
+        }
+        mTextView.setText(time);
+    }
 
+    public void passClickedTextView(@NonNull TextView textView){
+        mTextView = textView;
     }
 }

@@ -113,6 +113,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder1.setOnClickListener((v) -> {
                     TimerPickerFragment newFragment = new TimerPickerFragment();
+                    newFragment.passClickedTextView(mTextViewReminder1);
                     newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
                 });
                 break;

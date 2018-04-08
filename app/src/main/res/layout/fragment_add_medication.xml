@@ -55,7 +55,7 @@
             android:id="@+id/tv_reminder_1"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:text="Set Reminder"
             android:paddingLeft="8dp"
             android:drawableLeft="@drawable/ic_action_reminder"
