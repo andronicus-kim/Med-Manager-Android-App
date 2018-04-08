@@ -44,16 +44,14 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     EditText mEditTextName;
     @BindView(R.id.et_description)
     EditText mEditTextDescription;
-    @BindView(R.id.et_frequency)
-    EditText mEditTextFrequency;
+    @BindView(R.id.spinner_frequency)
+    Spinner mSpinnerFrequency;
     @BindView(R.id.et_start_date)
     EditText mEditTextStartDate;
     @BindView(R.id.et_end_date)
     EditText mEditTextEndDate;
     @BindView(R.id.et_tablets)
     EditText mEditTextNumberOfTablets;
-    @BindView(R.id.spinner_frequency)
-    Spinner mSpinnerFrequency;
 
 
     public static AddMedicationFragment newInstance() {
@@ -90,7 +88,21 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String[] strings = getActivity().getResources().getStringArray(R.array.frequencies);
-        Toast.makeText(getActivity(), strings[position] , Toast.LENGTH_SHORT).show();
+        String selectedString = strings[position];
+        Toast.makeText(getActivity(), selectedString, Toast.LENGTH_SHORT).show();
+        if (selectedString.equals(R.string.select_frequency)){
+            Toast.makeText(getActivity(), "Nothing selected", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals("Once a day")){
+            Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.twice_a_day)){
+            Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.thrice_a_day)){
+            Toast.makeText(getActivity(), "3", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.four_times_a_day)){
+            Toast.makeText(getActivity(), "4", Toast.LENGTH_SHORT).show();
+        }else if (selectedString.equals(R.string.five_times_a_day)){
+            Toast.makeText(getActivity(), "5", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -121,7 +133,6 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
             String name = mEditTextName.getText().toString().trim();
             String description = mEditTextDescription.getText().toString().trim();
             String no_of_tablets = mEditTextNumberOfTablets.getText().toString().trim();
-            String frequency = mEditTextFrequency.getText().toString().trim();
             String start_date = mEditTextStartDate.getText().toString().trim();
             String end_date = mEditTextEndDate.getText().toString().trim();
 
@@ -134,9 +145,6 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
             }else if (no_of_tablets.equals("")){
                 mEditTextNumberOfTablets.setError("Number of tablets required!");
                 return false;
-            }else if (frequency.equals("")){
-                mEditTextFrequency.setError("Frequency required!");
-                return false;
             }else if (start_date.equals("")){
                 mEditTextStartDate.setError("Start date required!");
                 return false;
@@ -147,7 +155,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
 
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
             String id = medicationReference.push().getKey();
-            Medication medication = new Medication(id,name,description,no_of_tablets,frequency,start_date,end_date);
+            Medication medication = new Medication(id,name,description,no_of_tablets,"3",start_date,end_date);
             medicationReference.child(id).setValue(medication);
             startActivity(MedicationActivity.newIntent(getActivity()));
             getActivity().finish();

@@ -43,17 +43,10 @@
                 android:inputType="number"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
+        <Spinner
+            android:id="@+id/spinner_frequency"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/et_frequency"
-                android:layout_width="match_parent"
-                android:hint="Frequency/Interval"
-                android:inputType="number"
-                android:paddingLeft="8dp"
-                android:layout_height="wrap_content"/>
-        </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"/>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
