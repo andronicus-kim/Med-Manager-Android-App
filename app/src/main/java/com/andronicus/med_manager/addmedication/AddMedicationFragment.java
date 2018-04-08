@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -52,6 +54,16 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     EditText mEditTextEndDate;
     @BindView(R.id.et_tablets)
     EditText mEditTextNumberOfTablets;
+    @BindView(R.id.tv_reminder_1)
+    TextView mTextViewReminder1;
+    @BindView(R.id.tv_reminder_2)
+    TextView mTextViewReminder2;
+    @BindView(R.id.tv_reminder_3)
+    TextView mTextViewReminder3;
+    @BindView(R.id.tv_reminder_4)
+    TextView mTextViewReminder4;
+    @BindView(R.id.tv_reminder_5)
+    TextView mTextViewReminder5;
 
 
     public static AddMedicationFragment newInstance() {
@@ -77,6 +89,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
+        clearAllReminders();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.frequencies, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
@@ -84,28 +97,55 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         mSpinnerFrequency.setOnItemSelectedListener(this);
         return view;
     }
-
+    public void clearAllReminders(){
+        mTextViewReminder1.setVisibility(View.GONE);
+        mTextViewReminder2.setVisibility(View.GONE);
+        mTextViewReminder3.setVisibility(View.GONE);
+        mTextViewReminder4.setVisibility(View.GONE);
+        mTextViewReminder5.setVisibility(View.GONE);
+    }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String[] strings = getActivity().getResources().getStringArray(R.array.frequencies);
         switch (position){
             case 0 :
                 Toast.makeText(getActivity(), strings[0], Toast.LENGTH_SHORT).show();
+                clearAllReminders();
                 break;
             case 1 :
                 Toast.makeText(getActivity(), strings[1], Toast.LENGTH_SHORT).show();
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
                 break;
             case 2 :
                 Toast.makeText(getActivity(), strings[2], Toast.LENGTH_SHORT).show();
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
                 break;
             case 3 :
                 Toast.makeText(getActivity(), strings[3], Toast.LENGTH_SHORT).show();
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
                 break;
             case 4 :
                 Toast.makeText(getActivity(), strings[4], Toast.LENGTH_SHORT).show();
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
+                mTextViewReminder4.setVisibility(View.VISIBLE);
                 break;
             case 5 :
                 Toast.makeText(getActivity(), strings[5], Toast.LENGTH_SHORT).show();
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
+                mTextViewReminder4.setVisibility(View.VISIBLE);
+                mTextViewReminder5.setVisibility(View.VISIBLE);
                 break;
         }
     }
