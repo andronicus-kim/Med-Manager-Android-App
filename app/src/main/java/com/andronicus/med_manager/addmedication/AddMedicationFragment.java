@@ -21,6 +21,7 @@ import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.medication.MedicationActivity;
 import com.andronicus.med_manager.util.DatePickerFragment;
+import com.andronicus.med_manager.util.TimerPickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -110,6 +111,10 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 clearAllReminders();
                 mFrequency = "1";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setOnClickListener((v) -> {
+                    TimerPickerFragment newFragment = new TimerPickerFragment();
+                    newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
+                });
                 break;
             case 2 :
                 clearAllReminders();
