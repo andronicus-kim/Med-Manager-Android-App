@@ -33,15 +33,10 @@ import butterknife.Unbinder;
 
 public class AddMedicationFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
-    public static final String NAME = "name";
-    public static final String DESCRIPTION = "description";
-    public static final String FREQUENCY = "frequency";
-    public static final String START_DATE = "start_date";
-    public static final String END_DATE = "end_date";
-
     private Unbinder mUnbinder;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
+    private String mFrequency;
     @BindView(R.id.et_name)
     EditText mEditTextName;
     @BindView(R.id.et_description)
@@ -111,21 +106,25 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
             case 0 :
                 Toast.makeText(getActivity(), strings[0], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
+                mFrequency = "0";
                 break;
             case 1 :
                 Toast.makeText(getActivity(), strings[1], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
+                mFrequency = "1";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 break;
             case 2 :
                 Toast.makeText(getActivity(), strings[2], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
+                mFrequency = "2";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 break;
             case 3 :
                 Toast.makeText(getActivity(), strings[3], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
+                mFrequency = "3";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 mTextViewReminder3.setVisibility(View.VISIBLE);
@@ -133,6 +132,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
             case 4 :
                 Toast.makeText(getActivity(), strings[4], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
+                mFrequency = "4";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 mTextViewReminder3.setVisibility(View.VISIBLE);
@@ -141,6 +141,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
             case 5 :
                 Toast.makeText(getActivity(), strings[5], Toast.LENGTH_SHORT).show();
                 clearAllReminders();
+                mFrequency = "5";
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 mTextViewReminder3.setVisibility(View.VISIBLE);
@@ -196,11 +197,13 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
             }else if (end_date.equals("")){
                 mEditTextEndDate.setError("End date required!");
                 return false;
+            }else if (mFrequency == null || mFrequency.equals("0")){
+                Toast.makeText(getActivity(), "You've not selected Frequency!", Toast.LENGTH_LONG).show();
             }
 
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
             String id = medicationReference.push().getKey();
-            Medication medication = new Medication(id,name,description,no_of_tablets,"3",start_date,end_date);
+            Medication medication = new Medication(id,name,description,no_of_tablets,mFrequency,start_date,end_date);
             medicationReference.child(id).setValue(medication);
             startActivity(MedicationActivity.newIntent(getActivity()));
             getActivity().finish();
