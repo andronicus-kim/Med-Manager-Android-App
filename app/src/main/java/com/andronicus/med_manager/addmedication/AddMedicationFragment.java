@@ -1,6 +1,10 @@
 package com.andronicus.med_manager.addmedication;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +25,7 @@ import android.widget.Toast;
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.data.Medication;
 import com.andronicus.med_manager.medication.MedicationActivity;
+import com.andronicus.med_manager.util.AlarmReceiver;
 import com.andronicus.med_manager.util.DatePickerFragment;
 import com.andronicus.med_manager.util.TimerPickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -241,7 +247,8 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 Toast.makeText(getActivity(), "You've not selected Frequency!", Toast.LENGTH_LONG).show();
             }
 
-            mReminders = getReminders(mFrequency);
+            Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+            mReminders = getReminders(mFrequency,intent);
 
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
             String id = medicationReference.push().getKey();
@@ -253,11 +260,21 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         return true;
     }
 
-    private List<String> getReminders(String frequency){
+    private List<String> getReminders(String frequency,Intent intent){
         List<String> reminders = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
         switch (Integer.parseInt(frequency)) {
             case 1 :
-                reminders.add(mTextViewReminder1.getText().toString().trim());
+                String reminder1 = mTextViewReminder1.getText().toString().trim();
+                reminders.add(reminder1);
+                String[] time = reminder1.split(":");
+                String hour = time[0];
+                String minute = time[1];
+                calendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hour.trim()));
+                calendar.set(Calendar.MINUTE,Integer.parseInt(minute.trim()));
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
                 break;
             case 2 :
                 reminders.add(mTextViewReminder1.getText().toString().trim());

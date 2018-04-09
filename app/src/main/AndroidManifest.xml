@@ -50,6 +50,7 @@
             android:name=".editprofile.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
             android:parentActivityName=".medication.MedicationActivity"/>
+        <receiver android:name=".util.AlarmReceiver"/>
     </application>
 
 </manifest>
