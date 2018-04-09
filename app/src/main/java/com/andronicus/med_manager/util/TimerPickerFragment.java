@@ -47,4 +47,5 @@ public class TimerPickerFragment extends DialogFragment implements TimePickerDia
     public void passClickedTextView(@NonNull TextView textView){
         mTextView = textView;
     }
+
 }
