@@ -71,6 +71,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     TextView mTextViewReminder4;
     @BindView(R.id.tv_reminder_5)
     TextView mTextViewReminder5;
+    private PendingIntent mPendingIntent;
 
 
     public static AddMedicationFragment newInstance() {
@@ -247,6 +248,8 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 Toast.makeText(getActivity(), "You've not selected Frequency!", Toast.LENGTH_LONG).show();
             }
 
+            Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+            mPendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
             mReminders = getReminders(mFrequency);
 
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
@@ -308,15 +311,13 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
 
     private void setReminder(String reminder){
         Calendar calendar = Calendar.getInstance();
-        Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         String[] time = reminder.split(":");
         String hour = time[0];
         String minute = time[1];
         calendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hour.trim()));
         calendar.set(Calendar.MINUTE,Integer.parseInt(minute.trim()));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+        manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),mPendingIntent);
     }
 
     @Override
