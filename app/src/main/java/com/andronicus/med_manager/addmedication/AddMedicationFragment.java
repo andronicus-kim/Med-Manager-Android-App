@@ -136,28 +136,13 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 launchTimePickerFragment(mTextViewReminder2);
                 break;
             case R.id.tv_reminder_3 :
-                mReminders = new ArrayList<>();
                 launchTimePickerFragment(mTextViewReminder3);
-                mReminders.add(mTextViewReminder1.getText().toString().trim());
-                mReminders.add(mTextViewReminder2.getText().toString().trim());
-                mReminders.add(mTextViewReminder3.getText().toString().trim());
                 break;
             case R.id.tv_reminder_4 :
-                mReminders = new ArrayList<>();
                 launchTimePickerFragment(mTextViewReminder4);
-                mReminders.add(mTextViewReminder1.getText().toString().trim());
-                mReminders.add(mTextViewReminder2.getText().toString().trim());
-                mReminders.add(mTextViewReminder3.getText().toString().trim());
-                mReminders.add(mTextViewReminder4.getText().toString().trim());
                 break;
             case R.id.tv_reminder_5 :
-                mReminders = new ArrayList<>();
                 launchTimePickerFragment(mTextViewReminder5);
-                mReminders.add(mTextViewReminder1.getText().toString().trim());
-                mReminders.add(mTextViewReminder2.getText().toString().trim());
-                mReminders.add(mTextViewReminder3.getText().toString().trim());
-                mReminders.add(mTextViewReminder4.getText().toString().trim());
-                mReminders.add(mTextViewReminder5.getText().toString().trim());
                 break;
         }
     }
@@ -282,6 +267,19 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 reminders.add(mTextViewReminder1.getText().toString().trim());
                 reminders.add(mTextViewReminder2.getText().toString().trim());
                 reminders.add(mTextViewReminder3.getText().toString().trim());
+                break;
+            case 4 :
+                reminders.add(mTextViewReminder1.getText().toString().trim());
+                reminders.add(mTextViewReminder2.getText().toString().trim());
+                reminders.add(mTextViewReminder3.getText().toString().trim());
+                reminders.add(mTextViewReminder4.getText().toString().trim());
+                break;
+            case 5 :
+                reminders.add(mTextViewReminder1.getText().toString().trim());
+                reminders.add(mTextViewReminder2.getText().toString().trim());
+                reminders.add(mTextViewReminder3.getText().toString().trim());
+                reminders.add(mTextViewReminder4.getText().toString().trim());
+                reminders.add(mTextViewReminder5.getText().toString().trim());
                 break;
         }
         return reminders;
