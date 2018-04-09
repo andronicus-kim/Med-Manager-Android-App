@@ -247,8 +247,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 Toast.makeText(getActivity(), "You've not selected Frequency!", Toast.LENGTH_LONG).show();
             }
 
-            Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-            mReminders = getReminders(mFrequency,intent);
+            mReminders = getReminders(mFrequency);
 
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
             String id = medicationReference.push().getKey();
@@ -260,46 +259,64 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         return true;
     }
 
-    private List<String> getReminders(String frequency,Intent intent){
+    private List<String> getReminders(String frequency){
         List<String> reminders = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
         switch (Integer.parseInt(frequency)) {
             case 1 :
-                String reminder1 = mTextViewReminder1.getText().toString().trim();
-                reminders.add(reminder1);
-                String[] time = reminder1.split(":");
-                String hour = time[0];
-                String minute = time[1];
-                calendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hour.trim()));
-                calendar.set(Calendar.MINUTE,Integer.parseInt(minute.trim()));
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+                reminders.add(mTextViewReminder1.getText().toString().trim());
+                setReminder(mTextViewReminder1.getText().toString().trim());
                 break;
             case 2 :
                 reminders.add(mTextViewReminder1.getText().toString().trim());
+                setReminder(mTextViewReminder1.getText().toString().trim());
                 reminders.add(mTextViewReminder2.getText().toString().trim());
+                setReminder(mTextViewReminder2.getText().toString().trim());
                 break;
             case 3 :
                 reminders.add(mTextViewReminder1.getText().toString().trim());
+                setReminder(mTextViewReminder1.getText().toString().trim());
                 reminders.add(mTextViewReminder2.getText().toString().trim());
+                setReminder(mTextViewReminder2.getText().toString().trim());
                 reminders.add(mTextViewReminder3.getText().toString().trim());
+                setReminder(mTextViewReminder3.getText().toString().trim());
                 break;
             case 4 :
                 reminders.add(mTextViewReminder1.getText().toString().trim());
+                setReminder(mTextViewReminder1.getText().toString().trim());
                 reminders.add(mTextViewReminder2.getText().toString().trim());
+                setReminder(mTextViewReminder2.getText().toString().trim());
                 reminders.add(mTextViewReminder3.getText().toString().trim());
+                setReminder(mTextViewReminder3.getText().toString().trim());
                 reminders.add(mTextViewReminder4.getText().toString().trim());
+                setReminder(mTextViewReminder4.getText().toString().trim());
                 break;
             case 5 :
                 reminders.add(mTextViewReminder1.getText().toString().trim());
+                setReminder(mTextViewReminder1.getText().toString().trim());
                 reminders.add(mTextViewReminder2.getText().toString().trim());
+                setReminder(mTextViewReminder2.getText().toString().trim());
                 reminders.add(mTextViewReminder3.getText().toString().trim());
+                setReminder(mTextViewReminder3.getText().toString().trim());
                 reminders.add(mTextViewReminder4.getText().toString().trim());
+                setReminder(mTextViewReminder4.getText().toString().trim());
                 reminders.add(mTextViewReminder5.getText().toString().trim());
+                setReminder(mTextViewReminder5.getText().toString().trim());
                 break;
         }
         return reminders;
+    }
+
+    private void setReminder(String reminder){
+        Calendar calendar = Calendar.getInstance();
+        Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+        String[] time = reminder.split(":");
+        String hour = time[0];
+        String minute = time[1];
+        calendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hour.trim()));
+        calendar.set(Calendar.MINUTE,Integer.parseInt(minute.trim()));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
     }
 
     @Override
