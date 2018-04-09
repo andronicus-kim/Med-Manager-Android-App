@@ -27,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -39,6 +42,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
     private String mFrequency;
+    private List<String> mReminders;
     @BindView(R.id.et_name)
     EditText mEditTextName;
     @BindView(R.id.et_description)
@@ -127,18 +131,38 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         switch (v.getId()){
             case R.id.tv_reminder_1 :
                 launchTimePickerFragment(mTextViewReminder1);
+                mReminders = new ArrayList<>();
+                mReminders.add(mTextViewReminder1.getText().toString().trim());
                 break;
             case R.id.tv_reminder_2 :
                 launchTimePickerFragment(mTextViewReminder2);
+                mReminders = new ArrayList<>();
+                mReminders.add(mTextViewReminder1.getText().toString().trim());
+                mReminders.add(mTextViewReminder2.getText().toString().trim());
                 break;
             case R.id.tv_reminder_3 :
                 launchTimePickerFragment(mTextViewReminder3);
+                mReminders = new ArrayList<>();
+                mReminders.add(mTextViewReminder1.getText().toString().trim());
+                mReminders.add(mTextViewReminder2.getText().toString().trim());
+                mReminders.add(mTextViewReminder3.getText().toString().trim());
                 break;
             case R.id.tv_reminder_4 :
                 launchTimePickerFragment(mTextViewReminder4);
+                mReminders = new ArrayList<>();
+                mReminders.add(mTextViewReminder1.getText().toString().trim());
+                mReminders.add(mTextViewReminder2.getText().toString().trim());
+                mReminders.add(mTextViewReminder3.getText().toString().trim());
+                mReminders.add(mTextViewReminder4.getText().toString().trim());
                 break;
             case R.id.tv_reminder_5 :
                 launchTimePickerFragment(mTextViewReminder5);
+                mReminders = new ArrayList<>();
+                mReminders.add(mTextViewReminder1.getText().toString().trim());
+                mReminders.add(mTextViewReminder2.getText().toString().trim());
+                mReminders.add(mTextViewReminder3.getText().toString().trim());
+                mReminders.add(mTextViewReminder4.getText().toString().trim());
+                mReminders.add(mTextViewReminder5.getText().toString().trim());
                 break;
         }
     }
@@ -240,7 +264,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
 
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
             String id = medicationReference.push().getKey();
-            Medication medication = new Medication(id,name,description,no_of_tablets,mFrequency,start_date,end_date);
+            Medication medication = new Medication(id,name,description,no_of_tablets,mFrequency,mReminders,start_date,end_date);
             medicationReference.child(id).setValue(medication);
             startActivity(MedicationActivity.newIntent(getActivity()));
             getActivity().finish();

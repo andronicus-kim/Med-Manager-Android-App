@@ -159,7 +159,7 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
                     .child(mAuth.getCurrentUser().getUid())
                     .child("medication")
                     .child(mMedication.getId());
-            Medication medication = new Medication(mMedication.getId(),name,description,no_of_tablets,"3",start_date,end_date);
+            Medication medication = new Medication(mMedication.getId(),name,description,no_of_tablets,"3",null,start_date,end_date);
             medicationReference.setValue(medication);
             getActivity().finish();
         }
