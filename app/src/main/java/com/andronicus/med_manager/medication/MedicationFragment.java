@@ -42,6 +42,7 @@ import butterknife.Unbinder;
  */
 public class MedicationFragment extends Fragment implements SearchView.OnQueryTextListener {
 
+    public static final String USER_ID = "USER_ID";
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
     private Unbinder mUnbinder;
@@ -55,13 +56,15 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
     ProgressBar mProgressBar;
     private List<Medication> mMedications;
     private MedicationAdapter mAdapter;
+    private String mUserId;
 
     /*
    * Helper method to create an instance of this fragment
    * */
-    public static MedicationFragment newInstance() {
+    public static MedicationFragment newInstance(String userId) {
         
         Bundle args = new Bundle();
+        args.putString(USER_ID,userId);
         
         MedicationFragment fragment = new MedicationFragment();
         fragment.setArguments(args);
@@ -79,6 +82,7 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medication, container, false);
+        mUserId = getArguments().getString(USER_ID);
         mUnbinder = ButterKnife.bind(this,view);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
@@ -127,7 +131,7 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
                     }
                     mImageViewEmptyRecyclerview.setVisibility(View.GONE);
                     mTextViewEmptyRecyclerview.setVisibility(View.GONE);
-                    mAdapter = new MedicationAdapter(mMedications);
+                    mAdapter = new MedicationAdapter(mMedications,mUserId);
                     mMedicationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                     mMedicationRecyclerView.setAdapter(mAdapter);
                 }

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.data.User;
 import com.andronicus.med_manager.medication.MedicationActivity;
 import com.andronicus.med_manager.util.ActivityUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -29,6 +30,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +48,7 @@ public class SignInActivity extends AppCompatActivity {
     private GoogleSignInClient mSignInClient;
     private FirebaseAuth mAuth;
     private Unbinder mUnbinder;
+    private DatabaseReference mDatabaseReference;
     private ProgressDialog mProgressDialog;
 
     @BindView(R.id.btn_sign_in)
@@ -56,6 +63,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         mAuth = FirebaseAuth.getInstance();
         mUnbinder = ButterKnife.bind(this);
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -107,7 +115,7 @@ public class SignInActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this,(task -> {
                     if (task.isSuccessful()){
-                        launchMedicationActivity();
+                        checkIfUserExists(account);
                     }else {
                         if (mProgressDialog != null && mProgressDialog.isShowing()){
                             mProgressDialog.dismiss();
@@ -116,21 +124,45 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 }));
     }
+    private void checkIfUserExists(GoogleSignInAccount account){
+        mDatabaseReference.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    //User exists
+                    launchMedicationActivity(mAuth.getCurrentUser().getUid());
+                }else {
+                    saveUser(new User(mAuth.getCurrentUser().getUid(),account.getDisplayName(),account.getEmail(),account.getPhotoUrl().toString()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void saveUser(User user) {
+        DatabaseReference userReference = mDatabaseReference.child(user.getId());
+        userReference.setValue(user);
+        launchMedicationActivity(user.getId());
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user!= null){
-            launchMedicationActivity();
+            launchMedicationActivity(user.getUid());
         }
     }
 
-    private void launchMedicationActivity() {
+    private void launchMedicationActivity(String userId) {
         if (mProgressDialog != null && mProgressDialog.isShowing()){
             mProgressDialog.dismiss();
         }
-        startActivity(MedicationActivity.newIntent(this));
+        startActivity(MedicationActivity.newIntent(this,userId));
         finish();
     }
 

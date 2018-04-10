@@ -49,6 +49,7 @@ import java.util.Map;
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String USER_ID = "USER_ID";
     private static final String TAG = "MedicationActivity";
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseReference;
@@ -59,17 +60,21 @@ public class MedicationActivity extends AppCompatActivity
     private String mName;
     private String mEmail;
     private String mProfileImageUrl;
+    private String mUserId;
     /*
     * Helper method to start this activity
     * */
-    public static Intent newIntent(@NonNull Context context){
-        return new Intent(context,MedicationActivity.class);
+    public static Intent newIntent(@NonNull Context context,String userId){
+        Intent intent = new Intent(context,MedicationActivity.class);
+        intent.putExtra(USER_ID,userId);
+        return intent;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
+        mUserId = getIntent().getStringExtra(USER_ID);
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -87,13 +92,13 @@ public class MedicationActivity extends AppCompatActivity
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment == null){
             //If the layout contains no fragment then create a new instance
-            fragment = MedicationFragment.newInstance();
+            fragment = MedicationFragment.newInstance(getIntent().getStringExtra(USER_ID));
             ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),R.id.fragment_container,fragment);
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener( (view) -> {
-                startActivity(AddMedicationActivity.newIntent(this));
+                startActivity(AddMedicationActivity.newIntent(this,getIntent().getStringExtra(USER_ID)));
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -109,39 +114,28 @@ public class MedicationActivity extends AppCompatActivity
         mTextViewEmail = navHeader.findViewById(R.id.tv_email);
         mImageViewProfilePic = navHeader.findViewById(R.id.iv_profile_pic);
 
-        checkIfUserExists();
+        displayProfile();
     }
-    private void checkIfUserExists(){
-            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+    private void displayProfile(){
+            mDatabaseReference.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                            User user = snapshot.getValue(User.class);
-                            try{
-                                mName = user.getName();
-                                mEmail = user.getEmail();
-                                mProfileImageUrl = user.getProfileImageUrl();
-                                Log.e(TAG, "onDataChange: " + mName + mEmail + mProfileImageUrl);
-                                if (mName != null && mEmail != null && mProfileImageUrl != null){
-                                    mTextViewUserName.setText(mName);
-                                    mTextViewEmail.setText(mEmail);
-                                    Picasso.get()
-                                            .load(mProfileImageUrl)
-                                            .placeholder(R.drawable.user)
-                                            .error(R.drawable.user)
-                                            .into(mImageViewProfilePic);
-                                }
-                            }catch (NullPointerException e){
-                                Log.e(TAG, "onDataChange: " + e.getMessage());
-                            }
-                        }
-
-                    }else {
+                    if (dataSnapshot.exists()){
                         FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null){
-                            saveUserInfo(user);
+                        mName = user.getDisplayName();
+                        mEmail = user.getEmail();
+                        mProfileImageUrl = user.getPhotoUrl().toString();
+                        if (mName != null && mEmail != null && mProfileImageUrl != null) {
+                            mTextViewUserName.setText(mName);
+                            mTextViewEmail.setText(mEmail);
+                            Picasso.get()
+                                    .load(mProfileImageUrl)
+                                    .placeholder(R.drawable.user)
+                                    .error(R.drawable.user)
+                                    .into(mImageViewProfilePic);
                         }
+                    }else {
+                       showDefaultProfile();
                     }
                 }
 
@@ -152,28 +146,13 @@ public class MedicationActivity extends AppCompatActivity
             });
     }
 
-    private void saveUserInfo(FirebaseUser user) {
-        if (user.getDisplayName() != null){
-            mTextViewUserName.setText(user.getDisplayName());
-        }else {
+    private void showDefaultProfile() {
             mTextViewUserName.setText("UserName");
-        }
-        if (user.getEmail() != null){
-            mTextViewEmail.setText(user.getEmail());
-        }else {
             mTextViewEmail.setText("user@email.com");
-        }
-        if (user.getPhotoUrl() != null){
-            Picasso.get()
-                    .load(user.getPhotoUrl())
-                    .placeholder(R.drawable.user)
-                    .error(R.drawable.user)
-                    .into(mImageViewProfilePic);
-        }
-        DatabaseReference userReference = mDatabaseReference.child(user.getUid());
-        userReference.child("name").setValue(user.getDisplayName());
-        userReference.child("email").setValue(user.getEmail());
-        userReference.child("profileImageUrl").setValue(user.getPhotoUrl().toString());
+            mImageViewProfilePic.setImageDrawable(getResources().getDrawable(R.drawable.user));
+//        DatabaseReference userReference = mDatabaseReference.child(user.getUid());
+//        User userInfo = new User(user.getUid(),user.getDisplayName(),user.getEmail(),user.getPhotoUrl().toString());
+//        userReference.setValue(userInfo);
     }
 
     @Override
@@ -195,8 +174,8 @@ public class MedicationActivity extends AppCompatActivity
             startActivity(EditProfileActivity.newIntent(MedicationActivity.this));
         }else if (id == R.id.nav_sign_out){
             if (mAuth.getCurrentUser() != null){
-                FirebaseAuth.getInstance().signOut();
                 mSignInClient.signOut();
+                FirebaseAuth.getInstance().signOut();
                 startActivity(SignInActivity.newIntent(MedicationActivity.this));
                 finish();
             }

@@ -47,13 +47,13 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
-    private String mUserId;
     private Context mContext;
     private List<Medication> mMedications;
-    public MedicationAdapter(List<Medication> medications){
+    private String mUserId;
+    public MedicationAdapter(List<Medication> medications,String userId){
         this.mMedications = medications;
         this.mAuth = FirebaseAuth.getInstance();
-        mUserId = mAuth.getCurrentUser().getUid();
+        mUserId = userId;
         this.mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mUserId).child("medication");
     }
 
@@ -120,7 +120,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
             switch (item.getItemId()) {
                 case R.id.action_edit_medication :
                     //Start Edit Medication activity
-                    mContext.startActivity(EditMedicationActivity.newIntent(mContext,medication));
+                    mContext.startActivity(EditMedicationActivity.newIntent(mContext,medication,mUserId));
                     break;
                 case R.id.action_delete_medication :
                     /*
