@@ -36,14 +36,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements EditProfileContract.View{
     private static final String TAG = "EditProfileActivity";
     private static final int RC_LOAD_IMAGE = 200;
 
+    @Inject
+    EditProfilePresenter mEditProfilePresenter;
 
     private Unbinder mUnbinder;
     private Uri mUri;
@@ -115,6 +119,8 @@ public class EditProfileActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_save :
                 if (mUri != null && !mEditTextName.getText().toString().trim().equals("")){
+
+
                     UploadTask uploadTask = uploadImage();
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
                         /*
