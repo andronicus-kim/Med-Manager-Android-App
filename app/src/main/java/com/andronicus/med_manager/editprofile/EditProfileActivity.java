@@ -1,6 +1,7 @@
 package com.andronicus.med_manager.editprofile;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,6 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
     ImageView mImageViewProfilePic;
     @BindView(R.id.et_name)
     EditText mEditTextName;
+    private ProgressDialog mProgressDialog;
     /*
     * Helper method to start this activity
     * */
@@ -83,6 +85,8 @@ public class EditProfileActivity extends AppCompatActivity {
             intent.setType("image/*");
             startActivityForResult(intent,RC_LOAD_IMAGE);
         });
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Uploading...");
     }
 
     @Override
@@ -105,34 +109,30 @@ public class EditProfileActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_save :
                 if (mUri != null && !mEditTextName.getText().toString().trim().equals("")){
-                    UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(mEditTextName.getText().toString().trim())
-                            .setPhotoUri(mUri)
-                            .build();
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null){
+                    UploadTask uploadTask = uploadImage();
+                    uploadTask.addOnSuccessListener(taskSnapshot -> {
+                        if (mProgressDialog != null && mProgressDialog.isShowing()){
+                            mProgressDialog.dismiss();
+                        }
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(mEditTextName.getText().toString().trim())
+                                .setPhotoUri(downloadUrl)
+                                .build();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null){
                             user.updateProfile(profileUpdate);
                         }
                         finish();
-//                    UploadTask uploadTask = uploadImage();
-//                    uploadTask.addOnSuccessListener(taskSnapshot -> {
-//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-//                                .setDisplayName(mEditTextName.getText().toString().trim())
-//                                .setPhotoUri(downloadUrl)
-//                                .build();
-//                        FirebaseUser user = mAuth.getCurrentUser();
-//                        if (user != null){
-//                            user.updateProfile(profileUpdate);
-//                        }
-//                        finish();
-//                    });
-//                    uploadTask.addOnFailureListener(e -> {
-//                        Log.e(TAG, "onOptionsItemSelected: " + e.getMessage() );
-//                        Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show();
-//                    });
+                    });
+                    uploadTask.addOnFailureListener(e -> {
+                        if (mProgressDialog != null && mProgressDialog.isShowing()){
+                            mProgressDialog.dismiss();
+                        }
+                        Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show();
+                    });
                 }else {
-                    Toast.makeText(this, "Error, Try again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, "Error, Try again!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
@@ -144,6 +144,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private UploadTask uploadImage() {
+        mProgressDialog.show();
         StorageReference filePath = mStorage.getReference().child("profile_images").child(mUserId);
         Bitmap bitmap = null;
         try{
@@ -161,5 +162,8 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
+        if (mProgressDialog != null && mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
+        }
     }
 }
