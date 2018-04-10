@@ -24,6 +24,11 @@ public class MedicationPopupActivity extends AppCompatActivity {
     private static final String TAG = "MedicationPopupActivity";
     public static final String MEDICATION = "MEDICATION";
 
+    /*
+    * This activity gives the user more details
+    * about their medication
+    * */
+
     private int[] colors = new int[]{
             R.color.card_background1,
             R.color.card_background2,
@@ -89,6 +94,10 @@ public class MedicationPopupActivity extends AppCompatActivity {
 
         getWindow().setLayout((int)(width*.8),(int)(height*.63));
 
+        /*
+        * Fill in medication information in activity views
+        *
+        * */
         fillLayout();
     }
 

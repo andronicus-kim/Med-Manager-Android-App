@@ -22,8 +22,8 @@
             android:background="@color/colorPrimary"
             android:fontFamily="@font/lato_light"
             android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:text="M"
+            android:textColor="@color/color_white"
+            tools:text="M"
             android:textSize="72sp"/>
         <LinearLayout
             android:layout_marginLeft="8dp"
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:textSize="22sp"
-                    android:text="Menthol"
+                    tools:text="Menthol"
                     android:textColor="#212121"/>
                 <ImageView
                     android:id="@+id/imageview_edit_medication"
@@ -61,7 +61,7 @@
                     android:layout_marginTop="8dp"
                     android:maxLines="1"
                     android:textStyle="bold"
-                    android:text="Prescription  "/>
+                    tools:text="Prescription  "/>
                 <TextView
                     android:id="@+id/tv_prescription"
                     android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
                     android:layout_marginTop="8dp"
                     android:maxLines="1"
                     android:textStyle="bold"
-                    android:text="End date"/>
+                    android:text="@string/end_date"/>
                 <TextView
                     android:id="@+id/tv_end_date"
                     android:layout_width="wrap_content"
@@ -93,27 +93,6 @@
                     android:textSize="15sp"
                     tools:text="26/04/2018"/>
             </LinearLayout>
-            <!--<LinearLayout-->
-                <!--android:orientation="horizontal"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-                <!--<ImageView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:layout_marginBottom="5dp"-->
-                    <!--android:src="@drawable/ic_action_reminder_dark"-->
-                    <!--/>-->
-                <!--<TextView-->
-                    <!--android:id="@+id/tv_item_medication_reminder"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--android:layout_marginLeft="62dp"-->
-                    <!--android:maxLines="1"-->
-                    <!--android:textSize="18sp"-->
-                    <!--android:text="8:00"/>-->
-            <!--</LinearLayout>-->
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

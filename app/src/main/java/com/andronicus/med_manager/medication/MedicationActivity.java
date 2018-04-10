@@ -117,6 +117,9 @@ public class MedicationActivity extends AppCompatActivity
         displayProfile();
     }
     private void displayProfile(){
+        /*
+        * display user profile in navigation header
+        * */
             mDatabaseReference.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -147,6 +150,10 @@ public class MedicationActivity extends AppCompatActivity
     }
 
     private void showDefaultProfile() {
+        /*
+        * user credentials were not found so
+        * use these default texts
+        * */
             mTextViewUserName.setText("UserName");
             mTextViewEmail.setText("user@email.com");
             mImageViewProfilePic.setImageDrawable(getResources().getDrawable(R.drawable.user));
@@ -171,6 +178,10 @@ public class MedicationActivity extends AppCompatActivity
             startActivity(EditProfileActivity.newIntent(MedicationActivity.this));
         }else if (id == R.id.nav_sign_out){
             if (mAuth.getCurrentUser() != null){
+
+                /*
+                * Sign out user from both google and firebase
+                * */
                 mSignInClient.signOut();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(SignInActivity.newIntent(MedicationActivity.this));

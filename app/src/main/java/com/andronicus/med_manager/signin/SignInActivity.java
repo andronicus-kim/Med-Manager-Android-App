@@ -43,7 +43,6 @@ import butterknife.Unbinder;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private static final String TAG = "SignInActivity";
     public static final int RC_SIGN_IN = 100;
     private GoogleSignInClient mSignInClient;
     private FirebaseAuth mAuth;
@@ -64,6 +63,10 @@ public class SignInActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUnbinder = ButterKnife.bind(this);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        /*
+        * Authenticate user with google
+        * */
 
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -94,6 +97,10 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+
+        /*
+        * Handle the results from our authentication with google
+        * */
         try {
             if (mProgressDialog != null && mProgressDialog.isShowing()){
                 mProgressDialog.dismiss();
@@ -101,6 +108,8 @@ public class SignInActivity extends AppCompatActivity {
                 mProgressDialog.show();
             }
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            //Google authentication was successful, lets authenticate with firebase
             firebaseAuthWithGoogle(account);
         } catch (ApiException e) {
             if (mProgressDialog != null && mProgressDialog.isShowing()){
@@ -115,8 +124,15 @@ public class SignInActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this,(task -> {
                     if (task.isSuccessful()){
+                        /*
+                        * Firebase authentication was successful, check if
+                        * signed in user exists
+                        * */
                         checkIfUserExists(account);
                     }else {
+                        /*
+                        * An error occurred authenticating with firebase
+                        * */
                         if (mProgressDialog != null && mProgressDialog.isShowing()){
                             mProgressDialog.dismiss();
                         }
@@ -132,6 +148,7 @@ public class SignInActivity extends AppCompatActivity {
                     //User exists
                     launchMedicationActivity(mAuth.getCurrentUser().getUid());
                 }else {
+                    //User doesn't exits, go ahead and save user information to database
                     saveUser(new User(mAuth.getCurrentUser().getUid(),account.getDisplayName(),account.getEmail(),account.getPhotoUrl().toString()));
                 }
             }
@@ -144,6 +161,9 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void saveUser(User user) {
+        /*
+        * Helper method to save user to database
+        * */
         DatabaseReference userReference = mDatabaseReference.child(user.getId());
         userReference.setValue(user);
         launchMedicationActivity(user.getId());

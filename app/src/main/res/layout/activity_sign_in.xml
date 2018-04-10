@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#FF0d0c31">
+        android:background="@color/color_signing_background">
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_marginTop="72dp"
             android:scaleType="centerCrop"
@@ -24,10 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_white"
             android:textStyle="bold"
             android:fontFamily="sans-serif-condensed"
-            android:text="Signed Out"/>
+            android:text="@string/signed_out"/>
         <com.google.android.gms.common.SignInButton
             android:id="@+id/btn_sign_in"
             android:layout_width="match_parent"

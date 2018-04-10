@@ -31,6 +31,9 @@ import java.util.Random;
 
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder>{
 
+    /*
+    * Different colors for medication background
+    * */
     private int[] colors = new int[]{
             R.color.card_background1,
             R.color.card_background2,
@@ -130,6 +133,9 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
                             .setMessage("Delete " + medication.getName() + " ?")
                             .setNegativeButton("CANCEL", (dialog1, which) -> dialog1.dismiss())
                             .setPositiveButton("OK", (dialog, which) -> {
+                                /*
+                                * delete medication from database
+                                * */
                                 mDatabaseReference.child(medication.getId()).removeValue();
                             }).show();
                     break;

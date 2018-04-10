@@ -17,13 +17,12 @@ public class AddMedicationActivity extends AppCompatActivity {
     private static final String TAG = "AddMedicationActivity";
     public static final String USER_ID = "USER_ID";
 
-    private String mUserId;
-
     /*
    * Helper method to start this activity
    * */
     public static Intent newIntent(@NonNull Context context,String userId){
         Intent intent =  new Intent(context,AddMedicationActivity.class);
+        //Pass necessary extras
         intent.putExtra(USER_ID,userId);
         return intent;
     }
@@ -37,6 +36,9 @@ public class AddMedicationActivity extends AppCompatActivity {
             Log.e(TAG, "onCreate: " + e.getMessage() );
         }
 
+        /*
+        * Refernce fragment if it exists or create a new instance
+        * */
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment == null){
             fragment = AddMedicationFragment.newInstance(getIntent().getStringExtra(USER_ID));
@@ -46,6 +48,7 @@ public class AddMedicationActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Handle up navigation event
         if (item.getItemId() == android.R.id.home){
             NavUtils.navigateUpFromSameTask(this);
             return true;

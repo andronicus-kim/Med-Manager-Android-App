@@ -1,6 +1,7 @@
 package com.andronicus.med_manager.editprofile;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,6 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
     ImageView mImageViewProfilePic;
     @BindView(R.id.et_name)
     EditText mEditTextName;
+    private ProgressDialog mProgressDialog;
     /*
     * Helper method to start this activity
     * */
@@ -79,15 +81,23 @@ public class EditProfileActivity extends AppCompatActivity {
         mStorage = FirebaseStorage.getInstance();
 
         mImageViewProfilePic.setOnClickListener((view) -> {
+            /*
+            * The intent to allow user pick/choose a photo
+            * */
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent,RC_LOAD_IMAGE);
         });
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Uploading...");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        /*
+        * Results from the intent to pick a photo
+        * */
         if (requestCode == RC_LOAD_IMAGE && resultCode == Activity.RESULT_OK){
             mUri = data.getData();
             mImageViewProfilePic.setImageURI(mUri);
@@ -105,8 +115,14 @@ public class EditProfileActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_save :
                 if (mUri != null && !mEditTextName.getText().toString().trim().equals("")){
-                    UploadTask uploadTask = uploadImage(mUri);
+                    UploadTask uploadTask = uploadImage();
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
+                        /*
+                        * Photo was successfully uploaded, respond accordingly
+                        * */
+                        if (mProgressDialog != null && mProgressDialog.isShowing()){
+                            mProgressDialog.dismiss();
+                        }
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(mEditTextName.getText().toString().trim())
@@ -119,11 +135,16 @@ public class EditProfileActivity extends AppCompatActivity {
                         finish();
                     });
                     uploadTask.addOnFailureListener(e -> {
-                        Log.e(TAG, "onOptionsItemSelected: " + e.getMessage() );
+                        /*
+                        * Photo upload was unsuccessful
+                        * */
+                        if (mProgressDialog != null && mProgressDialog.isShowing()){
+                            mProgressDialog.dismiss();
+                        }
                         Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show();
                     });
                 }else {
-                    finish();
+                    Toast.makeText(EditProfileActivity.this, "Error, Try again!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
@@ -134,7 +155,11 @@ public class EditProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    private UploadTask uploadImage(Uri uri) {
+    private UploadTask uploadImage() {
+        /*
+        * Helper method to upload the chosen photo to firebase storage
+        * */
+        mProgressDialog.show();
         StorageReference filePath = mStorage.getReference().child("profile_images").child(mUserId);
         Bitmap bitmap = null;
         try{
@@ -152,5 +177,8 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
+        if (mProgressDialog != null && mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
+        }
     }
 }

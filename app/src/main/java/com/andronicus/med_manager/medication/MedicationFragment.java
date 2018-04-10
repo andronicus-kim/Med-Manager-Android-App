@@ -103,6 +103,9 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
             return;
         }
 
+        /*
+        * Listen for real time changes in medication
+        * */
         mDatabaseReference.child(userId).child("medication").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

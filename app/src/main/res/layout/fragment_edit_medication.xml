@@ -18,7 +18,7 @@
                 android:paddingLeft="8dp"
                 android:inputType="textCapSentences"
                 android:layout_width="match_parent"
-                android:hint="Name"
+                android:hint="@string/medication_name"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
@@ -27,7 +27,7 @@
             <EditText
                 android:id="@+id/et_description"
                 android:layout_width="match_parent"
-                android:hint="Description"
+                android:hint="@string/description"
                 android:inputType="textCapSentences"
                 android:paddingLeft="8dp"
                 android:layout_height="wrap_content"/>
@@ -38,7 +38,7 @@
             <EditText
                 android:id="@+id/et_tablets"
                 android:layout_width="match_parent"
-                android:hint="Number of tablets"
+                android:hint="@string/number_of_tablets"
                 android:paddingLeft="8dp"
                 android:inputType="number"
                 android:layout_height="wrap_content"/>
@@ -55,11 +55,11 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textSize="22sp"
-            android:text="Set Reminder"
+            android:text="@string/set_reminder"
             android:paddingLeft="8dp"
             android:drawableLeft="@drawable/ic_action_reminder"
             android:background="@color/colorPrimary"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_white"
             android:gravity="center"
             tools:text="8 : 00 AM"/>
         <TextView
@@ -68,11 +68,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:textSize="22sp"
-            android:text="Set Reminder"
+            android:text="@string/set_reminder"
             android:paddingLeft="8dp"
             android:drawableLeft="@drawable/ic_action_reminder"
             android:background="@color/colorPrimary"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_white"
             android:gravity="center"
             tools:text="8 : 00 AM"/>
         <TextView
@@ -81,11 +81,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:textSize="22sp"
-            android:text="Set Reminder"
+            android:text="@string/set_reminder"
             android:paddingLeft="8dp"
             android:drawableLeft="@drawable/ic_action_reminder"
             android:background="@color/colorPrimary"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_white"
             android:gravity="center"
             tools:text="8 : 00 AM"/>
         <TextView
@@ -94,11 +94,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:textSize="22sp"
-            android:text="Set Reminder"
+            android:text="@string/set_reminder"
             android:paddingLeft="8dp"
             android:drawableLeft="@drawable/ic_action_reminder"
             android:background="@color/colorPrimary"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_white"
             android:gravity="center"
             tools:text="8 : 00 AM"/>
         <TextView
@@ -107,11 +107,11 @@
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:textSize="22sp"
-            android:text="Set Reminder"
+            android:text="@string/set_reminder"
             android:paddingLeft="8dp"
             android:drawableLeft="@drawable/ic_action_reminder"
             android:background="@color/colorPrimary"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/color_white"
             android:gravity="center"
             tools:text="8 : 00 AM"/>
         <android.support.design.widget.TextInputLayout
@@ -122,7 +122,7 @@
                 android:layout_width="match_parent"
                 android:clickable="true"
                 android:focusable="false"
-                android:hint="Start date"
+                android:hint="@string/start_date"
                 android:paddingLeft="8dp"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>
@@ -133,7 +133,7 @@
                 android:id="@+id/et_end_date"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
-                android:hint="End date"
+                android:hint="@string/end_date"
                 android:clickable="true"
                 android:focusable="false"
                 android:paddingLeft="8dp"
