@@ -3,6 +3,8 @@ package com.andronicus.med_manager.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 /**
  * Created by andronicus on 4/3/2018.
  */
@@ -14,18 +16,21 @@ public class Medication implements Parcelable{
     private String description;
     private String no_of_tablets;
     private String frequency;
+    private List<String> reminders;
     private String start_date;
     private String end_date;
 
     public Medication(){}
 
     public Medication(String id, String name, String description,
-                      String no_of_tablets, String frequency, String start_date, String end_date) {
+                      String no_of_tablets, String frequency, List<String> reminders,
+                      String start_date, String end_date) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.no_of_tablets = no_of_tablets;
         this.frequency = frequency;
+        this.reminders = reminders;
         this.start_date = start_date;
         this.end_date = end_date;
     }
@@ -36,6 +41,7 @@ public class Medication implements Parcelable{
         description = in.readString();
         no_of_tablets = in.readString();
         frequency = in.readString();
+        reminders = in.createStringArrayList();
         start_date = in.readString();
         end_date = in.readString();
     }
@@ -72,6 +78,10 @@ public class Medication implements Parcelable{
         return frequency;
     }
 
+    public List<String> getReminders() {
+        return reminders;
+    }
+
     public String getStart_date() {
         return start_date;
     }
@@ -92,6 +102,7 @@ public class Medication implements Parcelable{
         dest.writeString(description);
         dest.writeString(no_of_tablets);
         dest.writeString(frequency);
+        dest.writeStringList(reminders);
         dest.writeString(start_date);
         dest.writeString(end_date);
     }
