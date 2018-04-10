@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
@@ -29,22 +28,27 @@ public class AlarmReceiver extends BroadcastReceiver {
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
-        Intent contentIntent = new Intent(context, MedicationActivity.class);
+        Intent notificationIntent = new Intent(context, MedicationActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity
-                (context, 0, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                (context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //Build the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.small_icon)
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_action_notification)
                 .setContentTitle("MedManager")
-                .setContentText("Take your medication")
+                .setColor(context.getResources().getColor(R.color.colorPrimary))
+                .setContentText("Time to take medication")
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setDefaults(NotificationCompat.DEFAULT_ALL);
-
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            builder.setSmallIcon(R.drawable.small_icon);
+//            builder.setColor(context.getResources().getColor(R.color.colorPrimary));
+//        } else {
+//            builder.setSmallIcon(R.drawable.small_icon);
+//        }
         //Deliver the notification
-        notificationManager.notify(0, builder.build());
+        notificationManager.notify(0, notification.build());
     }
 }
