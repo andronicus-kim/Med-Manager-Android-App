@@ -22,6 +22,8 @@ import com.andronicus.med_manager.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -106,12 +108,14 @@ public class EditProfileActivity extends AppCompatActivity {
                     UploadTask uploadTask = uploadImage(mUri);
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        Map<String,Object> newPost = new HashMap<>();
-                        newPost.put("name",mEditTextName.getText().toString().trim());
-                        newPost.put("profileImageUrl",downloadUrl.toString());
-
-                        //Update database
-                        mDatabaseReference.updateChildren(newPost);
+                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(mEditTextName.getText().toString().trim())
+                                .setPhotoUri(downloadUrl)
+                                .build();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null){
+                            user.updateProfile(profileUpdate);
+                        }
                         finish();
                     });
                     uploadTask.addOnFailureListener(e -> {
