@@ -123,13 +123,11 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
         switch (frequency){
             case 1 :
                 mSpinnerFrequency.setSelection(1);
-                clearAllReminders();
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder1.setText(reminders.get(0));
                 break;
             case 2 :
                 mSpinnerFrequency.setSelection(2);
-                clearAllReminders();
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 mTextViewReminder1.setText(reminders.get(0));
@@ -137,7 +135,6 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
                 break;
             case 3 :
                 mSpinnerFrequency.setSelection(3);
-                clearAllReminders();
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 mTextViewReminder3.setVisibility(View.VISIBLE);
@@ -147,7 +144,6 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
                 break;
             case 4 :
                 mSpinnerFrequency.setSelection(4);
-                clearAllReminders();
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 mTextViewReminder3.setVisibility(View.VISIBLE);
@@ -159,7 +155,6 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
                 break;
             case 5 :
                 mSpinnerFrequency.setSelection(5);
-                clearAllReminders();
                 mTextViewReminder1.setVisibility(View.VISIBLE);
                 mTextViewReminder2.setVisibility(View.VISIBLE);
                 mTextViewReminder3.setVisibility(View.VISIBLE);
