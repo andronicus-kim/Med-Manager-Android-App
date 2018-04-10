@@ -81,6 +81,9 @@ public class EditProfileActivity extends AppCompatActivity {
         mStorage = FirebaseStorage.getInstance();
 
         mImageViewProfilePic.setOnClickListener((view) -> {
+            /*
+            * The intent to allow user pick/choose a photo
+            * */
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent,RC_LOAD_IMAGE);
@@ -92,6 +95,9 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        /*
+        * Results from the intent to pick a photo
+        * */
         if (requestCode == RC_LOAD_IMAGE && resultCode == Activity.RESULT_OK){
             mUri = data.getData();
             mImageViewProfilePic.setImageURI(mUri);
@@ -111,6 +117,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (mUri != null && !mEditTextName.getText().toString().trim().equals("")){
                     UploadTask uploadTask = uploadImage();
                     uploadTask.addOnSuccessListener(taskSnapshot -> {
+                        /*
+                        * Photo was successfully uploaded, respond accordingly
+                        * */
                         if (mProgressDialog != null && mProgressDialog.isShowing()){
                             mProgressDialog.dismiss();
                         }
@@ -126,6 +135,9 @@ public class EditProfileActivity extends AppCompatActivity {
                         finish();
                     });
                     uploadTask.addOnFailureListener(e -> {
+                        /*
+                        * Photo upload was unsuccessful
+                        * */
                         if (mProgressDialog != null && mProgressDialog.isShowing()){
                             mProgressDialog.dismiss();
                         }
@@ -144,6 +156,9 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private UploadTask uploadImage() {
+        /*
+        * Helper method to upload the chosen photo to firebase storage
+        * */
         mProgressDialog.show();
         StorageReference filePath = mStorage.getReference().child("profile_images").child(mUserId);
         Bitmap bitmap = null;

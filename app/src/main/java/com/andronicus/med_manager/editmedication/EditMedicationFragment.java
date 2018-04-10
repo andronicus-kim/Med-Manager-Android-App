@@ -93,6 +93,10 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        /*
+        * get user id of currently signed in user and get medication to update
+        * */
         mUserId = getArguments().getString(USER_ID);
         mMedication = getArguments().getParcelable(MEDICATION);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -105,6 +109,10 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_medication, container, false);
         mUnbinder = ButterKnife.bind(this,view);
+
+        /*
+        * clear any reminders if any
+        * */
         clearAllReminders();
         setOnClickListeners();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
@@ -113,6 +121,10 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
         mSpinnerFrequency.setAdapter(adapter);
         mSpinnerFrequency.setOnItemSelectedListener(this);
 
+        /*
+        * Fill views with data from the medication we want to update
+        * This makes it easier for the user not to fill all fields all over again
+        * */
         prepopulateMedication();
         return view;
     }
