@@ -117,31 +117,23 @@ public class MedicationActivity extends AppCompatActivity
         displayProfile();
     }
     private void displayProfile(){
-            mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            mDatabaseReference.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                            User user = snapshot.getValue(User.class);
-                            try{
-                                mName = user.getName();
-                                mEmail = user.getEmail();
-                                mProfileImageUrl = user.getProfileImageUrl();
-                                Log.e(TAG, "onDataChange: " + mName + mEmail + mProfileImageUrl);
-                                if (mName != null && mEmail != null && mProfileImageUrl != null){
-                                    mTextViewUserName.setText(mName);
-                                    mTextViewEmail.setText(mEmail);
-                                    Picasso.get()
-                                            .load(mProfileImageUrl)
-                                            .placeholder(R.drawable.user)
-                                            .error(R.drawable.user)
-                                            .into(mImageViewProfilePic);
-                                }
-                            }catch (NullPointerException e){
-                                Log.e(TAG, "onDataChange: " + e.getMessage());
-                            }
+                    if (dataSnapshot.exists()){
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        mName = user.getDisplayName();
+                        mEmail = user.getEmail();
+                        mProfileImageUrl = user.getPhotoUrl().toString();
+                        if (mName != null && mEmail != null && mProfileImageUrl != null) {
+                            mTextViewUserName.setText(mName);
+                            mTextViewEmail.setText(mEmail);
+                            Picasso.get()
+                                    .load(mProfileImageUrl)
+                                    .placeholder(R.drawable.user)
+                                    .error(R.drawable.user)
+                                    .into(mImageViewProfilePic);
                         }
-
                     }else {
                        showDefaultProfile();
                     }
