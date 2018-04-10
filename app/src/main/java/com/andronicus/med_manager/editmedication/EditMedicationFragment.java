@@ -113,16 +113,66 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
         return view;
     }
     private void prepopulateMedication(){
+        List<String> reminders = mMedication.getReminders();
         mEditTextName.setText(mMedication.getName());
         mEditTextDescription.setText(mMedication.getDescription());
         mEditTextNumberOfTablets.setText(mMedication.getNo_of_tablets());
         mEditTextStartDate.setText(mMedication.getStart_date());
         mEditTextEndDate.setText(mMedication.getEnd_date());
         int frequency = Integer.parseInt(mMedication.getFrequency());
-        switch (){
-            case
+        switch (frequency){
+            case 1 :
+                mSpinnerFrequency.setSelection(1);
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                break;
+            case 2 :
+                mSpinnerFrequency.setSelection(2);
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                mTextViewReminder2.setText(reminders.get(1));
+                break;
+            case 3 :
+                mSpinnerFrequency.setSelection(3);
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                mTextViewReminder2.setText(reminders.get(1));
+                mTextViewReminder3.setText(reminders.get(2));
+                break;
+            case 4 :
+                mSpinnerFrequency.setSelection(4);
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
+                mTextViewReminder4.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                mTextViewReminder2.setText(reminders.get(1));
+                mTextViewReminder3.setText(reminders.get(2));
+                mTextViewReminder4.setText(reminders.get(3));
+                break;
+            case 5 :
+                mSpinnerFrequency.setSelection(5);
+                clearAllReminders();
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
+                mTextViewReminder4.setVisibility(View.VISIBLE);
+                mTextViewReminder5.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                mTextViewReminder2.setText(reminders.get(1));
+                mTextViewReminder3.setText(reminders.get(2));
+                mTextViewReminder4.setText(reminders.get(3));
+                mTextViewReminder5.setText(reminders.get(4));
+                break;
         }
-        mSpinnerFrequency.setSelection();
+
     }
     private void clearAllReminders(){
         mTextViewReminder1.setVisibility(View.GONE);
