@@ -311,10 +311,10 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),requestCode,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         String[] time = reminder.split(":");
-        String hour = time[0];
-        String minute = time[1];
-        calendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hour.trim()));
-        calendar.set(Calendar.MINUTE,Integer.parseInt(minute.trim()));
+        int hour = Integer.parseInt(time[0].trim());
+        int minute = Integer.parseInt(time[1].trim());
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE,minute);
         AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         manager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
     }
