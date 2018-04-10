@@ -87,7 +87,7 @@ public class MedicationPopupActivity extends AppCompatActivity {
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
 
-        getWindow().setLayout((int)(width*.8),(int)(height*.6));
+        getWindow().setLayout((int)(width*.8),(int)(height*.63));
 
         fillLayout();
     }

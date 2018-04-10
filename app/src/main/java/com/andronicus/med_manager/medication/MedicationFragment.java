@@ -122,7 +122,9 @@ public class MedicationFragment extends Fragment implements SearchView.OnQueryTe
                     if (mProgressBar != null){
                         mProgressBar.setVisibility(View.GONE);
                     }
-                    mMedicationRecyclerView.setVisibility(View.VISIBLE);
+                    if (mMedicationRecyclerView != null){
+                        mMedicationRecyclerView.setVisibility(View.VISIBLE);
+                    }
                     mImageViewEmptyRecyclerview.setVisibility(View.GONE);
                     mTextViewEmptyRecyclerview.setVisibility(View.GONE);
                     mAdapter = new MedicationAdapter(mMedications);
