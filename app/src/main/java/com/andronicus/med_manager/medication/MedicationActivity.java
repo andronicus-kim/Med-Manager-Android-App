@@ -150,9 +150,6 @@ public class MedicationActivity extends AppCompatActivity
             mTextViewUserName.setText("UserName");
             mTextViewEmail.setText("user@email.com");
             mImageViewProfilePic.setImageDrawable(getResources().getDrawable(R.drawable.user));
-//        DatabaseReference userReference = mDatabaseReference.child(user.getUid());
-//        User userInfo = new User(user.getUid(),user.getDisplayName(),user.getEmail(),user.getPhotoUrl().toString());
-//        userReference.setValue(userInfo);
     }
 
     @Override
