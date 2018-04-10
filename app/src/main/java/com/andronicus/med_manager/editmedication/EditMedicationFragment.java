@@ -310,10 +310,12 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
 
             mReminders = getReminders(mFrequency);
 
-            DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
-            String id = medicationReference.push().getKey();
-            Medication medication = new Medication(id,name,description,no_of_tablets,mFrequency,mReminders,start_date,end_date);
-            medicationReference.child(id).setValue(medication);
+            DatabaseReference medicationReference = mDatabaseReference
+                    .child(mAuth.getCurrentUser().getUid())
+                    .child("medication")
+                    .child(mMedication.getId());
+            Medication medication = new Medication(mMedication.getId(),name,description,no_of_tablets,mFrequency,mReminders,start_date,end_date);
+            medicationReference.setValue(medication);
             startActivity(MedicationActivity.newIntent(getActivity()));
             getActivity().finish();
         }
