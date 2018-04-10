@@ -29,6 +29,7 @@ import com.andronicus.med_manager.util.AlarmReceiver;
 import com.andronicus.med_manager.util.DatePickerFragment;
 import com.andronicus.med_manager.util.TimerPickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -252,7 +253,12 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
             DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
             String id = medicationReference.push().getKey();
             Medication medication = new Medication(id,name,description,no_of_tablets,mFrequency,mReminders,start_date,end_date);
-            medicationReference.child(id).setValue(medication);
+            medicationReference.child(id).setValue(medication, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
             startActivity(MedicationActivity.newIntent(getActivity()));
             getActivity().finish();
         }

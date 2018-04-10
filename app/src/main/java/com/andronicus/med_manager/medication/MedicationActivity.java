@@ -109,9 +109,9 @@ public class MedicationActivity extends AppCompatActivity
         mTextViewEmail = navHeader.findViewById(R.id.tv_email);
         mImageViewProfilePic = navHeader.findViewById(R.id.iv_profile_pic);
 
-        checkIfUserExists();
+        displayProfile();
     }
-    private void checkIfUserExists(){
+    private void displayProfile(){
             mDatabaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,10 +138,7 @@ public class MedicationActivity extends AppCompatActivity
                         }
 
                     }else {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null){
-                            saveUserInfo(user);
-                        }
+                       showDefaultProfile();
                     }
                 }
 
@@ -152,28 +149,13 @@ public class MedicationActivity extends AppCompatActivity
             });
     }
 
-    private void saveUserInfo(FirebaseUser user) {
-        if (user.getDisplayName() != null){
-            mTextViewUserName.setText(user.getDisplayName());
-        }else {
+    private void showDefaultProfile() {
             mTextViewUserName.setText("UserName");
-        }
-        if (user.getEmail() != null){
-            mTextViewEmail.setText(user.getEmail());
-        }else {
             mTextViewEmail.setText("user@email.com");
-        }
-        if (user.getPhotoUrl() != null){
-            Picasso.get()
-                    .load(user.getPhotoUrl())
-                    .placeholder(R.drawable.user)
-                    .error(R.drawable.user)
-                    .into(mImageViewProfilePic);
-        }
-        DatabaseReference userReference = mDatabaseReference.child(user.getUid());
-        userReference.child("name").setValue(user.getDisplayName());
-        userReference.child("email").setValue(user.getEmail());
-        userReference.child("profileImageUrl").setValue(user.getPhotoUrl().toString());
+            mImageViewProfilePic.setImageDrawable(getResources().getDrawable(R.drawable.user));
+//        DatabaseReference userReference = mDatabaseReference.child(user.getUid());
+//        User userInfo = new User(user.getUid(),user.getDisplayName(),user.getEmail(),user.getPhotoUrl().toString());
+//        userReference.setValue(userInfo);
     }
 
     @Override
