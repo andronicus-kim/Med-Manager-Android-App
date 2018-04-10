@@ -19,7 +19,7 @@
                 android:paddingLeft="8dp"
                 android:inputType="textCapSentences"
                 android:layout_width="match_parent"
-                android:hint="Name"
+                android:hint="Medication Name"
                 android:layout_height="wrap_content"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout

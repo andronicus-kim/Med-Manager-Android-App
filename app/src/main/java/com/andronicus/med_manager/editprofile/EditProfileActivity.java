@@ -105,25 +105,34 @@ public class EditProfileActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_save :
                 if (mUri != null && !mEditTextName.getText().toString().trim().equals("")){
-                    UploadTask uploadTask = uploadImage(mUri);
-                    uploadTask.addOnSuccessListener(taskSnapshot -> {
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(mEditTextName.getText().toString().trim())
-                                .setPhotoUri(downloadUrl)
-                                .build();
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null){
+                    UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(mEditTextName.getText().toString().trim())
+                            .setPhotoUri(mUri)
+                            .build();
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if (user != null){
                             user.updateProfile(profileUpdate);
                         }
                         finish();
-                    });
-                    uploadTask.addOnFailureListener(e -> {
-                        Log.e(TAG, "onOptionsItemSelected: " + e.getMessage() );
-                        Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show();
-                    });
+//                    UploadTask uploadTask = uploadImage();
+//                    uploadTask.addOnSuccessListener(taskSnapshot -> {
+//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+//                                .setDisplayName(mEditTextName.getText().toString().trim())
+//                                .setPhotoUri(downloadUrl)
+//                                .build();
+//                        FirebaseUser user = mAuth.getCurrentUser();
+//                        if (user != null){
+//                            user.updateProfile(profileUpdate);
+//                        }
+//                        finish();
+//                    });
+//                    uploadTask.addOnFailureListener(e -> {
+//                        Log.e(TAG, "onOptionsItemSelected: " + e.getMessage() );
+//                        Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show();
+//                    });
                 }else {
-                    finish();
+                    Toast.makeText(this, "Error, Try again!", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 break;
@@ -134,7 +143,7 @@ public class EditProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    private UploadTask uploadImage(Uri uri) {
+    private UploadTask uploadImage() {
         StorageReference filePath = mStorage.getReference().child("profile_images").child(mUserId);
         Bitmap bitmap = null;
         try{
