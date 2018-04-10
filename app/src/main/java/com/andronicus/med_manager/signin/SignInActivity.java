@@ -125,19 +125,12 @@ public class SignInActivity extends AppCompatActivity {
                 }));
     }
     private void checkIfUserExists(GoogleSignInAccount account){
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mDatabaseReference.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChildren() && dataSnapshot.getChildrenCount() > 0){
-                    for (DataSnapshot snapshot:dataSnapshot.getChildren()){
-                        User user = snapshot.getValue(User.class);
-                        //Check if the id we receive already exists
-                        if (user.getId() != null && user.getId().equals(mAuth.getCurrentUser().getUid())){
-                            launchMedicationActivity(user.getId());
-                        }else {
-                            saveUser(new User(mAuth.getCurrentUser().getUid(),account.getDisplayName(),account.getEmail(),account.getPhotoUrl().toString()));
-                        }
-                    }
+                if (dataSnapshot.exists()){
+                    //User exists
+                    launchMedicationActivity(mAuth.getCurrentUser().getUid());
                 }else {
                     saveUser(new User(mAuth.getCurrentUser().getUid(),account.getDisplayName(),account.getEmail(),account.getPhotoUrl().toString()));
                 }

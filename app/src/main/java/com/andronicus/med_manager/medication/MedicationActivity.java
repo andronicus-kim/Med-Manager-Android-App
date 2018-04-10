@@ -182,8 +182,8 @@ public class MedicationActivity extends AppCompatActivity
             startActivity(EditProfileActivity.newIntent(MedicationActivity.this));
         }else if (id == R.id.nav_sign_out){
             if (mAuth.getCurrentUser() != null){
-                FirebaseAuth.getInstance().signOut();
                 mSignInClient.signOut();
+                FirebaseAuth.getInstance().signOut();
                 startActivity(SignInActivity.newIntent(MedicationActivity.this));
                 finish();
             }
