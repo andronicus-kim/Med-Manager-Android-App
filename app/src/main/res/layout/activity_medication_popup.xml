@@ -196,6 +196,7 @@
                     <TextView
                         android:id="@+id/tv_pop_up_reminder1"
                         android:paddingLeft="8dp"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#FFFFFF"
@@ -204,6 +205,7 @@
                     <TextView
                         android:id="@+id/tv_pop_up_reminder2"
                         android:paddingLeft="8dp"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#FFFFFF"
@@ -212,6 +214,7 @@
                     <TextView
                         android:id="@+id/tv_pop_up_reminder3"
                         android:paddingLeft="8dp"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#FFFFFF"
@@ -226,6 +229,7 @@
                     <TextView
                         android:id="@+id/tv_pop_up_reminder4"
                         android:paddingLeft="8dp"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#FFFFFF"
@@ -234,6 +238,7 @@
                     <TextView
                         android:id="@+id/tv_pop_up_reminder5"
                         android:paddingLeft="8dp"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#FFFFFF"

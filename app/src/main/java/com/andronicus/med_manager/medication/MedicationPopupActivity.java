@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.andronicus.med_manager.R;
 import com.andronicus.med_manager.data.Medication;
 
+import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -60,6 +62,16 @@ public class MedicationPopupActivity extends AppCompatActivity {
     TextView mTextViewStartDate;
     @BindView(R.id.tv_end_date_pop_up)
     TextView mTextViewEndDate;
+    @BindView(R.id.tv_pop_up_reminder1)
+    TextView mTextViewReminder1;
+    @BindView(R.id.tv_pop_up_reminder2)
+    TextView mTextViewReminder2;
+    @BindView(R.id.tv_pop_up_reminder3)
+    TextView mTextViewReminder3;
+    @BindView(R.id.tv_pop_up_reminder4)
+    TextView mTextViewReminder4;
+    @BindView(R.id.tv_pop_up_reminder5)
+    TextView mTextViewReminder5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,15 +89,66 @@ public class MedicationPopupActivity extends AppCompatActivity {
 
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
 
+        fillLayout();
+    }
+
+    private void fillLayout(){
         String medicationInitial = mMedication.getName().substring(0,1);
         String prescription = mMedication.getNo_of_tablets() + " * " + mMedication.getFrequency();
         mMedicationInitialPopUp.setText(medicationInitial);
+        mMedicationInitialPopUp.setBackgroundColor(this.getResources().getColor(colors[position]));
         mMedicationNamePopUp.setText(mMedication.getName());
         mTextViewDescription.setText(mMedication.getDescription());
         mTextViewPrescription.setText(prescription);
         mTextViewStartDate.setText(mMedication.getStart_date());
         mTextViewEndDate.setText(mMedication.getEnd_date());
-        mMedicationInitialPopUp.setBackgroundColor(this.getResources().getColor(colors[position]));
+        int size = mMedication.getReminders().size();
+        List<String> reminders = mMedication.getReminders();
+        setReminders(size,reminders);
+    }
 
+    private void setReminders(int size, List<String> reminders){
+        switch (size) {
+            case 1 :
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                break;
+            case 2 :
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                mTextViewReminder2.setText(reminders.get(1));
+                break;
+            case 3 :
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                mTextViewReminder2.setText(reminders.get(1));
+                mTextViewReminder3.setText(reminders.get(2));
+                break;
+            case 4 :
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
+                mTextViewReminder4.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                mTextViewReminder2.setText(reminders.get(1));
+                mTextViewReminder3.setText(reminders.get(2));
+                mTextViewReminder4.setText(reminders.get(3));
+                break;
+            case 5 :
+                mTextViewReminder1.setVisibility(View.VISIBLE);
+                mTextViewReminder2.setVisibility(View.VISIBLE);
+                mTextViewReminder3.setVisibility(View.VISIBLE);
+                mTextViewReminder4.setVisibility(View.VISIBLE);
+                mTextViewReminder5.setVisibility(View.VISIBLE);
+                mTextViewReminder1.setText(reminders.get(0));
+                mTextViewReminder2.setText(reminders.get(1));
+                mTextViewReminder3.setText(reminders.get(2));
+                mTextViewReminder4.setText(reminders.get(3));
+                mTextViewReminder5.setText(reminders.get(4));
+                break;
+        }
     }
 }
