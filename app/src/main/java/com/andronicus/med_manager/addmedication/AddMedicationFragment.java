@@ -111,6 +111,9 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         return view;
     }
     private void clearAllReminders(){
+        /*
+        * Clear any reminders that may have been set initially
+        * */
         mTextViewReminder1.setVisibility(View.GONE);
         mTextViewReminder2.setVisibility(View.GONE);
         mTextViewReminder3.setVisibility(View.GONE);
@@ -124,6 +127,9 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         mTextViewReminder5.setText(R.string.set_reminder);
     }
     private void setOnClickListeners(){
+        /*
+        * Set click event listeners for each text view
+        * */
         mTextViewReminder1.setOnClickListener(this);
         mTextViewReminder2.setOnClickListener(this);
         mTextViewReminder3.setOnClickListener(this);
@@ -132,6 +138,9 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     }
 
     private void launchTimePickerFragment(@NonNull TextView textView){
+        /*
+        * Helper method to launch Time Picker fragment
+        * */
         TimerPickerFragment newFragment = new TimerPickerFragment();
         newFragment.passClickedTextView(textView);
         newFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
@@ -139,6 +148,9 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
 
     @Override
     public void onClick(View v) {
+        /*
+        * Launch time picker fragment and pass it the text view that triggered the event
+        * */
         switch (v.getId()){
             case R.id.tv_reminder_1 :
                 launchTimePickerFragment(mTextViewReminder1);
@@ -160,6 +172,9 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        /*
+        * show different number of text views depending on the frequency selected by user
+        * */
         switch (position){
             case 0 :
                 clearAllReminders();
@@ -228,11 +243,16 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_save){
+            /*
+            * get text from edit texts
+            * */
             String name = mEditTextName.getText().toString().trim();
             String description = mEditTextDescription.getText().toString().trim();
             String no_of_tablets = mEditTextNumberOfTablets.getText().toString().trim();
             String start_date = mEditTextStartDate.getText().toString().trim();
             String end_date = mEditTextEndDate.getText().toString().trim();
+
+            //Issue appropriate errors
             if (name.equals("")){
                 mEditTextName.setError("Name required!");
                 return false;
@@ -252,8 +272,10 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
                 Toast.makeText(getActivity(), "You've not selected Frequency!", Toast.LENGTH_LONG).show();
             }
 
+            //get set reminders
             mReminders = getReminders(mFrequency);
 
+            //save medication
             DatabaseReference medicationReference = mDatabaseReference.child(mUserId).child("medication");
             String id = medicationReference.push().getKey();
             Medication medication = new Medication(id,name,description,no_of_tablets,mFrequency,mReminders,start_date,end_date);
@@ -264,6 +286,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         return true;
     }
 
+    //Get reminders set by user then use them to trigger alarms
     private List<String> getReminders(String frequency){
         List<String> reminders = new ArrayList<>();
         switch (Integer.parseInt(frequency)) {
@@ -311,6 +334,9 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
         return reminders;
     }
 
+    /*
+    * Trigger alarms/Reminders
+    * */
     private void setReminder(String reminder,int requestCode){
         Calendar calendar = Calendar.getInstance();
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
