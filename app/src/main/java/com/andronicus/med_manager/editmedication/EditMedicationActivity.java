@@ -19,14 +19,16 @@ public class EditMedicationActivity extends AppCompatActivity {
 
     private static final String TAG = "EditMedicationActivity";
     public static final String MEDICATION = "MEDICATION";
+    public static final String USER_ID = "USER_ID";
 
 
     /*
    * Helper method to start this activity
    * */
-    public static Intent newIntent(@NonNull Context context,Medication medication){
+    public static Intent newIntent(@NonNull Context context,Medication medication,String userId){
         Intent intent = new Intent(context,EditMedicationActivity.class);
         intent.putExtra(MEDICATION,medication);
+        intent.putExtra(USER_ID,userId);
         return intent;
     }
     @Override
@@ -40,7 +42,7 @@ public class EditMedicationActivity extends AppCompatActivity {
         }
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment == null){
-            fragment = EditMedicationFragment.newInstance(getIntent().getParcelableExtra(MEDICATION));
+            fragment = EditMedicationFragment.newInstance(getIntent().getParcelableExtra(MEDICATION),getIntent().getStringExtra(USER_ID));
             ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),R.id.fragment_container,fragment);
         }
     }

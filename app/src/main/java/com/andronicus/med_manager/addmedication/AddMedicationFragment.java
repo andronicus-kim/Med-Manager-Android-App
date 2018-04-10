@@ -29,7 +29,6 @@ import com.andronicus.med_manager.util.AlarmReceiver;
 import com.andronicus.med_manager.util.DatePickerFragment;
 import com.andronicus.med_manager.util.TimerPickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -45,6 +44,7 @@ import butterknife.Unbinder;
 
 public class AddMedicationFragment extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
 
+    public static final String USER_ID = "USER_ID";
     private Unbinder mUnbinder;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
@@ -73,10 +73,13 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     @BindView(R.id.tv_reminder_5)
     TextView mTextViewReminder5;
 
+    private String mUserId;
 
-    public static AddMedicationFragment newInstance() {
+
+    public static AddMedicationFragment newInstance(String userId) {
         
         Bundle args = new Bundle();
+        args.putString(USER_ID,userId);
         
         AddMedicationFragment fragment = new AddMedicationFragment();
         fragment.setArguments(args);
@@ -87,6 +90,7 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mUserId = getArguments().getString(USER_ID);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
     }
@@ -250,16 +254,11 @@ public class AddMedicationFragment extends Fragment implements AdapterView.OnIte
 
             mReminders = getReminders(mFrequency);
 
-            DatabaseReference medicationReference = mDatabaseReference.child(mAuth.getCurrentUser().getUid()).child("medication");
+            DatabaseReference medicationReference = mDatabaseReference.child(mUserId).child("medication");
             String id = medicationReference.push().getKey();
             Medication medication = new Medication(id,name,description,no_of_tablets,mFrequency,mReminders,start_date,end_date);
-            medicationReference.child(id).setValue(medication, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                    Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            startActivity(MedicationActivity.newIntent(getActivity()));
+            medicationReference.child(id).setValue(medication);
+            startActivity(MedicationActivity.newIntent(getActivity(),mUserId));
             getActivity().finish();
         }
         return true;

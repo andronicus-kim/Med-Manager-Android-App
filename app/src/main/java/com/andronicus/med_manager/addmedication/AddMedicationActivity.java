@@ -15,12 +15,17 @@ import com.andronicus.med_manager.util.ActivityUtil;
 
 public class AddMedicationActivity extends AppCompatActivity {
     private static final String TAG = "AddMedicationActivity";
+    public static final String USER_ID = "USER_ID";
+
+    private String mUserId;
 
     /*
    * Helper method to start this activity
    * */
-    public static Intent newIntent(@NonNull Context context){
-        return new Intent(context,AddMedicationActivity.class);
+    public static Intent newIntent(@NonNull Context context,String userId){
+        Intent intent =  new Intent(context,AddMedicationActivity.class);
+        intent.putExtra(USER_ID,userId);
+        return intent;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,7 @@ public class AddMedicationActivity extends AppCompatActivity {
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment == null){
-            fragment = AddMedicationFragment.newInstance();
+            fragment = AddMedicationFragment.newInstance(getIntent().getStringExtra(USER_ID));
             ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),R.id.fragment_container,fragment);
         }
     }

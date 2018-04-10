@@ -46,6 +46,7 @@ import butterknife.Unbinder;
 public class EditMedicationFragment extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener{
 
     public static final String MEDICATION = "MEDICATION";
+    public static final String USER_ID = "USER_ID";
 
     private Unbinder mUnbinder;
     private DatabaseReference mDatabaseReference;
@@ -75,11 +76,13 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
     TextView mTextViewReminder4;
     @BindView(R.id.tv_reminder_5)
     TextView mTextViewReminder5;
+    private String mUserId;
 
-    public static EditMedicationFragment newInstance(Medication medication) {
+    public static EditMedicationFragment newInstance(Medication medication,String userId) {
 
         Bundle args = new Bundle();
         args.putParcelable(MEDICATION,medication);
+        args.putString(USER_ID,userId);
 
         EditMedicationFragment fragment = new EditMedicationFragment();
         fragment.setArguments(args);
@@ -90,6 +93,7 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mUserId = getArguments().getString(USER_ID);
         mMedication = getArguments().getParcelable(MEDICATION);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
@@ -316,7 +320,7 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
                     .child(mMedication.getId());
             Medication medication = new Medication(mMedication.getId(),name,description,no_of_tablets,mFrequency,mReminders,start_date,end_date);
             medicationReference.setValue(medication);
-            startActivity(MedicationActivity.newIntent(getActivity()));
+            startActivity(MedicationActivity.newIntent(getActivity(),mUserId));
             getActivity().finish();
         }
         return true;

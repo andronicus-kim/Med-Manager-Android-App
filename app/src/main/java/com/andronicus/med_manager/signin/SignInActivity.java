@@ -133,7 +133,7 @@ public class SignInActivity extends AppCompatActivity {
                         User user = snapshot.getValue(User.class);
                         //Check if the id we receive already exists
                         if (user.getId() != null && user.getId().equals(mAuth.getCurrentUser().getUid())){
-                            launchMedicationActivity();
+                            launchMedicationActivity(user.getId());
                         }else {
                             saveUser(new User(mAuth.getCurrentUser().getUid(),account.getDisplayName(),account.getEmail(),account.getPhotoUrl().toString()));
                         }
@@ -153,6 +153,7 @@ public class SignInActivity extends AppCompatActivity {
     private void saveUser(User user) {
         DatabaseReference userReference = mDatabaseReference.child(user.getId());
         userReference.setValue(user);
+        launchMedicationActivity(user.getId());
     }
 
     @Override
@@ -160,15 +161,15 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user!= null){
-            launchMedicationActivity();
+            launchMedicationActivity(user.getUid());
         }
     }
 
-    private void launchMedicationActivity() {
+    private void launchMedicationActivity(String userId) {
         if (mProgressDialog != null && mProgressDialog.isShowing()){
             mProgressDialog.dismiss();
         }
-        startActivity(MedicationActivity.newIntent(this));
+        startActivity(MedicationActivity.newIntent(this,userId));
         finish();
     }
 

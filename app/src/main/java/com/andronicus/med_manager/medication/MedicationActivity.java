@@ -49,6 +49,7 @@ import java.util.Map;
 public class MedicationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String USER_ID = "USER_ID";
     private static final String TAG = "MedicationActivity";
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseReference;
@@ -59,17 +60,21 @@ public class MedicationActivity extends AppCompatActivity
     private String mName;
     private String mEmail;
     private String mProfileImageUrl;
+    private String mUserId;
     /*
     * Helper method to start this activity
     * */
-    public static Intent newIntent(@NonNull Context context){
-        return new Intent(context,MedicationActivity.class);
+    public static Intent newIntent(@NonNull Context context,String userId){
+        Intent intent = new Intent(context,MedicationActivity.class);
+        intent.putExtra(USER_ID,userId);
+        return intent;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medication);
+        mUserId = getIntent().getStringExtra(USER_ID);
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -87,13 +92,13 @@ public class MedicationActivity extends AppCompatActivity
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment == null){
             //If the layout contains no fragment then create a new instance
-            fragment = MedicationFragment.newInstance();
+            fragment = MedicationFragment.newInstance(getIntent().getStringExtra(USER_ID));
             ActivityUtil.addFragmentToActivity(getSupportFragmentManager(),R.id.fragment_container,fragment);
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener( (view) -> {
-                startActivity(AddMedicationActivity.newIntent(this));
+                startActivity(AddMedicationActivity.newIntent(this,getIntent().getStringExtra(USER_ID)));
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
