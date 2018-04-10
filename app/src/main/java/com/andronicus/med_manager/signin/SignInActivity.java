@@ -43,7 +43,6 @@ import butterknife.Unbinder;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private static final String TAG = "SignInActivity";
     public static final int RC_SIGN_IN = 100;
     private GoogleSignInClient mSignInClient;
     private FirebaseAuth mAuth;
