@@ -24,6 +24,7 @@
         <activity
             android:name=".medication.MedicationActivity"
             android:label="@string/title_activity_medication"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".addmedication.AddMedicationActivity"
