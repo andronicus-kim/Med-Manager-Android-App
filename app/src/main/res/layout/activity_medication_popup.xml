@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_white"
-                    tools:text="Description"
+                    android:text="@string/description"
                     android:textStyle="bold"
                     android:textSize="18sp"/>
             </LinearLayout>
@@ -84,7 +84,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Prescription"
+                    android:text="@string/prescription"
                     android:textStyle="bold"
                     android:textColor="@color/color_white"
                     android:textSize="18sp"/>
@@ -116,7 +116,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Start date"
+                    android:text="@string/start_date"
                     android:textStyle="bold"
                     android:textColor="@color/color_white"
                     android:textSize="18sp"/>
@@ -149,7 +149,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="End date"
+                    android:text="@string/end_date"
                     android:textStyle="bold"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"/>
