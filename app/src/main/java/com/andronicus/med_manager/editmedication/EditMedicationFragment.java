@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -40,6 +42,8 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
     private Medication mMedication;
+    private String mFrequency;
+    private List<String> mReminders;
     @BindView(R.id.et_name)
     EditText mEditTextName;
     @BindView(R.id.et_description)
@@ -52,6 +56,16 @@ public class EditMedicationFragment extends Fragment implements AdapterView.OnIt
     EditText mEditTextEndDate;
     @BindView(R.id.et_tablets)
     EditText mEditTextNumberOfTablets;
+    @BindView(R.id.tv_reminder_1)
+    TextView mTextViewReminder1;
+    @BindView(R.id.tv_reminder_2)
+    TextView mTextViewReminder2;
+    @BindView(R.id.tv_reminder_3)
+    TextView mTextViewReminder3;
+    @BindView(R.id.tv_reminder_4)
+    TextView mTextViewReminder4;
+    @BindView(R.id.tv_reminder_5)
+    TextView mTextViewReminder5;
 
     public static EditMedicationFragment newInstance(Medication medication) {
 
