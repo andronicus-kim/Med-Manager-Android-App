@@ -31,5 +31,12 @@ cache:
     - $HOME/.android/build-cache
 script :
     - ./gradlew build check
+    - ./gradlew build jacocoTestReport
 before_install:
-- chmod +x gradlew
+    - chmod +x gradlew
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
+    - pip install --user codecov
+    - codecov
+after_failure:
+    - "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"

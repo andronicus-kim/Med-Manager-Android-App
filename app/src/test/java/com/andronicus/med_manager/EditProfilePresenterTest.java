@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by andronicus on 4/11/2018.
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class EditProfilePresenterTest {
 
     @Mock
