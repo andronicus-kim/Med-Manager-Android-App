@@ -38,4 +38,6 @@ ext{
     espresso = '3.0.1'
     picasso = '2.71828'
     dagger = '2.14.1'
+    mockito = '2.8.9'
+    mockito_android = '2.7.22'
 }

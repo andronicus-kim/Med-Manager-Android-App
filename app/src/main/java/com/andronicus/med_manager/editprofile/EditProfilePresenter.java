@@ -17,7 +17,7 @@ public class EditProfilePresenter implements EditProfileContract.Presenter {
     private EditProfileContract.View mView;
 
     @Inject
-    EditProfilePresenter(@NonNull UsersRepository usersRepository,
+    public EditProfilePresenter(@NonNull UsersRepository usersRepository,
                          @NonNull EditProfileContract.View view){
        this.mUsersRepository = usersRepository;
        this.mView = view;
