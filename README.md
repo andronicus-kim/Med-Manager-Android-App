@@ -20,7 +20,10 @@ Click on the sign in button to authenticate with you google account
 Tap on the Floating Action Button to add your medication
 
 
-<img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/no_medication_added.png" width="350"/> <img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/add_medication.png" width="350"/> <img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/medication.png" width="350"/> 
+<img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/no_medication_added.png" width="350"/>   <img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/add_medication.png" width="350"/> <img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/medication.png" width="350"/> 
 
 ## Edit Medication
-<img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/edit_antibiotics.png" width="350"/> 
+<img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/edit_antibiotics.png" width="350"/>  <img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/editing_antibiotics.png" width="350"/>
+
+## Delete Medication
+<img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/delete_paracetamol.png" width="350"/>   <img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/confirm_delete_paracetamol.png" width="350"/>
