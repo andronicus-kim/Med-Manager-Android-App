@@ -39,12 +39,12 @@ public class UsersRemoteDataSource implements UsersDataSource {
 
     @Override
     public void updateProfile(Uri uri, String displayName, UserProfileUpdate profileUpdate) {
-        UploadTask uploadTask = uploadImage(uri,displayName);
+        UploadTask uploadTask = uploadImage(uri);
+//        profileUpdate.onSuccess();
         uploadTask.addOnSuccessListener(taskSnapshot -> {
         /*
         * Photo was successfully uploaded, respond accordingly
         * */
-
         profileUpdate.onSuccess();
         Uri downloadUrl = taskSnapshot.getDownloadUrl();
         UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
@@ -63,7 +63,7 @@ public class UsersRemoteDataSource implements UsersDataSource {
         profileUpdate.onFailure();
         });
     }
-    private UploadTask uploadImage(Uri uri,String displayName) {
+    private UploadTask uploadImage(Uri uri) {
         /*
         * Helper method to upload the chosen photo to firebase storage
         * */

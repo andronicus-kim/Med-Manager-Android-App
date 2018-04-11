@@ -20,6 +20,6 @@ public class UsersRepository implements UsersDataSource{
 
     @Override
     public void updateProfile(Uri uri, String displayName, UserProfileUpdate profileUpdate) {
-
+        mUsersRemoteDataSource.updateProfile(uri,displayName,profileUpdate);
     }
 }

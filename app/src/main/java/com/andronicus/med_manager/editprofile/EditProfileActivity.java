@@ -135,11 +135,13 @@ public class EditProfileActivity extends AppCompatActivity implements EditProfil
     @Override
     public void showSuccessMessage() {
         Toast.makeText(this, "Update was Successful!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
     public void showErrorMessage() {
         Toast.makeText(this, "Error, Try again!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
