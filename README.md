@@ -13,7 +13,7 @@ After that is set up, then just clone the repo and launch the project folder usi
 ## Sign In Screen
 
 Click on the sign in button to authenticate with you google account
-![alt text](screenshots/sign_in.png)
+<img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/sign_in.png" width="425"/> 
 
 ## Add Medication
-![alt text](screenshots/add_medication.png) | ![alt text](screenshots/medication.png)
+<img src="https://github.com/andronicus-kim/Med-Manager-Android-App/blob/dev/screenshots/add_medication.png" width="425"/> 
