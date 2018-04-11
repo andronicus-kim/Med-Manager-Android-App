@@ -50,5 +50,7 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picasso"
     implementation "com.google.dagger:dagger:$dagger"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
+    testImplementation "org.mockito:mockito-core:$mockito"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_android"
 }
 apply plugin: 'com.google.gms.google-services'
