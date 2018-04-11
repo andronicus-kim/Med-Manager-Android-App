@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context="com.andronicus.med_manager.editprofile.EditProfileActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:text="TAP BELOW ICON TO ADD PHOTO"
+        android:layout_gravity="center_horizontal"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile_pic"
         android:layout_marginTop="16dp"
