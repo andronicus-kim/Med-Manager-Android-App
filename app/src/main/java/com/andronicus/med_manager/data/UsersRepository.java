@@ -1,5 +1,6 @@
 package com.andronicus.med_manager.data;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ public class UsersRepository implements UsersDataSource{
     }
 
     @Override
-    public void updateProfile(String uri, String displayName, UserProfileUpdate profileUpdate) {
+    public void updateProfile(Uri uri, String displayName, UserProfileUpdate profileUpdate) {
 
     }
 }

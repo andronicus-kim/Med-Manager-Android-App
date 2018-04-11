@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class MedManagerApplication extends Application{
 
+    private static ApplicationComponent mApplicationComponent;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -16,5 +17,15 @@ public class MedManagerApplication extends Application{
         * Enable firebase offline capability
         * */
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        /*
+        * Initialize application component
+        * */
+        mApplicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
+    }
+    public static ApplicationComponent getApplicationComponent(){
+        return mApplicationComponent;
     }
 }
