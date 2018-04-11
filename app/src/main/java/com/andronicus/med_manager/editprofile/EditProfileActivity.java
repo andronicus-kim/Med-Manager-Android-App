@@ -20,6 +20,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.andronicus.med_manager.R;
+import com.andronicus.med_manager.appconfig.MedManagerApplication;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,21 +37,21 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements EditProfileContract.View{
     private static final String TAG = "EditProfileActivity";
     private static final int RC_LOAD_IMAGE = 200;
 
+    @Inject
+    EditProfilePresenter mPresenter;
 
     private Unbinder mUnbinder;
     private Uri mUri;
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabaseReference;
-    private FirebaseStorage mStorage;
-    private String mUserId;
     @BindView(R.id.iv_profile_pic)
     ImageView mImageViewProfilePic;
     @BindView(R.id.et_name)
@@ -67,18 +68,21 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        /*
+        * Initialize dagger modules and inject this activity
+        * */
+        DaggerEditProfileComponent.builder()
+                .applicationComponent(MedManagerApplication.getApplicationComponent())
+                .editProfileModule(new EditProfileModule(this))
+                .build()
+                .inject(this);
         try{
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }catch (NullPointerException e){
             Log.e(TAG, "onCreate: " + e.getMessage() );
         }
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() != null){
-            mUserId = mAuth.getCurrentUser().getUid();
-        }
         mUnbinder = ButterKnife.bind(this);
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mUserId);
-        mStorage = FirebaseStorage.getInstance();
 
         mImageViewProfilePic.setOnClickListener((view) -> {
             /*
@@ -115,34 +119,7 @@ public class EditProfileActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_save :
                 if (mUri != null && !mEditTextName.getText().toString().trim().equals("")){
-                    UploadTask uploadTask = uploadImage();
-                    uploadTask.addOnSuccessListener(taskSnapshot -> {
-                        /*
-                        * Photo was successfully uploaded, respond accordingly
-                        * */
-                        if (mProgressDialog != null && mProgressDialog.isShowing()){
-                            mProgressDialog.dismiss();
-                        }
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(mEditTextName.getText().toString().trim())
-                                .setPhotoUri(downloadUrl)
-                                .build();
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null){
-                            user.updateProfile(profileUpdate);
-                        }
-                        finish();
-                    });
-                    uploadTask.addOnFailureListener(e -> {
-                        /*
-                        * Photo upload was unsuccessful
-                        * */
-                        if (mProgressDialog != null && mProgressDialog.isShowing()){
-                            mProgressDialog.dismiss();
-                        }
-                        Toast.makeText(EditProfileActivity.this, "Error uploading Image!", Toast.LENGTH_SHORT).show();
-                    });
+                    mPresenter.updateProfile(mUri,mEditTextName.getText().toString().trim());
                 }else {
                     Toast.makeText(EditProfileActivity.this, "Error, Try again!", Toast.LENGTH_SHORT).show();
                     return false;
@@ -155,22 +132,28 @@ public class EditProfileActivity extends AppCompatActivity {
         return true;
     }
 
-    private UploadTask uploadImage() {
-        /*
-        * Helper method to upload the chosen photo to firebase storage
-        * */
+    @Override
+    public void showSuccessMessage() {
+        Toast.makeText(this, "Update was Successful!", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void showErrorMessage() {
+        Toast.makeText(this, "Error, Try again!", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void showProgressDialog() {
         mProgressDialog.show();
-        StorageReference filePath = mStorage.getReference().child("profile_images").child(mUserId);
-        Bitmap bitmap = null;
-        try{
-            bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(),mUri);
-        }catch (IOException e){
-            Log.e(TAG, "onOptionsItemSelected: " + e.getMessage());
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()){
+            mProgressDialog.dismiss();
         }
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream);
-        byte[] data = byteArrayOutputStream.toByteArray();
-        return filePath.putBytes(data);
     }
 
     @Override

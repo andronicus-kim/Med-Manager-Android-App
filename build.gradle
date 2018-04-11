@@ -37,4 +37,5 @@ ext{
     test_runner = '1.0.1'
     espresso = '3.0.1'
     picasso = '2.71828'
+    dagger = '2.14.1'
 }
